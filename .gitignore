@@ -3,3 +3,10 @@
 ################################################################################
 
 /.vs
+/Projects/.vs/Fs.NetCore/v16
+/Projects/Fs.Business/bin/Debug/netcoreapp3.1
+/Projects/Fs.Business/obj
+/Projects/Fs.Core/bin/Debug/netcoreapp3.1
+/Projects/Fs.Core/obj
+/Projects/Fs.Data/bin/Debug/netcoreapp3.1
+/Projects/Fs.Data/obj
