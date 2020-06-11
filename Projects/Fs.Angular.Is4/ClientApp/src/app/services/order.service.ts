@@ -13,7 +13,7 @@ export class OrderService {
   urlOrderService = '';
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.urlOrderService = this.baseUrl + 'api/order';
+    this.urlOrderService = 'https://angular2.netpoc.com/order';
   }
 
   getAllReports(): Observable<Report[]> {

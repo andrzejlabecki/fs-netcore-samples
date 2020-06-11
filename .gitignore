@@ -13,3 +13,6 @@
 /Projects/.vs/Fs.NetCore/DesignTimeBuild
 /Projects/Fs.Angular.Is4/.config/dotnet-tools.json
 /Projects/Fs.Angular.Is4/ClientApp/.editorconfig
+/Projects/Fs.Business/bin/Release/netcoreapp3.1
+/Projects/Fs.Core/bin/Release/netcoreapp3.1
+/Projects/Fs.Data/bin/Release/netcoreapp3.1
