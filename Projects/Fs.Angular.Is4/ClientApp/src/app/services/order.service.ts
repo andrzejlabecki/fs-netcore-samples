@@ -5,63 +5,126 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';  
 import { Order } from '../shared/models/order';
 import { Report } from '../shared/models/report';
+import { AuthorizeService } from '../../api-authorization/authorize.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
   urlOrderService = '';
+  private token: string;
+  
+  constructor(private http: HttpClient, private authorizeService: AuthorizeService) {
+    this.urlOrderService = 'https://fsapi.netpoc.com/order';
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.urlOrderService = 'https://angular2.netpoc.com/order';
+    this.token = '';
+
+    authorizeService.getAccessToken().subscribe(result => {
+    this.token = result;
+    });
   }
 
-  getAllReports(): Observable<Report[]> {
-    return this.http.get<Report[]>(this.urlOrderService + '/reports');
-  }
+    getAllReports(): Observable<Report[]> {
+      this.authorizeService.getAccessToken().subscribe(result => {
+        this.token = result;
+      });
+
+      const httpOptions = { headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token }) };
+
+      return this.http.get<Report[]>(this.urlOrderService + '/reports', httpOptions);
+    }
 
   getAllOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.urlOrderService + '/orders');
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
+    const httpOptions = { headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token }) };
+
+    return this.http.get<Order[]>(this.urlOrderService + '/orders', httpOptions);
   }
 
   getOrders(order: string): Observable<Order[]> {
-    const httpParams = {
-      params: new HttpParams()
-        .set('order', order)
-    };
-    return this.http.get<Order[]>(this.urlOrderService + '/search', httpParams);
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token }),
+      params: new HttpParams().set('order', order)};
+
+    return this.http.get<Order[]>(this.urlOrderService + '/search', httpOptions);
   }
 
   getOrderById(orderId: string): Observable<Order> {
-    return this.http.get<Order>(this.urlOrderService + '/' + orderId);
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
+    const httpOptions = { headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token }) };
+
+    return this.http.get<Order>(this.urlOrderService + '/' + orderId, httpOptions);
   }
 
   createOrder(order: Order): Observable<Order> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<Order>(this.urlOrderService,
-      order, httpOptions);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token })};
+
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
+    return this.http.post<Order>(this.urlOrderService, order, httpOptions);
   }
 
   updateOrder(order: Order): Observable<Order> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token })
+    };
+
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
     return this.http.put<Order>(this.urlOrderService,
       order, httpOptions);
   }
 
   deleteOrderById(orderId: string): Observable<number> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token })
+    };
+
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
     return this.http.delete<number>(this.urlOrderService + '/' + orderId,
       httpOptions);
   }
 
   createReport(report: Report): Observable<Report> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token })
+    };
+
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
     return this.http.post<Report>(this.urlOrderService + '/reports',
       report, httpOptions);
   }
 
   updateReport(report: Report): Observable<Report> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token })
+    };
+
+    this.authorizeService.getAccessToken().subscribe(result => {
+      this.token = result;
+    });
+
     return this.http.put<Report>(this.urlOrderService + '/reports',
       report, httpOptions);
   }

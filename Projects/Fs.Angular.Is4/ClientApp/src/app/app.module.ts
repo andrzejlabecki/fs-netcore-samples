@@ -49,7 +49,7 @@ import { ErrorHandler } from '@angular/core';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'report', component: ReportComponent },
+      { path: 'report', component: ReportComponent, canActivate: [AuthorizeGuard] },
       { path: 'order', component: OrderComponent, canActivate: [AuthorizeGuard] },
     ])
   ],

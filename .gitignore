@@ -16,3 +16,6 @@
 /Projects/Fs.Business/bin/Release/netcoreapp3.1
 /Projects/Fs.Core/bin/Release/netcoreapp3.1
 /Projects/Fs.Data/bin/Release/netcoreapp3.1
+/Projects/Fs.Api/bin
+/Projects/Fs.Api/logs
+/Projects/Fs.Api/obj
