@@ -10,3 +10,6 @@
 /Projects/Fs.Core/obj
 /Projects/Fs.Data/bin/Debug/netcoreapp3.1
 /Projects/Fs.Data/obj
+/Projects/.vs/Fs.NetCore/DesignTimeBuild
+/Projects/Fs.Angular.Is4/.config/dotnet-tools.json
+/Projects/Fs.Angular.Is4/ClientApp/.editorconfig

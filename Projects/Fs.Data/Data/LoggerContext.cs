@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using AngularPOC.Data.Models;
+using Fs.Data.Models;
 
-namespace AngularPOC.Data
+namespace Fs.Data
 {
     public class LoggerContext : DbContext
     {

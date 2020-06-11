@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using AngularPOC.Core.Interfaces.Services;
+using Fs.Core.Interfaces.Services;
 
-namespace AngularPOC.Business.Services
+namespace Fs.Business.Services
 {
     public class SharedConfiguration : ISharedConfiguration
     {

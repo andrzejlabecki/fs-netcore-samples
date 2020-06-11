@@ -1,0 +1,93 @@
+<h1 id="tableLabel">Reports</h1>
+
+<p>This component demonstrates reports grid</p>
+
+<p *ngIf="!reports"><em>Loading...</em></p>
+
+<div class="form-inline">
+  <div class="form-group">
+    <label for="exampleInputName2">Report Name</label>
+    <input type="text" class="form-control ml-1" id="txtReport" placeholder="search report name">
+  </div>
+  <div class="form-group">
+    <label class="ml-1" for="exampleInputEmail2">Order Name</label>
+    <input type="email" class="form-control ml-1" id="txtOrder" placeholder="search order name">
+  </div>
+  <button type="button" class="btn btn-primary ml-1">Search</button>
+  <button type="button" class="btn btn-primary ml-1" (click)="addReport(template)">Add Report</button>
+</div>
+
+<ag-grid-angular style="width: 100%; height: 300px;"
+                  class="ag-theme-alpine"
+                  [rowData]="reports"
+                  [columnDefs]="columnDefs"
+                  [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!-- [rowData]="reports | async"-->
+<!--
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="reports">
+  <thead>
+    <tr>
+      <th>Order#</th>
+      <th>Order Name</th>
+      <th>Report#</th>
+      <th>Report Name</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let report of reports">
+      <td>{{ report.order.orderId }}</td>
+      <td>{{ report.order.name }}</td>
+      <td>{{ report.reportId }}</td>
+      <td>{{ report.name }}</td>
+      <td><button type="button" class="btn btn-primary" (click)="editReport(report)">Edit</button></td>
+      <td><button type="button" class="btn btn-danger" (click)="deleteReport(report)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
+-->
+<!-- modal -->
+<ng-template #template>
+
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <span>Test Window</span>
+        <button type="button" class="close" aria-label="Close" (click)="closeDialog()"><span aria-hidden="true">&times;</span></button>
+      </div>
+
+      <div class="modal-body">
+
+
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <label class="control-label text-nowrap" for="orderName">Order Name:</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" formControlName="orderName" class="form-control input-sm col-sm-9" placeholder="Order name" />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <label class="control-label text-nowrap" for="reportName">Report Name:</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" formControlName="reportName" class="form-control input-sm col-sm-9" placeholder="Report name" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-primary" [disabled]="!form.valid">Save</button>
+        <button type="button" class="btn btn-sm btn-light" (click)="closeDialog()">Close</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+

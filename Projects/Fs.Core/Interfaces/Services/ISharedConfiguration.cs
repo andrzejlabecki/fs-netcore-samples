@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using AngularPOC.Core.Contracts;
+using Fs.Core.Contracts;
 
-namespace AngularPOC.Core.Interfaces.Services
+namespace Fs.Core.Interfaces.Services
 {
     public interface ISharedConfiguration : IConfiguration
     {

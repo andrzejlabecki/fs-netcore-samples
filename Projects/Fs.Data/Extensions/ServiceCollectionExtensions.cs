@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using AngularPOC.Data.Interfaces.Repositories;
-using AngularPOC.Core.Interfaces.Services;
+using Fs.Data.Interfaces.Repositories;
+using Fs.Core.Interfaces.Services;
 
-namespace AngularPOC.Data.Extensions
+namespace Fs.Data.Extensions
 {
     public static class ServiceCollectionExtensions
     {

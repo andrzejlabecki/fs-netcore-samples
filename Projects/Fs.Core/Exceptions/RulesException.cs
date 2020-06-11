@@ -9,10 +9,10 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
-using AngularPOC.Core.Contracts;
-using AngularPOC.Core.Interfaces.Services;
+using Fs.Core.Contracts;
+using Fs.Core.Interfaces.Services;
 
-namespace AngularPOC.Core.Exceptions
+namespace Fs.Core.Exceptions
 {
     public class RulesException : Exception
     {

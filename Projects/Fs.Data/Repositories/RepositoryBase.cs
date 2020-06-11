@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using AngularPOC.Data.Interfaces.Repositories;
-using AngularPOC.Data;
+using Fs.Data.Interfaces.Repositories;
+using Fs.Data;
 
-namespace AngularPOC.Data.Repositories
+namespace Fs.Data.Repositories
 {
     public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
     {

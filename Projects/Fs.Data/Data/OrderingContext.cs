@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using AngularPOC.Data.Models;
+using Fs.Data.Models;
 
-namespace AngularPOC.Data
+namespace Fs.Data
 {
     public class OrderingContext : DbContext
     {

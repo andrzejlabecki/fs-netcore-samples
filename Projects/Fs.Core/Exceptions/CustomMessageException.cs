@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AngularPOC.Core.Exceptions
+namespace Fs.Core.Exceptions
 {
     public class CustomMessageException : Exception
     {

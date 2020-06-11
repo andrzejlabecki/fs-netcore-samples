@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 
-namespace AngularPOC.Core
+namespace Fs.Core
 {
     public class Trace
     {

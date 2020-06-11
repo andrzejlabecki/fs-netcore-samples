@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace AngularPOC.Data.Interfaces.Repositories
+namespace Fs.Data.Interfaces.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {

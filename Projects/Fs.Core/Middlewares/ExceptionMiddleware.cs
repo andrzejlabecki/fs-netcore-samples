@@ -9,11 +9,11 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
-using AngularPOC.Core.Contracts;
-using AngularPOC.Core.Interfaces.Services;
-using AngularPOC.Core.Exceptions;
+using Fs.Core.Contracts;
+using Fs.Core.Interfaces.Services;
+using Fs.Core.Exceptions;
 
-namespace AngularPOC.Core.Middlewares
+namespace Fs.Core.Middlewares
 {
     public class ExceptionMiddleware
     {

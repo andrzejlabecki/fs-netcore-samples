@@ -4,12 +4,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
-using AngularPOC.Core.Interfaces.Services;
-using AngularPOC.Data.Interfaces.Repositories;
-using AngularPOC.Core.Contracts;
-using AngularPOC.Data.Models;
+using Fs.Core.Interfaces.Services;
+using Fs.Data.Interfaces.Repositories;
+using Fs.Core.Contracts;
+using Fs.Data.Models;
 
-namespace AngularPOC.Business.Services
+namespace Fs.Business.Services
 {
     public class OrderService : IOrderService
     {

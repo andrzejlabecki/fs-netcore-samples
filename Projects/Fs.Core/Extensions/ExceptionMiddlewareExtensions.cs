@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
-using AngularPOC.Core.Middlewares;
+using Fs.Core.Middlewares;
 
-namespace AngularPOC.Core.Extensions
+namespace Fs.Core.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AngularPOC.Core.Contracts
+namespace Fs.Core.Contracts
 {
 
     public class ErrorLogDto

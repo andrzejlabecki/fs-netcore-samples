@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AngularPOC.Data.Models
+namespace Fs.Data.Models
 {
     /*
 CREATE TABLE [dbo].[Order] (

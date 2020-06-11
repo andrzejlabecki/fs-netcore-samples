@@ -4,11 +4,11 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using AngularPOC.Data.Models;
-using AngularPOC.Data.Interfaces.Repositories;
-using AngularPOC.Data;
+using Fs.Data.Models;
+using Fs.Data.Interfaces.Repositories;
+using Fs.Data;
 
-namespace AngularPOC.Data.Repositories
+namespace Fs.Data.Repositories
 {
     public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {

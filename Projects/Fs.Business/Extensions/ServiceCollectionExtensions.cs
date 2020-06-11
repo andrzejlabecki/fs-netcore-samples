@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using AngularPOC.Core.Interfaces.Services;
-using AngularPOC.Business.Services;
-using AngularPOC.Data.Extensions;
+using Fs.Core.Interfaces.Services;
+using Fs.Business.Services;
+using Fs.Data.Extensions;
 
-namespace AngularPOC.Business.Extensions
+namespace Fs.Business.Extensions
 {
     public static class ServiceCollectionExtensions
     {

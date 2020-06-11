@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using AngularPOC.Data.Repositories;
-using AngularPOC.Data.Models;
-using AngularPOC.Data.Interfaces.Repositories;
+using Fs.Data.Repositories;
+using Fs.Data.Models;
+using Fs.Data.Interfaces.Repositories;
 
-namespace AngularPOC.Data
+namespace Fs.Data
 {
     public class LoggerSqlUnitOfWork : ILoggerUnitOfWork
     {

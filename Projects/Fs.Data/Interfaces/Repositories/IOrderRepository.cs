@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AngularPOC.Data.Models;
+using Fs.Data.Models;
 
-namespace AngularPOC.Data.Interfaces.Repositories
+namespace Fs.Data.Interfaces.Repositories
 {
     public interface IOrderRepository : IRepository<Order>
     {

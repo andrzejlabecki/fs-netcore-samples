@@ -1,0 +1,10 @@
+{
+  "SharedConnectionStrings": {
+    "DefaultConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!",
+    "LoggerConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!"
+  },
+  "Tracing": {
+    "traceFile": "C:\\Log\\FS\\Fs.Angular.Is4.Trace_[YYYY][MM][DD].txt",
+    "traceLevel": "Info"
+  }
+}

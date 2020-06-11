@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
-using AngularPOC.Core.Contracts;
-using AngularPOC.Data.Models;
+using Fs.Core.Contracts;
+using Fs.Data.Models;
 
-namespace AngularPOC.Business.Mappings
+namespace Fs.Business.Mappings
 {
     public class MappingProfile : Profile
     {
