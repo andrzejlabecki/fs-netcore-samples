@@ -10,6 +10,8 @@ namespace Fs.Core.Interfaces.Services
     {
         string GetConnectionString(string name);
         string GetValue(string name);
+        string GetTraceFile();
+        string GetTraceFile(string appName);
     }
 }
 

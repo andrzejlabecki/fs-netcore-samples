@@ -12,8 +12,8 @@ import { Report } from '../shared/models/report';
 export class OrderService {
   urlOrderService = '';
 
-  constructor(private http: HttpClient) {
-    this.urlOrderService = 'https://fsapi.netpoc.com/order';
+  constructor(private http: HttpClient, @Inject('API_BASE_URL') private baseUrl: string) {
+    this.urlOrderService = this.baseUrl + 'order';
   }
 
   getAllReports(): Observable<Report[]> {

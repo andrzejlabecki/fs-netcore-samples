@@ -52,5 +52,15 @@ namespace Fs.Business.Services
             IConfigurationSection section = configuration.GetSection(name);
             return section.Value;
         }
-}
+
+        public string GetTraceFile(string appName)
+        {
+            return string.Format("{0}{1}.Trace_[YYYY][MM][DD].txt", GetValue("Tracing:traceFolder"), appName);
+        }
+
+        public string GetTraceFile()
+        {
+            return GetTraceFile(GetValue("Tracing:appName"));
+        }
+    }
 }

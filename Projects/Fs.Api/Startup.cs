@@ -39,7 +39,7 @@ namespace WebAPI
             ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
 
             string appName = SharedConfiguration.GetValue("Tracing:appName");
-            string traceFile = SharedConfiguration.GetValue("Tracing:traceFile");
+            string traceFile = SharedConfiguration.GetTraceFile();
             TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
 
             Fs.Core.Trace.Init(appName, traceLevel, traceFile);
@@ -77,7 +77,7 @@ namespace WebAPI
                 })
                 .AddJwtBearer("Bearer2", options =>
                 {
-                    options.Authority = "https://angular3.netpoc.com";
+                    options.Authority = "https://fsangularis4client.netpoc.com";
                     options.RequireHttpsMetadata = false;
 
                     options.Audience = "WebAPI";

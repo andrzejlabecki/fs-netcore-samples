@@ -43,7 +43,7 @@ namespace Fs
             ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
 
             string appName = SharedConfiguration.GetValue("Tracing:appName");
-            string traceFile = SharedConfiguration.GetValue("Tracing:traceFile");
+            string traceFile = SharedConfiguration.GetTraceFile();
             TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
 
             Fs.Core.Trace.Init(appName, traceLevel, traceFile);
@@ -149,9 +149,9 @@ namespace Fs
                     PostLogoutRedirectUris = { "https://blazoroidc1.netpoc.com/signout-callback-oidc" },
                 });*/
                 options.Clients.AddSPA(
-                        "AngularPOC.Client", spa =>
-                        spa.WithRedirectUri("https://angular3.netpoc.com/signin-oidc")
-                           .WithLogoutRedirectUri("https://angular3.netpoc.com/signout-callback-oidc"));
+                        "Fs.Angular.Is4.Client", spa =>
+                        spa.WithRedirectUri("https://fsangularis4client.netpoc.com/signin-oidc")
+                           .WithLogoutRedirectUri("https://fsangularis4client.netpoc.com/signout-callback-oidc"));
                 options.Clients.AddSPA(
                         "BlazorClient.Client", spa =>
                         spa.WithRedirectUri("https://blazor4.netpoc.com/signin-oidc")
