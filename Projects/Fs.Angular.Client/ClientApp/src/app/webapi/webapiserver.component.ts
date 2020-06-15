@@ -3,19 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-webapic',
-  templateUrl: './webapi.component.html'
+  selector: 'app-webapis',
+  templateUrl: './webapiserver.component.html'
 })
-export class WebApiComponent {
+export class WebApiServerComponent {
   public orders: Order[];
-  urlOrderService = '';
 
-  constructor(private http: HttpClient, @Inject('API_BASE_URL') private baseUrl: string) {
-    this.urlOrderService = this.baseUrl + 'order';
-  }
-
-  ngOnInit() {
-    this.http.get<Order[]>(this.urlOrderService + '/orders').subscribe(result => {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    http.get<Order[]>(baseUrl + 'orderserver').subscribe(result => {
       this.orders = result;
     }, error => console.error(error));
   }
