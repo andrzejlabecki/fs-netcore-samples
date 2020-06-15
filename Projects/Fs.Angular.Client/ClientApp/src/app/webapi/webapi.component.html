@@ -1,0 +1,22 @@
+<h1 id="tableLabel">Web API</h1>
+
+<p>This component demonstrates Web API.</p>
+
+<p *ngIf="!orders"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="orders">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let order of orders">
+      <tr *ngIf="order.orderId < 20">
+        <td>{{ order.orderId }}</td>
+        <td>{{ order.name }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

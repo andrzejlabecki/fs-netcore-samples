@@ -34,11 +34,19 @@ namespace Fs.Client.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        private void ReportUser(string Method)
+        {
+            string userID = "<empty>";
+
+            if (_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) != null)
+                userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Fs.Core.Trace.Write("ReportUser() in " + Method, "UserID: " + userID, TraceLevel.Info);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            string userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Fs.Core.Trace.Write("GetWeatherForecast()", "UserID: " + userID, TraceLevel.Info);
+            ReportUser("Forecast - Get()");
 
             var rng = new Random();
 
@@ -53,7 +61,7 @@ namespace Fs.Client.Controllers
 
             string accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
 
-            Fs.Core.Trace.Write("GetWeatherForecast()", "Access Token:\r\n " + accessToken, TraceLevel.Info);
+            Fs.Core.Trace.Write("GetWeatherForecast2()", "Access Token:\r\n " + accessToken, TraceLevel.Info);
 
             // call api
             var apiClient = new HttpClient();
@@ -74,7 +82,6 @@ namespace Fs.Client.Controllers
 
             //CustomMessageException ex = new CustomMessageException() { ExceptionMessage = "I couldn't execute your request due to bad search criteria." };
             //throw ex;
-
 
             return Ok(forecasts);
         }

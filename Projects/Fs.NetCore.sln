@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Api", "Fs.Api\Fs.Api.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Angular.Is4.Client", "Fs.Angular.Is4.Client\Fs.Angular.Is4.Client.csproj", "{3516D2B9-4794-4CBF-8B91-69581F522B19}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Angular.Client", "Fs.Angular.Client\Fs.Angular.Client.csproj", "{A4CC1FAE-9BE0-4B2C-90D0-AC6101093249}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{3516D2B9-4794-4CBF-8B91-69581F522B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3516D2B9-4794-4CBF-8B91-69581F522B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3516D2B9-4794-4CBF-8B91-69581F522B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CC1FAE-9BE0-4B2C-90D0-AC6101093249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CC1FAE-9BE0-4B2C-90D0-AC6101093249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CC1FAE-9BE0-4B2C-90D0-AC6101093249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CC1FAE-9BE0-4B2C-90D0-AC6101093249}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{84BA05C9-A4AE-481D-A356-32A7EFB97A7F} = {C8129E33-1C44-4091-A338-9F662DEDA48B}
 		{4F8F60A9-E9D8-4F34-9829-1F34EC6B1D64} = {7D4ED276-4820-47F6-B0A0-87A4B0575F65}
 		{3516D2B9-4794-4CBF-8B91-69581F522B19} = {7D4ED276-4820-47F6-B0A0-87A4B0575F65}
+		{A4CC1FAE-9BE0-4B2C-90D0-AC6101093249} = {7D4ED276-4820-47F6-B0A0-87A4B0575F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31FFF523-64C3-4793-AE64-FDA5B20CBF3E}

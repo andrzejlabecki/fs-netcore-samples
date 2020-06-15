@@ -157,9 +157,9 @@ namespace Fs
                         spa.WithRedirectUri("https://blazor4.netpoc.com/signin-oidc")
                            .WithLogoutRedirectUri("https://blazor4.netpoc.com/signout-callback-oidc"));
                 options.Clients.AddSPA(
-                        "AngularPOC.Client2", spa =>
-                        spa.WithRedirectUri("https://angular4.netpoc.com/authentication/login-callback")
-                           .WithLogoutRedirectUri("https://angular4.netpoc.com/authentication/logout-callback")
+                        "Fs.Angular.Client", spa =>
+                        spa.WithRedirectUri("https://fsangularclient.netpoc.com/authentication/login-callback")
+                           .WithLogoutRedirectUri("https://fsangularclient.netpoc.com/authentication/logout-callback")
                            .WithScopes(new string[]
                             {
                                 IdentityServerConstants.StandardScopes.OpenId
@@ -175,8 +175,8 @@ namespace Fs
                                 IdentityServerConstants.StandardScopes.Profile
                             }));
 
-                options.Clients["AngularPOC.Client2"].AllowedCorsOrigins.Add("https://angular4.netpoc.com");
-                options.Clients["AngularPOC.Client2"].RedirectUris.Add("https://angular4.netpoc.com/signin-oidc");
+                options.Clients["Fs.Angular.Client"].AllowedCorsOrigins.Add("https://fsangularclient.netpoc.com");
+                options.Clients["Fs.Angular.Client"].RedirectUris.Add("https://fsangularclient.netpoc.com/signin-oidc");
 
                 options.Clients["BlazorClient.Client2"].AllowedCorsOrigins.Add("https://blazor5.netpoc.com");
                 options.Clients["BlazorClient.Client2"].RedirectUris.Add("https://blazor5.netpoc.com/signin-oidc");
