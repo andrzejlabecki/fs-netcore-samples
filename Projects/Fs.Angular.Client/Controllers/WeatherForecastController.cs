@@ -44,7 +44,7 @@ namespace Fs.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IEnumerable<WeatherForecast> Get()
         {
             ReportUser("Forecast - Get()");
 
@@ -58,32 +58,7 @@ namespace Fs.Client.Controllers
             })
             .ToArray();
 
-
-            string accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-
-            Fs.Core.Trace.Write("GetWeatherForecast2()", "Access Token:\r\n " + accessToken, TraceLevel.Info);
-
-            // call api
-            var apiClient = new HttpClient();
-
-            apiClient.SetBearerToken(accessToken);
-
-            var response = await apiClient.GetAsync("https://fsapi.netpoc.com/order/orders");
-            if (!response.IsSuccessStatusCode)
-            {
-                Fs.Core.Trace.Write("GetWeatherForecast()", "API Call Error: " + response.StatusCode.ToString(), TraceLevel.Info);
-            }
-            else
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Fs.Core.Trace.Write("GetWeatherForecast()", "API Call Result: " + JArray.Parse(content), TraceLevel.Info);
-            }
-
-
-            //CustomMessageException ex = new CustomMessageException() { ExceptionMessage = "I couldn't execute your request due to bad search criteria." };
-            //throw ex;
-
-            return Ok(forecasts);
+            return forecasts;
         }
     }
 }
