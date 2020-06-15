@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4466DDE2-7344-4180-A1D5-97F827CEEAB7}"
 	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
 		..\Configuration\SharedSettings.json = ..\Configuration\SharedSettings.json
 	EndProjectSection
 EndProject
