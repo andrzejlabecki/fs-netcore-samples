@@ -53,14 +53,14 @@ namespace Fs.Business.Services
             return section.Value;
         }
 
-        public string GetTraceFile(string appName)
+        public string GetTraceFilePath(string appName)
         {
             return string.Format("{0}{1}.Trace_[YYYY][MM][DD].txt", GetValue("Tracing:traceFolder"), appName);
         }
 
-        public string GetTraceFile()
+        public string GetTraceFilePath()
         {
-            return GetTraceFile(GetValue("Tracing:appName"));
+            return GetTraceFilePath(GetValue("Tracing:appName"));
         }
     }
 }

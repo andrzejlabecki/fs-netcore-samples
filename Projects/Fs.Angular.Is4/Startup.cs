@@ -43,7 +43,7 @@ namespace Fs
             ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
 
             string appName = SharedConfiguration.GetValue("Tracing:appName");
-            string traceFile = SharedConfiguration.GetTraceFile();
+            string traceFile = SharedConfiguration.GetTraceFilePath();
             TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
 
             Fs.Core.Trace.Init(appName, traceLevel, traceFile);
