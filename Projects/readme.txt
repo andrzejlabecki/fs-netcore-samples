@@ -17,7 +17,7 @@ Works with IIS at https://fs-api.netpoc.com/
 .Net Core app exposing web API, it's using Fs.Angular.Is4/Fs.Angular.Is4.Client as OAuth providers.
 
 Mappings for hosts file:
-127.0.0.1 fsangularis4.netpoc.com
+127.0.0.1 fs-angular-is4.netpoc.com
 127.0.0.1 fs-angular-is4-client.netpoc.com
 127.0.0.1 fs-angular-client.netpoc.com
 127.0.0.1 fs-api.netpoc.com

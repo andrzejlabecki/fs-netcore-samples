@@ -85,7 +85,7 @@ namespace Fs
             {
                 // base-address of your identityserver
                 //options.Authority = "https://is4.netpoc.com/";
-                options.Authority = "https://fsangularis4.netpoc.com/";
+                options.Authority = "https://fs-angular-is4.netpoc.com/";
                 options.RequireHttpsMetadata = false;
 
                 // name of the API resource

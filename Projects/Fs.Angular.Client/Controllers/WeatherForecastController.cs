@@ -19,14 +19,14 @@ namespace Fs.Client.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : CustomController
+    public class BaseWeatherForecastController : CustomController
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IHttpContextAccessor httpContextAccessor)
+        public BaseWeatherForecastController(ILogger<BaseWeatherForecastController> logger, IHttpContextAccessor httpContextAccessor)
             : base(logger, httpContextAccessor)
         {
         }
