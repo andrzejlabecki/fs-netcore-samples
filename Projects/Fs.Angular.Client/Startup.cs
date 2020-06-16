@@ -71,7 +71,7 @@ namespace Fs
                 .AddOpenIdConnect("oidc", options =>
                 {
                     //options.Authority = "https://is4.netpoc.com/";
-                    options.Authority = "https://fsangularis4.netpoc.com/";
+                    options.Authority = "https://fs-angular-is4.netpoc.com/";
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "Fs.Angular.Client";

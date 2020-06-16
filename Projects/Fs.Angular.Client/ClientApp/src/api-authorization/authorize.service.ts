@@ -174,8 +174,7 @@ export class AuthorizeService {
       return;
     }
 
-    const settings: any = { authority: "https://fsangularis4.netpoc.com", client_id: "Fs.Angular.Client", redirect_uri: "https://fsangularclient.netpoc.com/authentication/login-callback", post_logout_redirect_uri: "https://fsangularclient.netpoc.com/authentication/logout-callback", response_type: "code", scope: "WebAPI Fs.Angular.Client.API openid profile"};
-    //const settings: any = { authority: "https://is4.netpoc.com", client_id: "AngularPOC.Client2", redirect_uri: "https://angular4.netpoc.com/authentication/login-callback", post_logout_redirect_uri: "https://angular4.netpoc.com/authentication/logout-callback", response_type: "code", scope: "WebAPI Client2.AppAPI openid profile" };
+    const settings: any = { authority: "https://fs-angular-is4.netpoc.com", client_id: "Fs.Angular.Client", redirect_uri: "https://fs-angular-client.netpoc.com/authentication/login-callback", post_logout_redirect_uri: "https://fs-angular-client.netpoc.com/authentication/logout-callback", response_type: "code", scope: "WebAPI Fs.Angular.Client.API openid profile"};
 
     settings.automaticSilentRenew = true;
     settings.includeIdTokenInSilentRenew = true;

@@ -30,7 +30,7 @@ namespace Fs.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return await GetAPIResult<Order>("https://fsapi.netpoc.com/order/orders");
+            return await GetAPIResult<Order>("https://fs-api.netpoc.com/order/orders");
         }
     }
 }

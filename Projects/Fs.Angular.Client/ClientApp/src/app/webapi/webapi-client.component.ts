@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-webapic',
-  templateUrl: './webapi.component.html'
+  selector: 'app-webapi-client',
+  templateUrl: './webapi-client.component.html'
 })
-export class WebApiComponent {
+export class WebApiClientComponent {
   public orders: Order[];
   urlOrderService = '';
 

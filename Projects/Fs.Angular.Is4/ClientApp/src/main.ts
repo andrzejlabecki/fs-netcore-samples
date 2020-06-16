@@ -9,7 +9,7 @@ export function getBaseUrl() {
 }
 
 const providers = [
-  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }, { provide: 'API_BASE_URL', useValue: 'https://fsapi.netpoc.com/' }
+  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }, { provide: 'API_BASE_URL', useValue: 'https://fs-api.netpoc.com/' }
 ];
 
 if (environment.production) {

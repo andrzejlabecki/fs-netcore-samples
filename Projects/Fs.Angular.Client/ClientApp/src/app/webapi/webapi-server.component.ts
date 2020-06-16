@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-webapis',
-  templateUrl: './webapiserver.component.html'
+  selector: 'app-webapi-server',
+  templateUrl: './webapi-server.component.html'
 })
 export class WebApiServerComponent {
   public orders: Order[];

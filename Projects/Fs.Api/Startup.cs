@@ -70,14 +70,14 @@ namespace WebAPI
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer("Bearer1", options =>
                 {
-                    options.Authority = "https://fsangularis4.netpoc.com";
+                    options.Authority = "https://fs-angular-is4.netpoc.com";
                     options.RequireHttpsMetadata = false;
 
                     options.Audience = "WebAPI";
                 })
                 .AddJwtBearer("Bearer2", options =>
                 {
-                    options.Authority = "https://fsangularis4client.netpoc.com";
+                    options.Authority = "https://fs-angular-is4-client.netpoc.com";
                     options.RequireHttpsMetadata = false;
 
                     options.Audience = "WebAPI";

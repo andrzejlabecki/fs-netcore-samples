@@ -60,7 +60,7 @@ namespace Fs.Client.Controllers
 
             apiClient.SetBearerToken(accessToken);
 
-            var response = await apiClient.GetAsync("https://fsapi.netpoc.com/order/orders");
+            var response = await apiClient.GetAsync("https://fs-api.netpoc.com/order/orders");
             if (!response.IsSuccessStatusCode)
             {
                 Fs.Core.Trace.Write("GetWeatherForecast()", "API Call Error: " + response.StatusCode.ToString(), TraceLevel.Info);

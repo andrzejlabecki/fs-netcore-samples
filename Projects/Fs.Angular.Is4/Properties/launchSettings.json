@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "https://fsangularis4.netpoc.com/",
+      "applicationUrl": "https://fs-angular-is4.netpoc.com/",
       "sslPort": 0
     },
     "iisExpress": {
