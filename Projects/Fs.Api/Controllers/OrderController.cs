@@ -13,34 +13,23 @@ using Fs.Core.Contracts;
 using Fs.Data;
 using Fs.Core.Interfaces.Services;
 using Fs.Core.Exceptions;
+using Fs.Business.Base;
 
 namespace Fs.Controllers
 {
     [Authorize]
     [Route("[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : CustomController
     {
-        private readonly ILogger<OrderController> _logger;
         private readonly LoggerContext _context;
         private readonly IOrderService _service;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public OrderController(ILogger<OrderController> logger, LoggerContext context, IOrderService service, IHttpContextAccessor httpContextAccessor)
+            : base(logger, httpContextAccessor)
         {
-            _logger = logger;
             _context = context;
             _service = service;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        private void ReportUser(string Method)
-        {
-            string userID = "<empty>";
-
-            if (_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) != null)
-                userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Fs.Core.Trace.Write("ReportUser() in " + Method, "UserID: " + userID, TraceLevel.Info);
         }
 
         // GET: api/Order

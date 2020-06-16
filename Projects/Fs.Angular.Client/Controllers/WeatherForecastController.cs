@@ -12,35 +12,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json.Linq;
+using Fs.Business.Base;
 
 namespace Fs.Client.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : CustomController
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
         public WeatherForecastController(ILogger<WeatherForecastController> logger, IHttpContextAccessor httpContextAccessor)
+            : base(logger, httpContextAccessor)
         {
-            _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        private void ReportUser(string Method)
-        {
-            string userID = "<empty>";
-
-            if (_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) != null)
-                userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Fs.Core.Trace.Write("ReportUser() in " + Method, "UserID: " + userID, TraceLevel.Info);
         }
 
         [HttpGet]
