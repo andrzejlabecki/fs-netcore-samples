@@ -1,6 +1,6 @@
 using System;
 
-namespace Fs.Client
+namespace Fs.Data.Models
 {
     public class WeatherForecast
     {

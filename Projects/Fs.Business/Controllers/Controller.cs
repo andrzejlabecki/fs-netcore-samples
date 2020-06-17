@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Net.Http;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
-using Newtonsoft.Json.Linq;
-using Fs.Data.Models;
 
-namespace Fs.Business.Base
+namespace Fs.Business.Controllers
 {
     public class CustomController : ControllerBase
     {
         protected readonly ILogger<CustomController> _logger;
         protected readonly IHttpContextAccessor _httpContextAccessor;
+        protected string _baseURL;
 
         public CustomController(ILogger<CustomController> logger, IHttpContextAccessor httpContextAccessor)
         {

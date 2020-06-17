@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Security.Claims;
-using System.Net.Http;
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication;
-using Newtonsoft.Json.Linq;
-using Fs.Business.Base;
+using Fs.Data.Models;
 
-namespace Fs.Client.Controllers
+namespace Fs.Business.Controllers
 {
     [Authorize]
     [ApiController]

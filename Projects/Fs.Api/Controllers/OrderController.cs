@@ -13,7 +13,7 @@ using Fs.Core.Contracts;
 using Fs.Data;
 using Fs.Core.Interfaces.Services;
 using Fs.Core.Exceptions;
-using Fs.Business.Base;
+using Fs.Business.Controllers;
 
 namespace Fs.Controllers
 {
@@ -75,7 +75,6 @@ namespace Fs.Controllers
             return Ok(savedOrder);
         }
 
-
         // PUT: api/Order/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
@@ -87,7 +86,6 @@ namespace Fs.Controllers
         public void Delete(int id)
         {
         }
-
 
         #region Reports
 
