@@ -19,3 +19,5 @@
 /Projects/Fs.Api/bin
 /Projects/Fs.Api/logs
 /Projects/Fs.Api/obj
+/Projects/Fs.Console.Client/bin/Debug/netcoreapp3.0
+/Projects/Fs.Console.Client/obj
