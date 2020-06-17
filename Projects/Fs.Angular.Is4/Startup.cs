@@ -74,14 +74,14 @@ namespace Fs
             services.AddIdentityServer()
             .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
             {
-                options.Clients.Add(new Client
+                options.Clients.Add(new IdentityServer4.Models.Client
                 {
                     ClientId = "ClientPOC2",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = {"WebAPI"},
                     ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) }
                 });
-                options.Clients.Add(new Client
+                options.Clients.Add(new IdentityServer4.Models.Client
                 {
                     ClientId = "BlazorPOC.Client",
                     ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
