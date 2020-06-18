@@ -29,4 +29,6 @@ Mappings for hosts file:
 127.0.0.1 fs-angular-is4.netpoc.com
 127.0.0.1 fs-angular-is4-client.netpoc.com
 127.0.0.1 fs-angular-client.netpoc.com
+127.0.0.1 fs-blazor-wasm-client.netpoc.com
+127.0.0.1 fs-blazor-is4-wasm-client.netpoc.com
 127.0.0.1 fs-api.netpoc.com
