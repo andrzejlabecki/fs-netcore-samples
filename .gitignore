@@ -21,3 +21,16 @@
 /Projects/Fs.Api/obj
 /Projects/Fs.Console.Client/bin/Debug/netcoreapp3.0
 /Projects/Fs.Console.Client/obj
+/Projects/.vs/Fs.NetCore/config
+/Projects/Fs.Blazor.Is4.Wasm.Client/Client/bin
+/Projects/Fs.Blazor.Is4.Wasm.Client/Client/obj
+/Projects/Fs.Blazor.Is4.Wasm.Client/Server/bin/Debug/netcoreapp3.1
+/Projects/Fs.Blazor.Is4.Wasm.Client/Server/logs
+/Projects/Fs.Blazor.Is4.Wasm.Client/Server/obj
+/Projects/Fs.Blazor.Wasm.Client/Client/bin/Debug/netstandard2.1
+/Projects/Fs.Blazor.Wasm.Client/Client/obj
+/Projects/Fs.Blazor.Wasm.Client/Server/bin/Debug/netcoreapp3.1
+/Projects/Fs.Blazor.Wasm.Client/Server/logs
+/Projects/Fs.Blazor.Wasm.Client/Server/obj
+/Projects/Fs.Shared/bin/Debug/netstandard2.1
+/Projects/Fs.Shared/obj

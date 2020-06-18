@@ -153,9 +153,9 @@ namespace Fs
                         spa.WithRedirectUri("https://fs-angular-is4-client.netpoc.com/signin-oidc")
                            .WithLogoutRedirectUri("https://fs-angular-is4-client.netpoc.com/signout-callback-oidc"));
                 options.Clients.AddSPA(
-                        "BlazorClient.Client", spa =>
-                        spa.WithRedirectUri("https://blazor4.netpoc.com/signin-oidc")
-                           .WithLogoutRedirectUri("https://blazor4.netpoc.com/signout-callback-oidc"));
+                        "Fs.Blazor.Is4.Wasm.Client", spa =>
+                        spa.WithRedirectUri("https://fs-blazor-is4-wasm-client.netpoc.com/signin-oidc")
+                           .WithLogoutRedirectUri("https://fs-blazor-is4-wasm-client.netpoc.com/signout-callback-oidc"));
                 options.Clients.AddSPA(
                         "Fs.Angular.Client", spa =>
                         spa.WithRedirectUri("https://fs-angular-client.netpoc.com/authentication/login-callback")
@@ -165,9 +165,9 @@ namespace Fs
                                 IdentityServerConstants.StandardScopes.OpenId
                             }));
                 options.Clients.AddSPA(
-                        "BlazorClient.Client2", spa =>
-                        spa.WithRedirectUri("https://blazor5.netpoc.com/authentication/login-callback")
-                           .WithLogoutRedirectUri("https://blazor5.netpoc.com/authentication/logout-callback")
+                        "Fs.Blazor.Wasm.Client", spa =>
+                        spa.WithRedirectUri("https://fs-blazor-wasm-client.netpoc.com/authentication/login-callback")
+                           .WithLogoutRedirectUri("https://fs-blazor-wasm-client.netpoc.com/authentication/logout-callback")
                            //.WithoutClientSecrets()
                            .WithScopes(new string[]
                             {
@@ -178,10 +178,8 @@ namespace Fs
                 options.Clients["Fs.Angular.Client"].AllowedCorsOrigins.Add("https://fs-angular-client.netpoc.com");
                 options.Clients["Fs.Angular.Client"].RedirectUris.Add("https://fs-angular-client.netpoc.com/signin-oidc");
 
-                options.Clients["BlazorClient.Client2"].AllowedCorsOrigins.Add("https://blazor5.netpoc.com");
-                options.Clients["BlazorClient.Client2"].RedirectUris.Add("https://blazor5.netpoc.com/signin-oidc");
-                /*options.Clients["BlazorClient.Client2"].RequirePkce = true;
-                options.Clients["BlazorClient.Client2"].Enabled = true;*/
+                options.Clients["Fs.Blazor.Wasm.Client"].AllowedCorsOrigins.Add("https://fs-blazor-wasm-client.netpoc.com");
+                options.Clients["Fs.Blazor.Wasm.Client"].RedirectUris.Add("https://fs-blazor-wasm-client.netpoc.com/signin-oidc");
             });
 
             services.AddAuthentication()

@@ -1,25 +1,28 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Fs.Data;
+using Fs.Core.Extensions;
+using Fs.Business.Extensions;
+using Fs.Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using Fs.Business.Extensions;
-using Fs.Core.Extensions;
-using Fs.Core.Interfaces.Services;
 using AutoMapper;
+using System.Linq;
+using Fs.Blazor.Is4.Wasm.Client.Server.Data;
+using Fs.Blazor.Is4.Wasm.Client.Server.Models;
 
-namespace WebAPI
+
+namespace Fs.Blazor.Is4.Wasm.Client.Server
 {
     public class Startup
     {
@@ -33,9 +36,9 @@ namespace WebAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true; //Add this line
             ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
 
             string appName = SharedConfiguration.GetValue("Tracing:appName");
@@ -51,6 +54,9 @@ namespace WebAPI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLoggerFactory(AppLoggerFactory).
                 UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LoggerContext>(options =>
+                options.UseLoggerFactory(AppLoggerFactory).
+                UseSqlServer(SharedConfiguration.GetConnectionString("LoggerConnection")));
 
             services.AddLogging(config => config.ClearProviders())
                     .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener));
@@ -61,97 +67,68 @@ namespace WebAPI
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer("Bearer1", options =>
-                {
-                    options.Authority = "https://fs-angular-is4.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer2", options =>
-                {
-                    options.Authority = "https://fs-angular-is4-client.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer3", options =>
-                {
-                    options.Authority = "https://fs-blazor-is4-wasm-client.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer4", options =>
-                    {
-                        options.Authority = "https://is4.netpoc.com";
-                        options.RequireHttpsMetadata = false;
-
-                        options.Audience = "WebAPI";
-                    });
-
-            services.AddAuthorization(options =>
-            {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes("Bearer1", "Bearer2", "Bearer3", "Bearer4")
-                    .Build();
-            });
-
-            /*services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins("https://angular3.netpoc.com")
-                               .AllowAnyHeader();
-                    });
-            });*/
-
+            services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddIdentityServerJwt()
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "https://fs-angular-is4.netpoc.com/";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "Fs.Blazor.Is4.Wasm.Client";
+                    options.ClientSecret = "secret";
+                    options.ResponseType = "code";
+                    options.SaveTokens = true;
+                });
+
+            services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            logger.LogInformation("App start", null);
-
             try
             {
-                app.UseCors(builder => {
-                    builder.AllowAnyOrigin();
-                    builder.AllowAnyMethod();
-                    builder.AllowAnyHeader();
-                });
-
                 if (env.IsDevelopment())
                 {
                     app.UseDeveloperExceptionPage();
+                    app.UseDatabaseErrorPage();
+                    app.UseWebAssemblyDebugging();
+                    app.UseCustomExceptionMiddleware();
+                }
+                else
+                {
+                    app.UseCustomExceptionMiddleware();
+                    app.UseExceptionHandler("/Error");
+                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                    app.UseHsts();
                 }
 
-                app.UseCustomExceptionMiddleware();
-
                 app.UseHttpsRedirection();
+                app.UseBlazorFrameworkFiles();
+                app.UseStaticFiles();
 
                 app.UseRouting();
 
+                app.UseIdentityServer();
                 app.UseAuthentication();
-                //app.UseIdentityServer();
                 app.UseAuthorization();
-
-                //app.UseCors();
 
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapControllers();
                     endpoints.MapRazorPages();
+                    endpoints.MapControllers();
+                    endpoints.MapFallbackToFile("index.html");
                 });
             }
             catch (System.Exception ex)

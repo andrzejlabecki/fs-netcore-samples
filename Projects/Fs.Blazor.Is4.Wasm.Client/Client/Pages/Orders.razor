@@ -1,0 +1,67 @@
+﻿@page "/orders"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net.Http.Headers;
+@using Fs.Blazor.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IAccessTokenProvider TokenProvider
+
+<h1>Orders</h1>
+
+<p>This component demonstrates fetching data from web API.</p>
+
+@if (orders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>@order.OrderId.ToString()</td>
+                    <td>@order.Name.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Order[] orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var tokenResult = await TokenProvider.RequestAccessToken();
+
+            tokenResult.TryGetToken(out var token);
+
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
+            orders = await Http.GetFromJsonAsync<Order[]>("https://fs-api.netpoc.com/order/orders/");
+        }
+        catch (NotSupportedException exception)
+        {
+            string message = exception.Message;
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        catch (System.Exception exception)
+        {
+            string message = exception.Message;
+        }
+    }
+
+}
