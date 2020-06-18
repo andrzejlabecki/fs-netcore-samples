@@ -34,3 +34,6 @@
 /Projects/Fs.Blazor.Wasm.Client/Server/obj
 /Projects/Fs.Shared/bin/Debug/netstandard2.1
 /Projects/Fs.Shared/obj
+/Projects/Fs.Blazor.Is4/bin/Debug/netcoreapp3.1
+/Projects/Fs.Blazor.Is4/logs
+/Projects/Fs.Blazor.Is4/obj
