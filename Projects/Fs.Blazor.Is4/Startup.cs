@@ -89,7 +89,7 @@ namespace Fs.Blazor.Is4
                 });
                 options.Clients.Add(new IdentityServer4.Models.Client
                 {
-                    ClientId = "BlazorPOC.Client",
+                    ClientId = "Fs.Blazor.Client",
                     ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
@@ -103,57 +103,13 @@ namespace Fs.Blazor.Is4
                     },
 
                     // where to redirect to after login
-                    RedirectUris = { "https://blazor2.netpoc.com/signin-oidc1" },
+                    RedirectUris = { "https://fs-blazor-client.netpoc.com/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://blazor2.netpoc.com/signout-callback-oidc1" },
+                    PostLogoutRedirectUris = { "https://fs-blazor-client.netpoc.com/signout-callback-oidc" },
 
-                    AllowedCorsOrigins = { "https://blazor2.netpoc.com" },
+                    AllowedCorsOrigins = { "https://fs-blazor-client.netpoc.com" },
                 });
-                /*options.Clients.Add(new Client
-                {
-                    ClientId = "Blazor.Server",
-                    ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireConsent = false,
-                    RequirePkce = true,
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    },
-
-                    // where to redirect to after login
-                    RedirectUris = { "https://blazorserver.netpoc.com/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://blazorserver.netpoc.com/signout-callback-oidc" },
-
-                    AllowedCorsOrigins = { "https://blazorserver.netpoc.com" },
-                });*/
-                /*options.Clients.Add(new Client
-                {
-                    ClientId = "BlazorOIDC1",
-                    ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireConsent = false,
-                    RequirePkce = true,
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    },
-
-                    // where to redirect to after login
-                    RedirectUris = { "https://blazoroidc1.netpoc.com/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://blazoroidc1.netpoc.com/signout-callback-oidc" },
-                });*/
                 options.Clients.AddSPA(
                         "Fs.Angular.Is4.Client", spa =>
                         spa.WithRedirectUri("https://fs-angular-is4-client.netpoc.com/signin-oidc")

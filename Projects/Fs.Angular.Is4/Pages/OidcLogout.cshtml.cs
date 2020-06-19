@@ -37,7 +37,7 @@ namespace Fs.App.Pages
             if (returnUrl != null)
             {
                 // check URL from white list here, CORS should be set accordingly, maybe pass a secret here
-                if (returnUrl == "https://blazor2.netpoc.com/")
+                if (returnUrl == "https://fs-blazor-client.netpoc.com/")
                 {
                     await HttpContext.SignOutAsync("Identity.Application");
 
