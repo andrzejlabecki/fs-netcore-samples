@@ -1,12 +1,46 @@
-﻿<AuthorizeView>
-    <Authorized>
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
-        <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
-        </form>
-    </Authorized>
-    <NotAuthorized>
-        <a href="Identity/Account/Register">Register</a>
-        <a href="Identity/Account/Login">Log in</a>
-    </NotAuthorized>
-</AuthorizeView>
+﻿@inject AuthenticationStateProvider AuthState
+@inject NavigationManager NavManager
+
+        @if (IsAuthenticated)
+        {
+            <a href="Identity/Account/Manage">Hello, @Username!</a>
+            <a href="#" @onclick="SignOut">Log out</a>
+        }
+        else
+        {
+            <a href="Identity/Account/Register">Register</a>
+            <a href="Identity/Account/Login">Log in</a>
+        }
+
+        @code
+        {
+            private string Username = "";
+            private bool IsAuthenticated = false;
+
+            protected override async Task OnInitializedAsync()
+            {
+                var state = await AuthState.GetAuthenticationStateAsync();
+
+                IsAuthenticated = state.User.Identity.IsAuthenticated;
+
+                if (IsAuthenticated)
+                {
+                    Username =
+                        state.User.Claims
+                        .Where(c => c.Type.Equals("name"))
+                        .Select(c => c.Value)
+                        .FirstOrDefault() ?? string.Empty;
+                }
+
+                await base.OnInitializedAsync();
+            }
+
+            private void SignOut()
+            {
+                //string returnUrl = "https://fs-blazor-client.netpoc.com/signout-callback-oidc";
+
+
+                //NavManager.NavigateTo($"/Logout?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+                NavManager.NavigateTo($"/Identity/Account/LogOut", true);
+            }
+        }

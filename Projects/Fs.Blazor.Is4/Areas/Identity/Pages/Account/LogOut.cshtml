@@ -1,8 +1,10 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authentication
 @using Fs.Blazor.Is4.Models
 @attribute [IgnoreAntiforgeryToken]
 @inject SignInManager<ApplicationUser> SignInManager
+
 @functions {
     public async Task<IActionResult> OnPost()
     {
@@ -11,6 +13,23 @@
             await SignInManager.SignOutAsync();
         }
 
-        return Redirect("~/");
+        //return Redirect("~/");
+        return Redirect("~/Identity/Account/LoggedOut");
+    }
+
+    public async Task<IActionResult> OnGet()
+    {
+        if (SignInManager.IsSignedIn(User))
+        {
+            await SignInManager.SignOutAsync();
+        }
+
+        string url = HttpContext.Request.Headers["Referer"];
+
+        // validate return URL against client list
+
+        //return Redirect(url);
+        //return Redirect("~/Identity/Account/Login");
+        return Redirect("~/Identity/Account/LoggedOut");
     }
 }

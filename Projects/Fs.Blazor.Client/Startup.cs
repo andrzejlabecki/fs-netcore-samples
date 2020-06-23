@@ -75,8 +75,8 @@ namespace Fs.Blazor.Client
             .AddCookie("Cookies")
             .AddOpenIdConnect("oidc", options =>
             {
-                //options.Authority = "https://fs-blazor-is4.netpoc.com/";
-                options.Authority = "https://fs-is4.netpoc.com/";
+                options.Authority = "https://fs-blazor-is4.netpoc.com/";
+                //options.Authority = "https://fs-is4.netpoc.com/";
                 options.ClientId = "Fs.Blazor.Client";
 
                 options.ClientSecret = "secret";

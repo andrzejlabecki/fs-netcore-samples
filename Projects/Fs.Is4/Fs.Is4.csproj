@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Remove="aspnetcore-stdout_20200609155635_11172.log" />
+    <None Remove="netpoc.server.pfx" />
   </ItemGroup>
   
   <ItemGroup>
@@ -22,5 +23,12 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
 
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.0.0" />
+
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Fs.Business\Fs.Business.csproj" />
+    <ProjectReference Include="..\Fs.Core\Fs.Core.csproj" />
   </ItemGroup>
 </Project>

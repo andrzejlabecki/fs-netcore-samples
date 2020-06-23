@@ -99,50 +99,6 @@ namespace Fs
 
                     AllowedCorsOrigins = { "https://fs-blazor-client.netpoc.com" },
                 });
-                /*options.Clients.Add(new Client
-                {
-                    ClientId = "Blazor.Server",
-                    ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireConsent = false,
-                    RequirePkce = true,
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    },
-
-                    // where to redirect to after login
-                    RedirectUris = { "https://blazorserver.netpoc.com/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://blazorserver.netpoc.com/signout-callback-oidc" },
-
-                    AllowedCorsOrigins = { "https://blazorserver.netpoc.com" },
-                });*/
-                /*options.Clients.Add(new Client
-                {
-                    ClientId = "BlazorOIDC1",
-                    ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireConsent = false,
-                    RequirePkce = true,
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    },
-
-                    // where to redirect to after login
-                    RedirectUris = { "https://blazoroidc1.netpoc.com/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://blazoroidc1.netpoc.com/signout-callback-oidc" },
-                });*/
                 options.Clients.AddSPA(
                         "Fs.Angular.Is4.Client", spa =>
                         spa.WithRedirectUri("https://fs-angular-is4-client.netpoc.com/signin-oidc")
