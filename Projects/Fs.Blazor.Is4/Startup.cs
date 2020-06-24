@@ -159,7 +159,6 @@ namespace Fs.Blazor.Is4
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddScoped<ApplicationStateProvider>();
-            services.AddScoped<ApplicationStateReader>();
             services.AddSingleton<WeatherForecastService>();
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }

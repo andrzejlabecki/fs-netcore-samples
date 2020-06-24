@@ -1,17 +1,15 @@
 ﻿@page "/"
 @using Fs.Blazor.Is4.Areas.Identity
-@using Microsoft.AspNetCore.Authentication
-@inject ApplicationStateReader StateReader
 @namespace Fs.Blazor.Is4.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
 
-    string ticket = StateReader.DecryptIdentityCookie();
+    string cookie = HttpContext.Request.Cookies[".AspNetCore.Identity.Application"];
 
     var state = new InitialApplicationState
     {
-        Ticket = ticket
+        IdentityCookie = cookie
     };
 }
 

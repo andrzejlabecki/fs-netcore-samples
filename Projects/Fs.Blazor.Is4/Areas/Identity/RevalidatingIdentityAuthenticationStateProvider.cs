@@ -20,41 +20,14 @@ using Fs.Blazor.Is4;
 
 namespace Fs.Blazor.Is4.Areas.Identity
 {
-    public class ApplicationStateReader
-    {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private IDataProtectionProvider _provider;
-
-        public ApplicationStateReader(IHttpContextAccessor httpContextAccessor,
-                                      IDataProtectionProvider provider)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            _provider = provider;
-        }
-
-        public string DecryptIdentityCookie()
-        {
-            if (_httpContextAccessor.HttpContext == null)
-                return null;
-
-            //Get the encrypted cookie value
-            string cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[".AspNetCore.Identity.Application"];
-
-            if (cookieValue == null || cookieValue.Length == 0)
-                return null;
-
-            return cookieValue;
-        }
-    }
-
     public class InitialApplicationState
     {
-        public string Ticket { get; set; }
+        public string IdentityCookie { get; set; }
     }
 
     public class ApplicationStateProvider
     {
-        public string Ticket { get; set; }
+        public string IdentityCookie { get; set; }
     }
 
     public class RevalidatingIdentityAuthenticationStateProvider<TUser>
@@ -82,12 +55,12 @@ namespace Fs.Blazor.Is4.Areas.Identity
         public AuthenticationTicket DecryptIdentityCookie()
         {
             if (_appStateProvider == null || 
-                _appStateProvider.Ticket == null ||
-                _appStateProvider.Ticket.Length == 0)
+                _appStateProvider.IdentityCookie == null ||
+                _appStateProvider.IdentityCookie.Length == 0)
                 return null;
 
             //Get the encrypted cookie value
-            string cookieValue = _appStateProvider.Ticket;
+            string cookieValue = _appStateProvider.IdentityCookie;
 
             //Get a data protector to use with either approach
             var dataProtector = _provider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", "Identity.Application", "v2");
