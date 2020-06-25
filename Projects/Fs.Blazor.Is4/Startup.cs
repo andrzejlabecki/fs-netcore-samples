@@ -101,13 +101,15 @@ namespace Fs.Blazor.Is4
                     ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
+                    //AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequireConsent = false,
                     RequirePkce = true,
 
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "WebAPI"
                     },
 
                     // where to redirect to after login

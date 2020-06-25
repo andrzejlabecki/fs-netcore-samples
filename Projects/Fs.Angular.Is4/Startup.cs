@@ -82,20 +82,22 @@ namespace Fs
                     ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
+                    //AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequireConsent = false,
                     RequirePkce = true,
 
                     AllowedScopes = 
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "WebAPI"
                     },
 
                     // where to redirect to after login
-                    RedirectUris = { "https://fs-blazor-client.netpoc.com/signin-oidc1" },
+                    RedirectUris = { "https://fs-blazor-client.netpoc.com/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://fs-blazor-client.netpoc.com/signout-callback-oidc1" },
+                    PostLogoutRedirectUris = { "https://fs-blazor-client.netpoc.com/signout-callback-oidc" },
 
                     AllowedCorsOrigins = { "https://fs-blazor-client.netpoc.com" },
                 });

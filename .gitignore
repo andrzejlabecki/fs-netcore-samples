@@ -44,3 +44,5 @@
 /Projects/Fs.Is4/logs
 /Projects/Fs.Is4/obj
 /Projects/Fs.Is4/bin/Debug/netcoreapp3.1
+/Projects/Fs.Blazor.Shared/bin/Debug/netstandard2.1
+/Projects/Fs.Blazor.Shared/obj

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Hosting;
@@ -77,6 +78,7 @@ namespace Fs.Blazor.Client
             {
                 options.Authority = "https://fs-blazor-is4.netpoc.com/";
                 //options.Authority = "https://fs-is4.netpoc.com/";
+                //options.Authority = "https://fs-angular-is4.netpoc.com/";
                 options.ClientId = "Fs.Blazor.Client";
 
                 options.ClientSecret = "secret";
@@ -86,6 +88,8 @@ namespace Fs.Blazor.Client
 
                 // for API add offline_access scope to get refresh_token
                 options.GetClaimsFromUserInfoEndpoint = true;
+
+                options.Scope.Add("WebAPI");
 
                 options.Events = new OpenIdConnectEvents
                 {
@@ -97,39 +101,14 @@ namespace Fs.Blazor.Client
                         return Task.CompletedTask;
                     }
                 };
-            })
-            .AddOpenIdConnect("oidc1", options =>
-             {
-                 options.Authority = "https://fs-angular-is4.netpoc.com/";
-                 options.ClientId = "Fs.Blazor.Client";
-                 options.ClientSecret = "secret";
-                 options.ResponseType = "code";
-                 options.SaveTokens = true;
-                 options.RequireHttpsMetadata = false;
-
-                 // for API add offline_access scope to get refresh_token
-                 options.GetClaimsFromUserInfoEndpoint = true;
-
-                 // Callbacks for middleware to properly correlate
-                 options.CallbackPath = new PathString("/signin-oidc1");
-                 options.SignedOutCallbackPath = new PathString("/signout-oidc1");
-
-                 options.Events = new OpenIdConnectEvents
-                 {
-                     // called if user clicks Cancel during login
-                     OnAccessDenied = context =>
-                     {
-                         context.Response.Redirect("/");
-                         context.HandleResponse();
-                         return Task.CompletedTask;
-                     }
-                 };
-             });
+            });
 
             services.AddServerSideBlazor();
-            //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            //services.AddHttpClient();
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<OrderService>();
             services.AddSingleton<BlazorServerAuthStateCache>();
+            services.AddScoped<ApplicationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, BlazorServerAuthState>();
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }

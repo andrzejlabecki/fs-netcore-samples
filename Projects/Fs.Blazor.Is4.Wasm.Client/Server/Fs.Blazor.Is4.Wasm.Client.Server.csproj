@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Fs.Business\Fs.Business.csproj" />
     <ProjectReference Include="..\..\Fs.Core\Fs.Core.csproj" />
-    <ProjectReference Include="..\..\Fs.Shared\Fs.Blazor.Wasm.Shared.csproj" />
     <ProjectReference Include="..\Client\Fs.Blazor.Is4.Wasm.Client.Client.csproj" />
   </ItemGroup>
 

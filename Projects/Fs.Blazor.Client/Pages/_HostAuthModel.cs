@@ -52,12 +52,7 @@ namespace Fs.Blazor.Client.Pages
                 if (sid != null && !Cache.HasSubjectId(sid))
                 {
                     string authScheme = "oidc";
-                    var authResult = await HttpContext.AuthenticateAsync("oidc");
-                    if (authResult.Succeeded == false)
-                    {
-                        authResult = await HttpContext.AuthenticateAsync("oidc1");
-                        authScheme = "oidc1";
-                    }
+                    var authResult = await HttpContext.AuthenticateAsync(authScheme);
 
                     DateTimeOffset expiration = authResult.Properties.ExpiresUtc.Value;
                     string accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -90,28 +85,6 @@ namespace Fs.Blazor.Client.Pages
             return Challenge(authProps, "oidc");
         }
 
-        public IActionResult OnGetLogin1()
-        {
-            System.Diagnostics.Debug.WriteLine("\n_Host OnGetLogin");
-
-            var redirectUri = _httpContextAccessor.HttpContext.Request.Query["returnUrl"];
-            if (redirectUri.Count == 0)
-                redirectUri = _httpContextAccessor.HttpContext.Request.Headers["Referer"];
-
-            if (redirectUri.Count == 0)
-                redirectUri = "~/";
-
-            var authProps = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1),
-                //ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(30),
-                RedirectUri = Url.Content(redirectUri)
-            };
-
-            return Challenge(authProps, "oidc1");
-        }
-
         public async Task OnGetLogout()
         {
             System.Diagnostics.Debug.WriteLine("\n_Host OnGetLogout");
@@ -140,11 +113,9 @@ namespace Fs.Blazor.Client.Pages
             };
 
             await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc", authProps);
 
-            if (serverAuthData != null && serverAuthData.AuthScheme == "oidc1")
-                HttpContext.Response.RedirectToAbsoluteUrl(string.Format("https://fs-angular-is4.netpoc.com/OidcLogout?&userID={0}", userID));
-            else
-                await HttpContext.SignOutAsync("oidc", authProps);
+            //HttpContext.Response.RedirectToAbsoluteUrl(string.Format("https://fs-angular-is4.netpoc.com/OidcLogout?&userID={0}", userID));
         }
     }
 }

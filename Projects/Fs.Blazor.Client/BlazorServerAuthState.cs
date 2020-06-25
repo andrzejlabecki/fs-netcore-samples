@@ -8,6 +8,16 @@ using System.Threading.Tasks;
 
 namespace Fs.Blazor.Client
 {
+    public class InitialApplicationState
+    {
+        public string AccessToken { get; set; }
+    }
+
+    public class ApplicationStateProvider
+    {
+        public string AccessToken { get; set; }
+    }
+
     public class BlazorServerAuthState 
         : RevalidatingServerAuthenticationStateProvider
     {
