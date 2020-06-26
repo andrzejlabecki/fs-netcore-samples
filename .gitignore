@@ -46,3 +46,8 @@
 /Projects/Fs.Is4/bin/Debug/netcoreapp3.1
 /Projects/Fs.Blazor.Shared/bin/Debug/netstandard2.1
 /Projects/Fs.Blazor.Shared/obj
+/Projects/Fs.Mvc.Is4/bin/Debug/netcoreapp3.1
+/Projects/Fs.Mvc.Is4/logs
+/Projects/Fs.Mvc.Is4/obj/Debug/netcoreapp3.1
+/Projects/Fs.Mvc.Is4/obj
+/Projects/Fs.Mvc.Is4/Fs.Mvc.Is4.csproj.user
