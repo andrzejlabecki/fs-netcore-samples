@@ -109,13 +109,11 @@ namespace Fs.Blazor.Client.Pages
 
             var authProps = new AuthenticationProperties
             {
-                RedirectUri = Url.Content("~/")
+                RedirectUri = Url.Content("https://fs-blazor-client.netpoc.com")
             };
 
             await HttpContext.SignOutAsync("Cookies");
             await HttpContext.SignOutAsync("oidc", authProps);
-
-            //HttpContext.Response.RedirectToAbsoluteUrl(string.Format("https://fs-angular-is4.netpoc.com/OidcLogout?&userID={0}", userID));
         }
     }
 }
