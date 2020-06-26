@@ -14,15 +14,17 @@ namespace Fs.Blazor.Client.Pages
 {
     public class _HostAuthModel : PageModel
     {
-        public readonly BlazorServerAuthStateCache Cache;
+        //public readonly BlazorServerAuthStateCache Cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly SignInManager<IdentityUser> SignInManager;
+        private readonly ApplicationStateProvider StateProvider;
 
-        public _HostAuthModel(BlazorServerAuthStateCache cache, IHttpContextAccessor httpContextAccessor/*, SignInManager<IdentityUser> signInManager*/)
+        public _HostAuthModel(//BlazorServerAuthStateCache cache, 
+                              IHttpContextAccessor httpContextAccessor,
+                              ApplicationStateProvider stateProvider)
         {
-            Cache = cache;
+            //Cache = cache;
             _httpContextAccessor = httpContextAccessor;
-            //SignInManager = signInManager;
+            StateProvider = stateProvider;
         }
 
         private void ReportUser(string Method)
@@ -35,7 +37,7 @@ namespace Fs.Blazor.Client.Pages
         }
 
 
-        public async Task<IActionResult> OnGet()
+        /*public async Task<IActionResult> OnGet()
         {
             System.Diagnostics.Debug.WriteLine($"\n_Host OnGet IsAuth? {User.Identity.IsAuthenticated}");
             ReportUser("OnGet()");
@@ -61,7 +63,7 @@ namespace Fs.Blazor.Client.Pages
                 }
             }
             return Page();
-        }
+        }*/
 
         public IActionResult OnGetLogin()
         {
@@ -94,7 +96,6 @@ namespace Fs.Blazor.Client.Pages
                 userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var sid = "";
-            BlazorServerAuthData serverAuthData = null;
 
             if (User.Identity.IsAuthenticated)
             {
@@ -103,7 +104,6 @@ namespace Fs.Blazor.Client.Pages
                     .Select(c => c.Value)
                     .FirstOrDefault();
 
-                serverAuthData = Cache.Get(sid);
                 System.Diagnostics.Debug.WriteLine($"sid: {sid}");
             }
 

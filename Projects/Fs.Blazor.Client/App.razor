@@ -9,6 +9,8 @@
     protected override Task OnInitializedAsync()
     {
         StateProvider.AccessToken = InitialState.AccessToken;
+        StateProvider.RefreshToken = InitialState.RefreshToken;
+        StateProvider.Expiration = InitialState.Expiration;
 
         return base.OnInitializedAsync();
     }

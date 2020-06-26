@@ -76,9 +76,9 @@ namespace Fs.Blazor.Client
             .AddCookie("Cookies")
             .AddOpenIdConnect("oidc", options =>
             {
-                options.Authority = "https://fs-blazor-is4.netpoc.com/";
+                //options.Authority = "https://fs-blazor-is4.netpoc.com/";
                 //options.Authority = "https://fs-is4.netpoc.com/";
-                //options.Authority = "https://fs-angular-is4.netpoc.com/";
+                options.Authority = "https://fs-angular-is4.netpoc.com/";
                 options.ClientId = "Fs.Blazor.Client";
 
                 options.ClientSecret = "secret";
@@ -107,7 +107,7 @@ namespace Fs.Blazor.Client
             //services.AddHttpClient();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<OrderService>();
-            services.AddSingleton<BlazorServerAuthStateCache>();
+            //services.AddSingleton<BlazorServerAuthStateCache>();
             services.AddScoped<ApplicationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, BlazorServerAuthState>();
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);

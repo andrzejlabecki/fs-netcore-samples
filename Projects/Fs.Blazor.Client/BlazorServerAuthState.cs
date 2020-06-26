@@ -11,28 +11,35 @@ namespace Fs.Blazor.Client
     public class InitialApplicationState
     {
         public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTimeOffset Expiration { get; set; }
     }
 
     public class ApplicationStateProvider
     {
         public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTimeOffset Expiration { get; set; }
     }
 
     public class BlazorServerAuthState 
         : RevalidatingServerAuthenticationStateProvider
     {
-        private readonly BlazorServerAuthStateCache Cache;
+        //private readonly BlazorServerAuthStateCache Cache;
+        private readonly ApplicationStateProvider StateProvider;
 
         public BlazorServerAuthState(
             ILoggerFactory loggerFactory,
-            BlazorServerAuthStateCache cache)
+            //BlazorServerAuthStateCache cache,
+            ApplicationStateProvider stateProvider)
             : base(loggerFactory)
         {
-            Cache = cache;
+            //Cache = cache;
+            StateProvider = stateProvider;
         }
 
         protected override TimeSpan RevalidationInterval
-            => TimeSpan.FromSeconds(600); // TODO read from config
+            => TimeSpan.FromSeconds(60); // TODO read from config
 
         protected override Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState, CancellationToken cancellationToken)
         {
@@ -49,17 +56,17 @@ namespace Fs.Blazor.Client
                 .FirstOrDefault() ?? string.Empty;
             System.Diagnostics.Debug.WriteLine($"\nValidate: {name} / {sid}");
 
-            if (sid != null && Cache.HasSubjectId(sid))
+            if (sid != null/* && Cache.HasSubjectId(sid)*/)
             {
-                var data = Cache.Get(sid);
+                //var data = Cache.Get(sid);
 
                 System.Diagnostics.Debug.WriteLine($"NowUtc: {DateTimeOffset.UtcNow.ToString("o")}");
-                System.Diagnostics.Debug.WriteLine($"ExpUtc: {data.Expiration.ToString("o")}");
+                System.Diagnostics.Debug.WriteLine($"ExpUtc: {StateProvider.Expiration.ToString("o")}");
 
-                if(DateTimeOffset.UtcNow >= data.Expiration)
+                if(DateTimeOffset.UtcNow >= StateProvider.Expiration)
                 {
                     System.Diagnostics.Debug.WriteLine($"*** EXPIRED ***");
-                    Cache.Remove(sid);
+                    //Cache.Remove(sid);
                     return Task.FromResult(false);
                 }
             }

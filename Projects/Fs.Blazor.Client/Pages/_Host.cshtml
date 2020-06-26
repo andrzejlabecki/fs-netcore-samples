@@ -5,9 +5,19 @@
 @{
     Layout = null;
 
+    var authResult = await HttpContext.AuthenticateAsync("oidc");
+
+    DateTimeOffset expiration = new DateTimeOffset();
+
+    if (authResult.Succeeded)
+        expiration = authResult.Properties.ExpiresUtc.Value;
+
+
     var tokens = new InitialApplicationState
     {
         AccessToken = await HttpContext.GetTokenAsync("access_token"),
+        RefreshToken = await HttpContext.GetTokenAsync("refresh_token"),
+        Expiration = expiration
     };
 }
 
