@@ -98,7 +98,7 @@ namespace WebAPI
                 })
                 .AddJwtBearer("Bearer5", options =>
                     {
-                        options.Authority = "https://is4.netpoc.com";
+                        options.Authority = "https://fs-mvc-is4.netpoc.com";
                         options.RequireHttpsMetadata = false;
 
                         options.Audience = "WebAPI";

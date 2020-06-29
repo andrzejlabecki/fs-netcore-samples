@@ -33,6 +33,10 @@ Fs.Api:
 Works with IIS at https://fs-api.netpoc.com/
 .Net Core app exposing web API, it's using Fs.Angular.Is4/Fs.Angular.Is4.Client as OAuth providers.
 
+Fs.Mvc.Is4:
+Works with IIS at https://fs-mvc-is4.netpoc.com/
+App with MVC client and .Net Core server, it's with integrated IS4.
+
 Mappings for hosts file:
 127.0.0.1 fs-angular-is4.netpoc.com
 127.0.0.1 fs-angular-is4-client.netpoc.com
@@ -40,4 +44,6 @@ Mappings for hosts file:
 127.0.0.1 fs-blazor-wasm-client.netpoc.com
 127.0.0.1 fs-blazor-is4-wasm-client.netpoc.com
 127.0.0.1 fs-blazor-is4.netpoc.com
+127.0.0.1 fs-blazor-client.netpoc.com
+127.0.0.1 fs-mvc-is4.netpoc.com
 127.0.0.1 fs-api.netpoc.com

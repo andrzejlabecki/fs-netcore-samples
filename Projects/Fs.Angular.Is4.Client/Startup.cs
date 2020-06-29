@@ -74,7 +74,7 @@ namespace Fs
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://fs-angular-is4.netpoc.com/";
+                    options.Authority = SharedConfiguration.GetOidcLink();
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "Fs.Angular.Is4.Client";

@@ -71,7 +71,7 @@ namespace Fs
                 .AddOpenIdConnect("oidc", options =>
                 {
                     //options.Authority = "https://is4.netpoc.com/";
-                    options.Authority = "https://fs-angular-is4.netpoc.com/";
+                    options.Authority = SharedConfiguration.GetOidcLink();
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "Fs.Angular.Client";
@@ -85,7 +85,7 @@ namespace Fs
             {
                 // base-address of your identityserver
                 //options.Authority = "https://is4.netpoc.com/";
-                options.Authority = "https://fs-angular-is4.netpoc.com/";
+                options.Authority = SharedConfiguration.GetOidcLink();
                 options.RequireHttpsMetadata = false;
 
                 // name of the API resource

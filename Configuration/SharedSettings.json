@@ -6,5 +6,8 @@
   "Tracing": {
     "traceLevel": "Info",
     "traceFolder": "C:\\Log\\FS\\"
+  },
+  "OidcAuthority": {
+    "httpLink": "https://fs-mvc-is4.netpoc.com/"
   }
 }

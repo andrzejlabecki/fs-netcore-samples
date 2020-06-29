@@ -62,5 +62,15 @@ namespace Fs.Business.Services
         {
             return GetTraceFilePath(GetValue("Tracing:appName"));
         }
+
+        public string GetOidcLink(string name)
+        {
+            return GetValue(name);
+        }
+
+        public string GetOidcLink()
+        {
+            return GetOidcLink("OidcAuthority:httpLink");
+        }
     }
 }

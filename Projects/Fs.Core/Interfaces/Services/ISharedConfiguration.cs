@@ -12,6 +12,8 @@ namespace Fs.Core.Interfaces.Services
         string GetValue(string name);
         string GetTraceFilePath();
         string GetTraceFilePath(string appName);
+        string GetOidcLink();
+        string GetOidcLink(string authName);
     }
 }
 

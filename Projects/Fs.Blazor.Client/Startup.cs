@@ -77,8 +77,8 @@ namespace Fs.Blazor.Client
             .AddOpenIdConnect("oidc", options =>
             {
                 //options.Authority = "https://fs-blazor-is4.netpoc.com/";
-                //options.Authority = "https://fs-is4.netpoc.com/";
-                options.Authority = "https://fs-angular-is4.netpoc.com/";
+                //options.Authority = "https://fs-angular-is4.netpoc.com/";
+                options.Authority = SharedConfiguration.GetOidcLink();
                 options.ClientId = "Fs.Blazor.Client";
 
                 options.ClientSecret = "secret";
