@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Fs.Mvc.Is4.Models;
@@ -23,8 +24,22 @@ namespace Fs.Mvc.Is4.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet(string returnUrl = null)
         {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+
+            if (returnUrl == null)
+                returnUrl = HttpContext.Request.Headers["Referer"];
+
+            if (returnUrl != null)
+            {
+                HttpContext.Response.RedirectToAbsoluteUrl(returnUrl);
+                return null;
+            }
+            else
+                return RedirectToPage("Login");
+
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
