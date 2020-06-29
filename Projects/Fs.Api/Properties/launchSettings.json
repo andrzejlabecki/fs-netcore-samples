@@ -24,7 +24,7 @@
     "Fs.Api": {
       "commandName": "IIS",
       "launchBrowser": true,
-      "launchUrl": "https://fs-angular-is4.netpoc.com",
+      "launchUrl": "https://fs-blazor-client.netpoc.com",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -68,46 +68,12 @@ namespace Fs.Blazor.Client
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-            .AddCookie("Cookies")
-            .AddOpenIdConnect("oidc", options =>
-            {
-                //options.Authority = "https://fs-blazor-is4.netpoc.com/";
-                //options.Authority = "https://fs-angular-is4.netpoc.com/";
-                options.Authority = SharedConfiguration.GetOidcLink();
-                options.ClientId = "Fs.Blazor.Client";
+            services.AddOidcProviders(SharedConfiguration);
 
-                options.ClientSecret = "secret";
-                options.ResponseType = "code";
-                options.SaveTokens = true;
-                options.RequireHttpsMetadata = false;
-
-                // for API add offline_access scope to get refresh_token
-                options.GetClaimsFromUserInfoEndpoint = true;
-
-                options.Scope.Add("WebAPI");
-
-                options.Events = new OpenIdConnectEvents
-                {
-                    // called if user clicks Cancel during login
-                    OnAccessDenied = context =>
-                    {
-                        context.Response.Redirect("/");
-                        context.HandleResponse();
-                        return Task.CompletedTask;
-                    }
-                };
-            });
 
             services.AddServerSideBlazor();
-            //services.AddHttpClient();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<OrderService>();
-            //services.AddSingleton<BlazorServerAuthStateCache>();
             services.AddScoped<ApplicationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, BlazorServerAuthState>();
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);

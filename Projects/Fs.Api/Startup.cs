@@ -67,50 +67,7 @@ namespace WebAPI
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer("Bearer1", options =>
-                {
-                    options.Authority = "https://fs-angular-is4.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer2", options =>
-                {
-                    options.Authority = "https://fs-angular-is4-client.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer3", options =>
-                {
-                    options.Authority = "https://fs-blazor-is4-wasm-client.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer4", options =>
-                {
-                    options.Authority = "https://fs-blazor-is4.netpoc.com";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Audience = "WebAPI";
-                })
-                .AddJwtBearer("Bearer5", options =>
-                    {
-                        options.Authority = "https://fs-mvc-is4.netpoc.com";
-                        options.RequireHttpsMetadata = false;
-
-                        options.Audience = "WebAPI";
-                    });
-
-            services.AddAuthorization(options =>
-            {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes("Bearer1", "Bearer2", "Bearer3", "Bearer4", "Bearer5")
-                    .Build();
-            });
+            services.AddJwtBearers(SharedConfiguration);
 
             /*services.AddCors(options =>
             {
