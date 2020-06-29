@@ -10,14 +10,6 @@ using Fs.Blazor.Is4.Models;
 
 namespace Fs.Blazor.Is4.Data
 {
-    public class ApplicationDbContext1 : IdentityDbContext
-    {
-        public ApplicationDbContext1(DbContextOptions<ApplicationDbContext1> options)
-            : base(options)
-        {
-        }
-    }
-
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
         public ApplicationDbContext(
