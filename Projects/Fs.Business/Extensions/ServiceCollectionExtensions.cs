@@ -9,9 +9,14 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Fs.Core.Interfaces.Services;
 using Fs.Business.Services;
 using Fs.Data.Extensions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4;
+using IdentityServer4.Models;
 
 namespace Fs.Business.Extensions
 {
@@ -107,6 +112,87 @@ namespace Fs.Business.Extensions
             }
 
             return services;
+        }
+
+        public static IdentityServer4.Models.Client[] GetClientCollection(this IServiceCollection services, ISharedConfiguration configuration)
+        {
+            IConfigurationSection section = configuration.GetSection("OidcClients");
+            IEnumerable<IConfigurationSection> clients = section.GetChildren();
+
+            IdentityServer4.Models.Client[] clientArray = new IdentityServer4.Models.Client[clients.Count()];
+            ClientCollection clientColl = new ClientCollection();
+            bool isSpa = false;
+            int index = 0;
+
+            foreach (IConfigurationSection clientSection in clients)
+            {
+                isSpa = clientSection.GetValue<bool>("Spa");
+
+                if (isSpa)
+                {
+                    clientColl.AddSPA(clientSection.Key, spa =>
+                        spa.WithLogoutRedirectUri(clientSection.GetValue<string>("LogoutUris"))
+                        .WithScopes(clientSection.GetValue<string>("Scopes")));
+
+                    clientColl[clientSection.Key].RedirectUris = GetStringCollection(clientSection, "RedirectUris");
+                    clientColl[clientSection.Key].AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins");
+
+                    clientArray[index] = clientColl[clientSection.Key];
+                }
+                else
+                {
+                    clientArray[index] = new IdentityServer4.Models.Client
+                    {
+                        ClientId = clientSection.Key,
+                        AllowedGrantTypes = GetStringCollection(clientSection, "GrantTypes"),
+                        AllowedScopes = GetStringCollection(clientSection, "Scopes"),
+                        ClientSecrets = GetSecretCollection(clientSection),
+                        RequireConsent = clientSection.GetValue<bool>("Consent"),
+                        RequirePkce = clientSection.GetValue<bool>("Pkce"),
+                        RedirectUris = GetStringCollection(clientSection, "RedirectUris"),
+                        PostLogoutRedirectUris = GetStringCollection(clientSection, "LogoutUris"),
+                        AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins"),
+                    };
+                }
+
+                index++;
+            }
+
+            //IdentityServer4.Models.Client[] clientArray = new IdentityServer4.Models.Client[clientColl.Count];
+
+            //clientColl.CopyTo(clientArray, 0);
+            clientColl.Clear();
+
+            return clientArray;
+        }
+
+        private static ICollection<IdentityServer4.Models.Secret> GetSecretCollection(IConfigurationSection section)
+        {
+            string secretsValue = section.GetValue<string>("Secrets");
+
+            List<IdentityServer4.Models.Secret> secrets = new List<IdentityServer4.Models.Secret>();
+
+            if (secretsValue != null)
+            {
+                string [] secretValues = secretsValue.Split(" ");
+
+                foreach (string secret in secretValues)
+                {
+                    secrets.Add(new IdentityServer4.Models.Secret(secret.Sha256()));
+                }
+            }
+
+            return secrets;
+        }
+
+        private static ICollection<string> GetStringCollection(IConfigurationSection section, string name)
+        {
+            string scopes = section.GetValue<string>(name);
+
+            if (scopes != null)
+                return scopes.Split(" ");
+            else
+                return new string[0];
         }
 
         public static ISharedConfiguration RegisterSharedConfiguration(this IServiceCollection services)

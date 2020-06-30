@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -83,7 +84,17 @@ namespace Fs.Mvc.Is4
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            IdentityServer4.Models.Client[] clientArray = services.GetClientCollection(SharedConfiguration);
+
             services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+                .AddInMemoryClients(clientArray);
+            /*.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+            {
+                options.Clients.AddRange(clientArray);
+            });*/
+
+            /*services.AddIdentityServer()
             .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
             {
                 options.Clients.Add(new IdentityServer4.Models.Client
@@ -150,7 +161,7 @@ namespace Fs.Mvc.Is4
 
                 options.Clients["Fs.Blazor.Wasm.Client"].AllowedCorsOrigins.Add("https://fs-blazor-wasm-client.netpoc.com");
                 options.Clients["Fs.Blazor.Wasm.Client"].RedirectUris.Add("https://fs-blazor-wasm-client.netpoc.com/signin-oidc");
-            });
+            });*/
 
             services.AddAuthentication()
             .AddIdentityServerJwt();

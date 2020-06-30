@@ -62,7 +62,6 @@ namespace Fs.Blazor.Client
 
             services.AddOidcProviders(SharedConfiguration);
 
-
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<OrderService>();
