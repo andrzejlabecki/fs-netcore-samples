@@ -114,15 +114,13 @@ namespace Fs.Business.Extensions
             return services;
         }
 
-        public static IdentityServer4.Models.Client[] GetClientCollection(this IServiceCollection services, ISharedConfiguration configuration)
+        public static ClientCollection GetClientCollection(this IServiceCollection services, ISharedConfiguration configuration)
         {
             IConfigurationSection section = configuration.GetSection("OidcClients");
             IEnumerable<IConfigurationSection> clients = section.GetChildren();
 
-            IdentityServer4.Models.Client[] clientArray = new IdentityServer4.Models.Client[clients.Count()];
             ClientCollection clientColl = new ClientCollection();
             bool isSpa = false;
-            int index = 0;
 
             foreach (IConfigurationSection clientSection in clients)
             {
@@ -136,12 +134,10 @@ namespace Fs.Business.Extensions
 
                     clientColl[clientSection.Key].RedirectUris = GetStringCollection(clientSection, "RedirectUris");
                     clientColl[clientSection.Key].AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins");
-
-                    clientArray[index] = clientColl[clientSection.Key];
                 }
                 else
                 {
-                    clientArray[index] = new IdentityServer4.Models.Client
+                    clientColl.Add(new IdentityServer4.Models.Client
                     {
                         ClientId = clientSection.Key,
                         AllowedGrantTypes = GetStringCollection(clientSection, "GrantTypes"),
@@ -152,18 +148,11 @@ namespace Fs.Business.Extensions
                         RedirectUris = GetStringCollection(clientSection, "RedirectUris"),
                         PostLogoutRedirectUris = GetStringCollection(clientSection, "LogoutUris"),
                         AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins"),
-                    };
+                    });
                 }
-
-                index++;
             }
 
-            //IdentityServer4.Models.Client[] clientArray = new IdentityServer4.Models.Client[clientColl.Count];
-
-            //clientColl.CopyTo(clientArray, 0);
-            clientColl.Clear();
-
-            return clientArray;
+            return clientColl;
         }
 
         private static ICollection<IdentityServer4.Models.Secret> GetSecretCollection(IConfigurationSection section)
