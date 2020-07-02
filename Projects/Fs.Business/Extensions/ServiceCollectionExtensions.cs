@@ -10,13 +10,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Fs.Core.Interfaces.Services;
-using Fs.Business.Services;
-using Fs.Data.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4;
 using IdentityServer4.Models;
+using Fs.Core.Interfaces.Services;
+using Fs.Business.Services;
+using Fs.Data.Extensions;
+using Fs.Business.Controllers;
+using Microsoft.VisualBasic;
 
 namespace Fs.Business.Extensions
 {
@@ -114,6 +116,14 @@ namespace Fs.Business.Extensions
             return services;
         }
 
+        public static void CopyClients(this IServiceCollection services, ClientCollection source, ref ClientCollection destination)
+        {
+            foreach (IdentityServer4.Models.Client client in source)
+            {
+                destination.Add(client);
+            }
+        }
+
         public static ClientCollection GetClientCollection(this IServiceCollection services, ISharedConfiguration configuration)
         {
             IConfigurationSection section = configuration.GetSection("OidcClients");
@@ -134,6 +144,9 @@ namespace Fs.Business.Extensions
 
                     clientColl[clientSection.Key].RedirectUris = GetStringCollection(clientSection, "RedirectUris");
                     clientColl[clientSection.Key].AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins");
+                    clientColl[clientSection.Key].AllowedGrantTypes = GetStringCollection(clientSection, "GrantTypes");
+                    clientColl[clientSection.Key].RequirePkce = clientSection.GetValue<bool>("Pkce");
+                    clientColl[clientSection.Key].AllowAccessTokensViaBrowser = clientSection.GetValue<bool>("TokensViaBrowser");
                 }
                 else
                 {
@@ -186,7 +199,7 @@ namespace Fs.Business.Extensions
 
         public static ISharedConfiguration RegisterSharedConfiguration(this IServiceCollection services)
         {
-            IServiceProvider serviceProvider = services.AddScoped<ISharedConfiguration, SharedConfiguration>().BuildServiceProvider();
+            IServiceProvider serviceProvider = services.AddSingleton<ISharedConfiguration, SharedConfiguration>().BuildServiceProvider();
 
             return serviceProvider.GetRequiredService<ISharedConfiguration>();
         }

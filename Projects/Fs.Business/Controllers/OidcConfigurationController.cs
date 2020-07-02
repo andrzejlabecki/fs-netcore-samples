@@ -2,26 +2,27 @@
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Fs.Core.Interfaces.Services;
 
-namespace Fs.Controllers
+namespace Fs.Business.Controllers
 {
     public class OidcConfigurationController : Controller
     {
         private readonly ILogger<OidcConfigurationController> logger;
 
-        public OidcConfigurationController(IClientRequestParametersProvider clientRequestParametersProvider, ILogger<OidcConfigurationController> _logger)
+        public OidcConfigurationController(ISharedConfiguration sharedConfiguration, ILogger<OidcConfigurationController> _logger)
         {
-            ClientRequestParametersProvider = clientRequestParametersProvider;
+            SharedConfiguration = sharedConfiguration;
             logger = _logger;
         }
 
-        public IClientRequestParametersProvider ClientRequestParametersProvider { get; }
+        public ISharedConfiguration SharedConfiguration { get; }
 
         [HttpGet("_configuration/{clientId}")]
-        public IActionResult GetClientRequestParameters([FromRoute]string clientId)
+        public IActionResult GetClientRequestParameters([FromRoute] string clientId)
         {
             Fs.Core.Trace.Write("GetClientRequestParameters()", "ClientID: " + clientId, TraceLevel.Info);
-            var parameters = ClientRequestParametersProvider.GetClientParameters(HttpContext, clientId);
+            var parameters = SharedConfiguration.GetClientParameters(clientId);
             return Ok(parameters);
         }
     }

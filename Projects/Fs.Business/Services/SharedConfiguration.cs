@@ -72,5 +72,26 @@ namespace Fs.Business.Services
         {
             return GetOidcLink("OidcAuthority:httpLink");
         }
+
+        public System.Collections.Generic.IDictionary<string, string> GetClientParameters(string clientId)
+        {
+            System.Collections.Generic.IDictionary<string, string> clientParameters = null;
+
+            IConfigurationSection clientSection = configuration.GetSection("IdentityServer:SpaClients:"+ clientId);
+
+            if (clientSection != null)
+            {
+                clientParameters = new Dictionary<string, string>();
+
+                clientParameters.Add("authority", clientSection.GetValue<string>("Authority"));
+                clientParameters.Add("client_id", clientId);
+                clientParameters.Add("redirect_uri", clientSection.GetValue<string>("RedirectUri"));
+                clientParameters.Add("post_logout_redirect_uri", clientSection.GetValue<string>("LogoutUri"));
+                clientParameters.Add("response_type", clientSection.GetValue<string>("ResponseType"));
+                clientParameters.Add("scope", clientSection.GetValue<string>("Scope"));
+            }
+
+            return clientParameters;
+        }
     }
 }

@@ -1,32 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Text;
-using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using IdentityServer4;
-using IdentityServer4.Models;
 using AutoMapper;
 using Fs.Data;
 using Fs.Business.Extensions;
@@ -34,7 +17,6 @@ using Fs.Core.Extensions;
 using Fs.Core.Interfaces.Services;
 using Fs.Mvc.Is4.Data;
 using Fs.Mvc.Is4.Models;
-using Microsoft.Extensions.Options;
 
 namespace Fs.Mvc.Is4
 {
@@ -87,8 +69,11 @@ namespace Fs.Mvc.Is4
             ClientCollection clientColl = services.GetClientCollection(SharedConfiguration);
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
-                .AddInMemoryClients(clientColl);
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+            {
+                services.CopyClients(options.Clients, ref clientColl);
+            })
+            .AddInMemoryClients(clientColl);
 
             services.AddAuthentication()
             .AddIdentityServerJwt();

@@ -14,6 +14,7 @@ namespace Fs.Core.Interfaces.Services
         string GetTraceFilePath(string appName);
         string GetOidcLink();
         string GetOidcLink(string authName);
+        System.Collections.Generic.IDictionary<string, string> GetClientParameters(string clientId);
     }
 }
 
