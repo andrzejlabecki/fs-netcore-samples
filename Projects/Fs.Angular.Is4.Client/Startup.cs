@@ -65,23 +65,7 @@ namespace Fs
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddIdentityServerJwt()
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = SharedConfiguration.GetOidcLink();
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "Fs.Angular.Is4.Client";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code";
-                    options.SaveTokens = true;
-                });
+            services.AddOidcProviders(SharedConfiguration);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Fs.Core.Interfaces.Services;
 
-namespace Fs.Client.Controllers
+namespace Fs.Controllers
 {
     public class OidcConfigurationController : Controller
     {

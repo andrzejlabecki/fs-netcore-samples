@@ -74,8 +74,16 @@ namespace Fs.Business.Extensions
             {
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
-            })
-            .AddCookie("Cookies");
+            });
+
+            IConfigurationSection identityServer = configuration.GetSection("IdentityServer");
+            IEnumerable<IConfigurationSection> sections = identityServer.GetChildren();
+
+            if (sections.Count() > 0)
+                builder.AddIdentityServerJwt()
+                .AddCookie("Cookies");
+            else
+                builder.AddCookie("Cookies");
 
             IConfigurationSection section = configuration.GetSection("OidcProviders");
             IEnumerable<IConfigurationSection> providers = section.GetChildren();
@@ -139,14 +147,17 @@ namespace Fs.Business.Extensions
                 if (isSpa)
                 {
                     clientColl.AddSPA(clientSection.Key, spa =>
-                        spa.WithLogoutRedirectUri(clientSection.GetValue<string>("LogoutUris"))
-                        .WithScopes(clientSection.GetValue<string>("Scopes")));
+                        spa.WithLogoutRedirectUri(clientSection.GetValue<string>("LogoutUris")));
+
+                    var scopes = clientSection.GetValue<string>("Scopes");
+                    if (scopes != null && scopes.Length > 0)
+                        clientColl[clientSection.Key].AllowedScopes = GetStringCollection(clientSection, "Scopes");
+
+                    var origins = clientSection.GetValue<string>("CorsOrigins");
+                    if (origins != null && origins.Length > 0)
+                        clientColl[clientSection.Key].AllowedScopes = GetStringCollection(clientSection, "CorsOrigins");
 
                     clientColl[clientSection.Key].RedirectUris = GetStringCollection(clientSection, "RedirectUris");
-                    clientColl[clientSection.Key].AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins");
-                    clientColl[clientSection.Key].AllowedGrantTypes = GetStringCollection(clientSection, "GrantTypes");
-                    clientColl[clientSection.Key].RequirePkce = clientSection.GetValue<bool>("Pkce");
-                    clientColl[clientSection.Key].AllowAccessTokensViaBrowser = clientSection.GetValue<bool>("TokensViaBrowser");
                 }
                 else
                 {
