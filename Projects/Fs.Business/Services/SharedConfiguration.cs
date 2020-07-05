@@ -83,7 +83,11 @@ namespace Fs.Business.Services
             {
                 clientParameters = new Dictionary<string, string>();
 
-                clientParameters.Add("authority", clientSection.GetValue<string>("Authority"));
+                string authority = clientSection.GetValue<string>("Authority");
+                if (authority == null)
+                    authority = GetOidcLink();
+
+                clientParameters.Add("authority", authority);
                 clientParameters.Add("client_id", clientId);
                 clientParameters.Add("redirect_uri", clientSection.GetValue<string>("RedirectUri"));
                 clientParameters.Add("post_logout_redirect_uri", clientSection.GetValue<string>("LogoutUri"));

@@ -62,23 +62,7 @@ namespace Fs
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    //options.Authority = "https://is4.netpoc.com/";
-                    options.Authority = SharedConfiguration.GetOidcLink();
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "Fs.Angular.Client";
-                    //options.ClientSecret = "secret";
-                    options.ResponseType = "code";
-                    options.SaveTokens = true;
-                });
+            services.AddOidcProviders(SharedConfiguration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

@@ -97,12 +97,22 @@ namespace Fs.Business.Extensions
                         options.Authority = configuration.GetOidcLink();
 
                     options.ClientId = providerSection.GetValue<string>("ClientID");
-                    options.ClientSecret = providerSection.GetValue<string>("ClientSecret");
-                    options.ResponseType = providerSection.GetValue<string>("ResponseType");
-                    options.RequireHttpsMetadata = providerSection.GetValue<bool>("HttpsMetadata");
+
+                    string secret = providerSection.GetValue<string>("ClientSecret");
+                    if (secret != null && secret.Length > 0)
+                        options.ClientSecret = secret;
+
+                    string response = providerSection.GetValue<string>("ResponseType");
+                    if (response != null && response.Length > 0)
+                        options.ResponseType = response;
+
+                    string scope = providerSection.GetValue<string>("Scope");
+                    if (scope != null && scope.Length > 0)
+                        options.Scope.Add(scope);
+
                     options.SaveTokens = providerSection.GetValue<bool>("SaveTokens");
+                    options.RequireHttpsMetadata = providerSection.GetValue<bool>("HttpsMetadata");
                     options.GetClaimsFromUserInfoEndpoint = providerSection.GetValue<bool>("ClaimsUserEndpoint");
-                    options.Scope.Add(providerSection.GetValue<string>("Scope"));
 
                     if (providerSection.GetValue<bool>("Events"))
                     {
@@ -117,7 +127,6 @@ namespace Fs.Business.Extensions
                             }
                         };
                     }
-
                 });
             }
 
@@ -155,7 +164,7 @@ namespace Fs.Business.Extensions
 
                     var origins = clientSection.GetValue<string>("CorsOrigins");
                     if (origins != null && origins.Length > 0)
-                        clientColl[clientSection.Key].AllowedScopes = GetStringCollection(clientSection, "CorsOrigins");
+                        clientColl[clientSection.Key].AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins");
 
                     clientColl[clientSection.Key].RedirectUris = GetStringCollection(clientSection, "RedirectUris");
                 }

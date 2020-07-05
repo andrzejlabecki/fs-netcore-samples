@@ -174,7 +174,12 @@ export class AuthorizeService {
       return;
     }
 
-    const settings: any = { authority: "https://fs-angular-is4.netpoc.com", client_id: "Fs.Angular.Client", redirect_uri: "https://fs-angular-client.netpoc.com/authentication/login-callback", post_logout_redirect_uri: "https://fs-angular-client.netpoc.com/authentication/logout-callback", response_type: "code", scope: "WebAPI Fs.Angular.Client.API openid profile"};
+    const response = await fetch(ApplicationPaths.ApiAuthorizationClientConfigurationUrl);
+    if (!response.ok) {
+      throw new Error(`Could not load settings for '${ApplicationName}'`);
+    }
+
+    const settings: any = await response.json();
 
     settings.automaticSilentRenew = true;
     settings.includeIdTokenInSilentRenew = true;
