@@ -33,7 +33,7 @@ using Fs.Core.Extensions;
 using Fs.Core.Interfaces.Services;
 using Fs.Blazor.Is4.Areas.Identity;
 using Fs.Blazor.Is4.Data;
-using Fs.Blazor.Is4.Models;
+using Fs.Data.Models;
 using Microsoft.Extensions.Options;
 
 namespace Fs.Blazor.Is4

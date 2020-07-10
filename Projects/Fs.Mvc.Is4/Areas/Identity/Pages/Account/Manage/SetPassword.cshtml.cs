@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Fs.Mvc.Is4.Models;
+using Fs.Data.Models;
 
 namespace Fs.Mvc.Is4.Areas.Identity.Pages.Account.Manage
 {

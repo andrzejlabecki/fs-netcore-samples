@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.Extensions.Options;
-using Fs.Mvc.Is4.Models;
+using Fs.Data.Models;
 
 namespace Fs.Mvc.Is4.Data
 {

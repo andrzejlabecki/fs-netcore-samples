@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using IdentityServer4.EntityFramework.Options;
-using Fs.Blazor.Is4.Models;
+using Fs.Data.Models;
 
 namespace Fs.Blazor.Is4.Data
 {

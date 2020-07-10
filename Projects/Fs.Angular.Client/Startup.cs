@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Fs.Data;
 using Fs.Core.Extensions;
 using Fs.Business.Extensions;
-using Fs.Models;
+using Fs.Data.Models;
 using Fs.Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,8 +63,9 @@ namespace Fs
             services.AddRazorPages();
 
             services.AddOidcProviders(SharedConfiguration);
+            services.AddJwtBearer(SharedConfiguration);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            /*services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 // base-address of your identityserver
@@ -74,7 +75,7 @@ namespace Fs
 
                 // name of the API resource
                 options.Audience = "Fs.Angular.Client.API";
-            });
+            });*/
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

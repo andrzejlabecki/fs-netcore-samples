@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Fs.Data;
-using Fs.Models;
+using Fs.Data.Models;
 using Fs.Business.Extensions;
 using Fs.Core.Extensions;
 using Fs.Core.Interfaces.Services;

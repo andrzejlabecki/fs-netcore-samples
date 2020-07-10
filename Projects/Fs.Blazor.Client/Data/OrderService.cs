@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
-
-using Fs.Blazor.Shared;
+using Fs.Models;
 
 namespace Fs.Blazor.Client.Data
 {

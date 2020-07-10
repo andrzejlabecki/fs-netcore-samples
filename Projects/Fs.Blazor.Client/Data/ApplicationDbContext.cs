@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.Extensions.Options;
-using Fs.Blazor.Client.Models;
+using Fs.Data.Models;
 
 namespace Fs.Blazor.Client.Data
 {

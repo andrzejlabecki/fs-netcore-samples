@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Fs.Business.Extensions;
 using Fs.Core.Extensions;
 using Fs.Core.Interfaces.Services;
+using Fs.Data.Models;
 using AutoMapper;
 
 namespace WebAPI

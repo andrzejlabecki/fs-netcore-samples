@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
-using Fs.Blazor.Client.Models;
+using Fs.Data.Models;
 
 
 namespace Fs.Blazor.Client.Pages

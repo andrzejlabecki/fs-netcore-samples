@@ -3,6 +3,7 @@
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject HttpClient Http
 
 <AuthorizeView>
     <Authorized>
@@ -18,7 +19,24 @@
 @code{
     private async Task BeginSignOut(MouseEventArgs args)
     {
+        OidcContext context;
+
         await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
+
+        context = await Http.GetFromJsonAsync<OidcContext>("OidcContext");
+
+        if (context.IsExternalLogin)
+        {
+            //await Http.GetAsync("OidcContext/signout");
+
+            // link to local logout page
+            string returnUrl = Navigation.BaseUri + "authentication/logout";
+            // link to remote logout page (Identity Server)
+            string logoutUrl = context.Authority + "Identity/Account/Logout?returnUrl="+Uri.EscapeDataString(returnUrl);
+
+            Navigation.NavigateTo(logoutUrl, true);
+        }
+        else
+            Navigation.NavigateTo("authentication/logout");
     }
 }

@@ -34,6 +34,26 @@ namespace Fs.Business.Extensions
             return services;
         }
 
+        public static IServiceCollection AddJwtBearer(this IServiceCollection services, ISharedConfiguration configuration)
+        {
+            AuthenticationBuilder builder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+
+            IConfigurationSection section = configuration.GetSection("JwtBearer");
+
+            builder.AddJwtBearer(options =>
+            {
+                options.Authority = section.GetValue<string>("Authority");
+                if (options.Authority == null)
+                    options.Authority = configuration.GetOidcLink();
+
+                options.RequireHttpsMetadata = section.GetValue<bool>("HttpsMetadata");
+
+                options.Audience = section.GetValue<string>("Audience");
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddJwtBearers(this IServiceCollection services, ISharedConfiguration configuration)
         {
             AuthenticationBuilder builder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
@@ -76,14 +96,14 @@ namespace Fs.Business.Extensions
                 options.DefaultChallengeScheme = "oidc";
             });
 
-            IConfigurationSection identityServer = configuration.GetSection("IdentityServer");
-            IEnumerable<IConfigurationSection> sections = identityServer.GetChildren();
+            //IConfigurationSection identityServer = configuration.GetSection("IdentityServer");
+            //IEnumerable<IConfigurationSection> sections = identityServer.GetChildren();
 
-            if (sections.Count() > 0)
-                builder.AddIdentityServerJwt()
-                .AddCookie("Cookies");
-            else
-                builder.AddCookie("Cookies");
+            //if (sections.Count() > 0)
+            builder.AddIdentityServerJwt()
+            .AddCookie("Cookies");
+            //else
+            //    builder.AddCookie("Cookies");
 
             IConfigurationSection section = configuration.GetSection("OidcProviders");
             IEnumerable<IConfigurationSection> providers = section.GetChildren();

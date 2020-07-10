@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Fs.Models;
+using Fs.Data.Models;
 
 namespace Fs.Angular.Is4.Areas.Identity.Pages.Account
 {

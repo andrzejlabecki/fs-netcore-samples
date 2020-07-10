@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using System.Linq;
 using Fs.Blazor.Wasm.Client.Server.Data;
-using Fs.Blazor.Wasm.Client.Server.Models;
+using Fs.Data.Models;
 
 namespace Fs.Blazor.Wasm.Client.Server
 {

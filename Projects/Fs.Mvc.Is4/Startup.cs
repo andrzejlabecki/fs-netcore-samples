@@ -16,7 +16,7 @@ using Fs.Business.Extensions;
 using Fs.Core.Extensions;
 using Fs.Core.Interfaces.Services;
 using Fs.Mvc.Is4.Data;
-using Fs.Mvc.Is4.Models;
+using Fs.Data.Models;
 
 namespace Fs.Mvc.Is4
 {

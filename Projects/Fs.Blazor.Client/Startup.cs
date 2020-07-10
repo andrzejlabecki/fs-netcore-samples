@@ -13,7 +13,7 @@ using Fs.Core.Extensions;
 using Fs.Business.Extensions;
 using Fs.Core.Interfaces.Services;
 using Fs.Blazor.Client.Data;
-using Fs.Blazor.Client.Models;
+using Fs.Data.Models;
 
 namespace Fs.Blazor.Client
 {

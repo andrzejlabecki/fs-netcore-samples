@@ -8,8 +8,8 @@
     "traceFolder": "C:\\Log\\FS\\"
   },
   "OidcAuthority": {
-    //"httpLink": "https://fs-mvc-is4.netpoc.com/",
-    "httpLink": "https://fs-angular-is4.netpoc.com/"
+    "httpLink": "https://fs-mvc-is4.netpoc.com/"
+    //"httpLink": "https://fs-angular-is4.netpoc.com/"
   },
   "OidcClients": {
     "ClientPOC2": {
@@ -43,6 +43,8 @@
     },
     "Fs.Blazor.Is4.Wasm.Client": {
       "Spa": true,
+      "Secrets": "secret",
+      "Scopes": "WebAPI Fs.Blazor.Is4.Wasm.Client.ServerAPI openid profile",
       "RedirectUris": "https://fs-blazor-is4-wasm-client.netpoc.com/signin-oidc",
       "LogoutUris": "https://fs-blazor-is4-wasm-client.netpoc.com/signout-callback-oidc"
     },

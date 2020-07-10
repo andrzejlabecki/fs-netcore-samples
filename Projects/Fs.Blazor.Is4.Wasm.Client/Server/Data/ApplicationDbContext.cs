@@ -1,4 +1,4 @@
-﻿using Fs.Blazor.Is4.Wasm.Client.Server.Models;
+﻿using Fs.Data.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Fs.Blazor.Wasm.Client.Server.Models;
+using Fs.Data.Models;
 
 namespace Fs.Blazor.Wasm.Client.Server.Data
 {

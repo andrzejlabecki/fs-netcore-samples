@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Fs.Blazor.Shared;
+using Fs.Models;
 
 namespace Fs.Blazor.Client.Data
 {

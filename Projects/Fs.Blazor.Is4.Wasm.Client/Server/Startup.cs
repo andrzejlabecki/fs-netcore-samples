@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using System.Linq;
 using Fs.Blazor.Is4.Wasm.Client.Server.Data;
-using Fs.Blazor.Is4.Wasm.Client.Server.Models;
+using Fs.Data.Models;
 
 
 namespace Fs.Blazor.Is4.Wasm.Client.Server
@@ -73,23 +73,7 @@ namespace Fs.Blazor.Is4.Wasm.Client.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddIdentityServerJwt()
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = SharedConfiguration.GetOidcLink();
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "Fs.Blazor.Is4.Wasm.Client";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code";
-                    options.SaveTokens = true;
-                });
+            services.AddOidcProviders(SharedConfiguration);
 
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }
