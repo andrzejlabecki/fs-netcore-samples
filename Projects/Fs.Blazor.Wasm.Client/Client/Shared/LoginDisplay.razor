@@ -3,6 +3,7 @@
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject IHttpClientFactory HttpClientFactory
 
 <AuthorizeView>
     <Authorized>
@@ -11,11 +12,36 @@
     </Authorized>
     <NotAuthorized>
         <a href="authentication/register">Register</a>
-        <a href="authentication/login">Log in</a>
+        <button class="nav-link btn btn-link" @onclick="BeginSignIn">Login</button>
     </NotAuthorized>
 </AuthorizeView>
 
 @code{
+    private void /*async Task*/ BeginSignIn()
+    {
+        /*var Http = HttpClientFactory.CreateClient("BlazorWasmApp.AnonymousAPI");
+
+        System.Collections.Generic.IDictionary<string, string> oidcParams = null;
+
+        oidcParams = await Http.GetFromJsonAsync<System.Collections.Generic.IDictionary<string, string>>("/_configuration/Fs.Blazor.Wasm.Client");
+
+        OidcProviderOptions options = new OidcProviderOptions();
+
+        options.Authority = oidcParams["authority"];
+        options.ClientId = oidcParams["client_id"];
+        options.ResponseType = oidcParams["response_type"];
+
+        string scope = oidcParams["scope"];
+        string[] scopes = scope.Split(" ");
+
+        options.DefaultScopes.Add(scopes[0]);
+        options.DefaultScopes.Add(scopes[1]);
+        options.DefaultScopes.Add(scopes[2]);
+        options.DefaultScopes.Add(scopes[3]);*/
+
+        Navigation.NavigateTo("authentication/login");
+    }
+
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();

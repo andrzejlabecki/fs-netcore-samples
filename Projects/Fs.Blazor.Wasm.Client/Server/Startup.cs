@@ -65,33 +65,8 @@ namespace Fs.Blazor.Wasm.Client.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = SharedConfiguration.GetOidcLink();
-                    options.RequireHttpsMetadata = false;
-
-                    options.ClientId = "Fs.Blazor.Wasm.Client";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code";
-                    options.SaveTokens = true;
-                });
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                // base-address of your identityserver
-                options.Authority = SharedConfiguration.GetOidcLink();
-                options.RequireHttpsMetadata = false;
-
-                // name of the API resource
-                options.Audience = "BlazorClient2.ServerAPI";
-            });
+            services.AddOidcProviders(SharedConfiguration);
+            services.AddJwtBearer(SharedConfiguration);
 
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }

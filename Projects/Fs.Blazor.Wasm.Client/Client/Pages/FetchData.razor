@@ -51,6 +51,12 @@ else
         {
             exception.Redirect();
         }
+        catch (System.Exception exception)
+        {
+            string message = exception.Message;
+
+            throw;
+        }
     }
 
 }

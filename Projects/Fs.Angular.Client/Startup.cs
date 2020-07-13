@@ -65,18 +65,6 @@ namespace Fs
             services.AddOidcProviders(SharedConfiguration);
             services.AddJwtBearer(SharedConfiguration);
 
-            /*services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                // base-address of your identityserver
-                //options.Authority = "https://is4.netpoc.com/";
-                options.Authority = SharedConfiguration.GetOidcLink();
-                options.RequireHttpsMetadata = false;
-
-                // name of the API resource
-                options.Audience = "Fs.Angular.Client.API";
-            });*/
-
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

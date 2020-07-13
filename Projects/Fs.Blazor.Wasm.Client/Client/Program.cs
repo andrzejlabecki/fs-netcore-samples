@@ -18,6 +18,10 @@ namespace Fs.Blazor.Wasm.Client.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
+            builder.Services.AddHttpClient("BlazorWasmApp.AnonymousAPI", client => {
+                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            });
+
             builder.Services.AddHttpClient("BlazorClient2.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
@@ -26,16 +30,20 @@ namespace Fs.Blazor.Wasm.Client.Client
 
             //builder.Services.AddApiAuthorization();
 
-            builder.Services.AddOidcAuthentication(options =>
+            builder.Services.AddApiAuthorization(options => options.ProviderOptions.ConfigurationEndpoint = "oidc.json");
+
+            /*builder.Services.AddOidcAuthentication(options =>
             {
-                options.ProviderOptions.Authority = "https://fs-angular-is4.netpoc.com";
+                //builder.Configuration.Bind("Local", options.ProviderOptions);
+
+                options.ProviderOptions.Authority = "https://fs-mvc-is4.netpoc.com";
                 options.ProviderOptions.ClientId = "Fs.Blazor.Wasm.Client";
                 options.ProviderOptions.ResponseType = "code";
                 options.ProviderOptions.DefaultScopes.Add("openid");
                 options.ProviderOptions.DefaultScopes.Add("profile");
                 options.ProviderOptions.DefaultScopes.Add("WebAPI");
                 options.ProviderOptions.DefaultScopes.Add("BlazorClient2.ServerAPI");
-            });
+            });*/
 
             await builder.Build().RunAsync();
         }

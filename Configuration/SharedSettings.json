@@ -50,7 +50,8 @@
     },
     "Fs.Blazor.Wasm.Client": {
       "Spa": true,
-      "Scopes": "openid",
+      "Secrets": "secret",
+      "Scopes": "WebAPI BlazorClient2.ServerAPI profile openid",
       "RedirectUris": "https://fs-blazor-wasm-client.netpoc.com/authentication/login-callback https://fs-blazor-wasm-client.netpoc.com/signin-oidc",
       "LogoutUris": "https://fs-blazor-wasm-client.netpoc.com/authentication/logout-callback",
       "CorsOrigins": "https://fs-blazor-wasm-client.netpoc.com"
