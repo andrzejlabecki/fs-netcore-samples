@@ -48,7 +48,7 @@
       "RedirectUris": "https://fs-blazor-is4-wasm-client.netpoc.com/signin-oidc",
       "LogoutUris": "https://fs-blazor-is4-wasm-client.netpoc.com/signout-callback-oidc"
     },
-    "Fs.Blazor.Wasm.Client": {
+    "Fs.Blazor.Wasm.Client.Client": {
       "Spa": true,
       "Secrets": "secret",
       "Scopes": "WebAPI BlazorClient2.ServerAPI profile openid",

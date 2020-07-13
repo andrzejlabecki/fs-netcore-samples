@@ -1,9 +1,10 @@
 @page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@inject HttpClient Http
 
-<RemoteAuthenticatorView Action="@Action" />
+
+<RemoteAuthenticatorView Action="@Action"/>
 
 @code{
     [Parameter] public string Action { get; set; }
+
 }

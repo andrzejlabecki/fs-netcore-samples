@@ -20,7 +20,6 @@ namespace Fs.Blazor.Is4.Wasm.Client.Server.Controllers
         [HttpGet("_configuration/{clientId}")]
         public IActionResult GetClientRequestParameters([FromRoute] string clientId)
         {
-            //var parameters = ClientRequestParametersProvider.GetClientParameters(HttpContext, clientId);
             var parameters = SharedConfiguration.GetClientParameters(clientId);
             return Ok(parameters);
         }

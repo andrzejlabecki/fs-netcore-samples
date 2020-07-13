@@ -18,9 +18,10 @@ namespace Fs.Blazor.Wasm.Client.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddHttpClient("BlazorWasmApp.AnonymousAPI", client => {
-                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
-            });
+            // client is not requiring authentication token - use to call public API
+            //builder.Services.AddHttpClient("BlazorWasmApp.AnonymousAPI", client => {
+            //    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            //});
 
             builder.Services.AddHttpClient("BlazorClient2.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
@@ -28,9 +29,10 @@ namespace Fs.Blazor.Wasm.Client.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BlazorClient2.ServerAPI"));
 
-            //builder.Services.AddApiAuthorization();
+            builder.Services.AddApiAuthorization();
 
-            builder.Services.AddApiAuthorization(options => options.ProviderOptions.ConfigurationEndpoint = "oidc.json");
+            // load oidc provider configuration from Json file
+            //builder.Services.AddApiAuthorization(options => options.ProviderOptions.ConfigurationEndpoint = "oidc.json");
 
             /*builder.Services.AddOidcAuthentication(options =>
             {
