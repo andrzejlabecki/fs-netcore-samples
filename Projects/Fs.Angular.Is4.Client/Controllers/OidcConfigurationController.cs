@@ -24,6 +24,12 @@ namespace Fs.Client.Controllers
         {
             //var parameters = ClientRequestParametersProvider.GetClientParameters(HttpContext, clientId);
             var parameters = SharedConfiguration.GetClientParameters(clientId);
+            if (Fs.Data.Models.AppContext.Instance.IsExternalLogin)
+            {
+                parameters["post_logout_redirect_uri"] = parameters["authority"] + SharedConfiguration.GetExternalLogoutUrl(clientId);
+                parameters["external_login"] = "Y";
+            }
+
             return Ok(parameters);
         }
     }

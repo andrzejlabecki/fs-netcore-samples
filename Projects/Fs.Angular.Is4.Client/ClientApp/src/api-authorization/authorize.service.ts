@@ -41,8 +41,14 @@ export class AuthorizeService {
   // If you want to enable pop up authentication simply set this flag to false.
 
   private popUpDisabled = true;
+  private isExternalLogin = false;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+
+
+  public IsExternalLogin(): boolean {
+    return this.isExternalLogin;
+  }
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
@@ -183,6 +189,7 @@ export class AuthorizeService {
     settings.automaticSilentRenew = true;
     settings.includeIdTokenInSilentRenew = true;
     this.userManager = new UserManager(settings);
+    this.isExternalLogin = settings.external_login == 'Y';
 
     this.userManager.events.addUserSignedOut(async () => {
       await this.userManager.removeUser();

@@ -28,8 +28,12 @@ export class LogoutComponent implements OnInit {
         if (!!window.history.state.local) {
           await this.logout(this.getReturnUrl());
         } else {
-          // This prevents regular links to <app>/authentication/logout from triggering a logout
-          this.message.next('The logout was not initiated from within the page.');
+
+          if (!this.authorizeService.IsExternalLogin)
+            // This prevents regular links to <app>/authentication/logout from triggering a logout
+            this.message.next('The logout was not initiated from within the page.');
+          else
+            this.message.next('You successfully logged out from external identity server!');
         }
         break;
       case LogoutActions.LogoutCallback:

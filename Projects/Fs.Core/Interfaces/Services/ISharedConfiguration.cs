@@ -15,6 +15,7 @@ namespace Fs.Core.Interfaces.Services
         string GetOidcLink();
         string GetOidcLink(string authName);
         System.Collections.Generic.IDictionary<string, string> GetClientParameters(string clientId);
+        string GetExternalLogoutUrl(string clientId);
     }
 }
 

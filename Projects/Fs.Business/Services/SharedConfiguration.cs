@@ -73,6 +73,12 @@ namespace Fs.Business.Services
             return GetOidcLink("OidcAuthority:httpLink");
         }
 
+        public string GetExternalLogoutUrl(string clientId)
+        {
+            return GetValue("IdentityServer:SpaClients:Fs.Angular.Is4.Client:LogoutUriExt");
+        }
+
+
         public System.Collections.Generic.IDictionary<string, string> GetClientParameters(string clientId)
         {
             System.Collections.Generic.IDictionary<string, string> clientParameters = null;

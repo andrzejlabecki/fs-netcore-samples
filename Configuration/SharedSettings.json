@@ -31,7 +31,7 @@
       "Secrets": "secret",
       "Scopes": "WebAPI Fs.Angular.Is4.ClientAPI openid profile",
       "RedirectUris": "https://fs-angular-is4-client.netpoc.com/signin-oidc",
-      "LogoutUris": "https://fs-angular-is4-client.netpoc.com/signout-callback-oidc"
+      "LogoutUris": "https://fs-angular-is4-client.netpoc.com/signout-callback-oidc https://fs-angular-is4-client.netpoc.com/Identity/Account/logout"
     },
     "Fs.Angular.Client": {
       "Spa": true,

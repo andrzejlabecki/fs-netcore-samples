@@ -20,6 +20,7 @@ namespace Fs
 {
     public class Startup
     {
+        public const string ApplicationName = "Fs.Angular.Is4.Client";
         private static ILoggerFactory AppLoggerFactory = null;
 
         public Startup(IConfiguration configuration)
@@ -61,7 +62,11 @@ namespace Fs
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+                {
+                    //options.Clients[ApplicationName].PostLogoutRedirectUris.Add("/Identity/Account/logout");
+                    options.Clients[ApplicationName].PostLogoutRedirectUris.Add(SharedConfiguration.GetExternalLogoutUrl(ApplicationName));
+                });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
