@@ -88,7 +88,7 @@ namespace Fs.Business.Extensions
             return services;
         }
 
-        public static IServiceCollection AddOidcProviders(this IServiceCollection services, ISharedConfiguration configuration)
+        public static IServiceCollection AddOidcProviders(this IServiceCollection services, ISharedConfiguration configuration, bool addServerJwt = true)
         {
             AuthenticationBuilder builder = services.AddAuthentication(options =>
             {
@@ -96,14 +96,10 @@ namespace Fs.Business.Extensions
                 options.DefaultChallengeScheme = "oidc";
             });
 
-            //IConfigurationSection identityServer = configuration.GetSection("IdentityServer");
-            //IEnumerable<IConfigurationSection> sections = identityServer.GetChildren();
 
-            //if (sections.Count() > 0)
-            builder.AddIdentityServerJwt()
-            .AddCookie("Cookies");
-            //else
-            //    builder.AddCookie("Cookies");
+            if (addServerJwt)
+                builder.AddIdentityServerJwt();
+            builder.AddCookie("Cookies");
 
             IConfigurationSection section = configuration.GetSection("OidcProviders");
             IEnumerable<IConfigurationSection> providers = section.GetChildren();

@@ -8,6 +8,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.UI;
@@ -85,74 +86,14 @@ namespace Fs.Blazor.Is4
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            ClientCollection clientColl = services.GetClientCollection(SharedConfiguration);
+
             services.AddIdentityServer()
             .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
             {
-                options.Clients.Add(new IdentityServer4.Models.Client
-                {
-                    ClientId = "ClientPOC2",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "WebAPI" },
-                    ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) }
-                });
-                options.Clients.Add(new IdentityServer4.Models.Client
-                {
-                    ClientId = "Fs.Blazor.Client",
-                    ClientSecrets = { new IdentityServer4.Models.Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-                    //AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RequireConsent = false,
-                    RequirePkce = true,
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "WebAPI"
-                    },
-
-                    // where to redirect to after login
-                    RedirectUris = { "https://fs-blazor-client.netpoc.com/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://fs-blazor-client.netpoc.com/signout-callback-oidc" },
-
-                    AllowedCorsOrigins = { "https://fs-blazor-client.netpoc.com" },
-                });
-                options.Clients.AddSPA(
-                        "Fs.Angular.Is4.Client", spa =>
-                        spa.WithRedirectUri("https://fs-angular-is4-client.netpoc.com/signin-oidc")
-                           .WithLogoutRedirectUri("https://fs-angular-is4-client.netpoc.com/signout-callback-oidc"));
-                options.Clients.AddSPA(
-                        "Fs.Blazor.Is4.Wasm.Client", spa =>
-                        spa.WithRedirectUri("https://fs-blazor-is4-wasm-client.netpoc.com/signin-oidc")
-                           .WithLogoutRedirectUri("https://fs-blazor-is4-wasm-client.netpoc.com/signout-callback-oidc"));
-                options.Clients.AddSPA(
-                        "Fs.Angular.Client", spa =>
-                        spa.WithRedirectUri("https://fs-angular-client.netpoc.com/authentication/login-callback")
-                           .WithLogoutRedirectUri("https://fs-angular-client.netpoc.com/authentication/logout-callback")
-                           .WithScopes(new string[]
-                            {
-                                IdentityServerConstants.StandardScopes.OpenId
-                            }));
-                options.Clients.AddSPA(
-                        "Fs.Blazor.Wasm.Client", spa =>
-                        spa.WithRedirectUri("https://fs-blazor-wasm-client.netpoc.com/authentication/login-callback")
-                           .WithLogoutRedirectUri("https://fs-blazor-wasm-client.netpoc.com/authentication/logout-callback")
-                           //.WithoutClientSecrets()
-                           .WithScopes(new string[]
-                            {
-                                IdentityServerConstants.StandardScopes.OpenId,
-                                IdentityServerConstants.StandardScopes.Profile
-                            }));
-
-                options.Clients["Fs.Angular.Client"].AllowedCorsOrigins.Add("https://fs-angular-client.netpoc.com");
-                options.Clients["Fs.Angular.Client"].RedirectUris.Add("https://fs-angular-client.netpoc.com/signin-oidc");
-
-                options.Clients["Fs.Blazor.Wasm.Client"].AllowedCorsOrigins.Add("https://fs-blazor-wasm-client.netpoc.com");
-                options.Clients["Fs.Blazor.Wasm.Client"].RedirectUris.Add("https://fs-blazor-wasm-client.netpoc.com/signin-oidc");
-            });
+                services.CopyClients(options.Clients, ref clientColl);
+            })
+            .AddInMemoryClients(clientColl);
 
             services.AddAuthentication()
             .AddIdentityServerJwt();

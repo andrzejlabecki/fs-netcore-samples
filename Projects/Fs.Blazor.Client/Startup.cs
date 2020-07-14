@@ -60,7 +60,7 @@ namespace Fs.Blazor.Client
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddOidcProviders(SharedConfiguration);
+            services.AddOidcProviders(SharedConfiguration, false);
 
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();

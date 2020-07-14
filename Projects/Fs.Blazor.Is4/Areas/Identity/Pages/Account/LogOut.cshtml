@@ -1,11 +1,29 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Http
 @using Fs.Data.Models
 @attribute [IgnoreAntiforgeryToken]
 @inject SignInManager<ApplicationUser> SignInManager
 
 @functions {
+    public async Task<IActionResult> OnGet(string returnUrl = null)
+    {
+        await SignInManager.SignOutAsync();
+
+        if (returnUrl == null)
+            returnUrl = HttpContext.Request.Headers["Referer"];
+
+        if (returnUrl != null)
+        {
+            HttpContext.Response.RedirectToAbsoluteUrl(returnUrl);
+            return null;
+        }
+        else
+            return RedirectToPage("Login");
+
+    }
+
     public async Task<IActionResult> OnPost()
     {
         if (SignInManager.IsSignedIn(User))
@@ -15,21 +33,5 @@
 
         //return Redirect("~/");
         return Redirect("~/Identity/Account/LoggedOut");
-    }
-
-    public async Task<IActionResult> OnGet()
-    {
-        if (SignInManager.IsSignedIn(User))
-        {
-            await SignInManager.SignOutAsync();
-        }
-
-        string url = HttpContext.Request.Headers["Referer"];
-
-        // validate return URL against client list
-
-        return Redirect(url);
-        //return Redirect("~/Identity/Account/Login");
-        //return Redirect("~/Identity/Account/LoggedOut");
     }
 }
