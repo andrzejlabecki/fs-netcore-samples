@@ -8,7 +8,7 @@
     "traceFolder": "C:\\Log\\FS\\"
   },
   "OidcAuthority": {
-    "httpLink": "https://fs-mvc-is4.netpoc.com/",
+    "httpLink": "https://fs-mvc-is4.netpoc.com/"
     //"httpLink": "https://fs-angular-is4.netpoc.com/"
     //"httpLink": "https://fs-blazor-is4.netpoc.com/"
   },
