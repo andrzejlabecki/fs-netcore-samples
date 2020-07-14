@@ -75,7 +75,7 @@ namespace Fs.Business.Services
 
         public string GetExternalLogoutUrl(string clientId)
         {
-            return GetValue("IdentityServer:SpaClients:Fs.Angular.Is4.Client:LogoutUriExt");
+            return GetValue("IdentityServer:SpaClients:" + clientId + ":LogoutUriExt");
         }
 
 
