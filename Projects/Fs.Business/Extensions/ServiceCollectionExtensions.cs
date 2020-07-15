@@ -239,5 +239,12 @@ namespace Fs.Business.Extensions
 
             return serviceProvider.GetRequiredService<ISharedConfiguration>();
         }
+
+        public static ISharedConfiguration RegisterSharedConfiguration(this IServiceCollection services, SharedConfiguration sharedConfiguration)
+        {
+            IServiceProvider serviceProvider = services.AddSingleton<ISharedConfiguration>(sharedConfiguration).BuildServiceProvider();
+
+            return serviceProvider.GetRequiredService<ISharedConfiguration>();
+        }
     }
 }

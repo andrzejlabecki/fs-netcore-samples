@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Models", "Fs.Blazor.Shar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Mvc.Is4", "Fs.Mvc.Is4\Fs.Mvc.Is4.csproj", "{D4AF6E53-EA69-467F-863D-FD2C4AA78E5B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Test", "Fs.Test\Fs.Test.csproj", "{34DAFBD0-CDC4-4C24-96E1-111BB60D6F5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{D4AF6E53-EA69-467F-863D-FD2C4AA78E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4AF6E53-EA69-467F-863D-FD2C4AA78E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4AF6E53-EA69-467F-863D-FD2C4AA78E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34DAFBD0-CDC4-4C24-96E1-111BB60D6F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34DAFBD0-CDC4-4C24-96E1-111BB60D6F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34DAFBD0-CDC4-4C24-96E1-111BB60D6F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34DAFBD0-CDC4-4C24-96E1-111BB60D6F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
