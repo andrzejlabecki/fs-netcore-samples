@@ -22,6 +22,8 @@ namespace Fs.Service
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }
+
+            Fs.Core.Trace.Write("ExecuteAsync()", "Cancelled", System.Diagnostics.TraceLevel.Info);
         }
     }
 }
