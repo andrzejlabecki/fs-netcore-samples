@@ -29,7 +29,6 @@ namespace Fs.Test
 {
     public class OrderingTests
     {
-        private static IConfiguration Configuration = null;
         public static ILoggerFactory TestLoggerFactory = null;
         private static DbContextOptions<OrderingContext> options = null;
         private static ILogger<OrderService> logger = null;
@@ -71,14 +70,15 @@ namespace Fs.Test
                     .UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection"))
                     .Options;
 
+            optionsBuilder.EnableSensitiveDataLogging(true);
+
             services.AddLogging(config => config.ClearProviders())
                        .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener))
-                       .AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly)
-                       .BuildServiceProvider();
-
-            services.RegisterServices(SharedConfiguration, TestLoggerFactory);
+                       .AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+            services.RegisterServices(SharedConfiguration, TestLoggerFactory);
 
             logger = serviceProvider.GetRequiredService<ILogger<OrderService>>();
             mapper = serviceProvider.GetRequiredService<IMapper>();
@@ -170,34 +170,61 @@ namespace Fs.Test
         {
             Fs.Core.Trace.Write("DeleteOrder()", "Started", System.Diagnostics.TraceLevel.Info);
 
-            using (OrderingContext db = new OrderingContext(options))
+            try
             {
-                IOrderService service = GetOrderService(db);
+                OrderDto newOrder = null;
 
-                OrderDto order = new OrderDto()
+                using (OrderingContext db = new OrderingContext(options))
                 {
-                    Name = "Order #2"
-                };
+                    IOrderService service = GetOrderService(db);
 
-                ReportDto report = new ReportDto()
+                    OrderDto order = new OrderDto()
+                    {
+                        Name = "Order #2"
+                    };
+
+                    ReportDto report = new ReportDto()
+                    {
+                        Name = "Order #2 Report #1",
+                        Order = order
+                    };
+                    order.Reports.Add(report);
+
+                    report = new ReportDto()
+                    {
+                        Name = "Order #2 Report #2",
+                        Order = order
+                    };
+                    order.Reports.Add(report);
+
+                    newOrder = await service.SaveOrder(order);
+                }
+
+                using (OrderingContext db = new OrderingContext(options))
                 {
-                    Name = "Order #2 Report #1",
-                    Order = order
-                };
-                order.Reports.Add(report);
+                    IOrderService service = GetOrderService(db);
 
-                report = new ReportDto()
+                    await service.DeleteOrder(newOrder);
+                    OrderDto deletedOrder = await service.GetOrder(newOrder.OrderId);
+                    if (deletedOrder != null)
+                        throw new System.Exception(string.Format("Order #{0} is not deleted", newOrder.OrderId.ToString()));
+                }
+            }
+            catch (System.Exception ex)
+            {
+                string errorMessage = "Exception:\r\n";
+
+                errorMessage += "Message: " + ex.Message + "\r\n";
+                errorMessage += "Stack: " + ex.StackTrace + "\r\n";
+                if (ex.InnerException != null)
                 {
-                    Name = "Order #2 Report #2",
-                    Order = order
-                };
-                order.Reports.Add(report);
+                    errorMessage = "Inner Exception:\r\n";
+                    errorMessage += "Message: " + ex.InnerException.Message + "\r\n";
+                    errorMessage += "Stack: " + ex.InnerException.StackTrace + "\r\n";
+                }
 
-                OrderDto newOrder = await service.SaveOrder(order);
-                await service.DeleteOrder(newOrder);
-                OrderDto deletedOrder = await service.GetOrder(newOrder.OrderId);
-                if (deletedOrder != null)
-                    throw new System.Exception(string.Format("Order #{0} is not deleted", newOrder.OrderId.ToString()));
+                Fs.Core.Trace.Write(ex.Source, errorMessage, System.Diagnostics.TraceLevel.Error);
+                throw;
             }
 
             Fs.Core.Trace.Write("DeleteOrder()", "Completed", System.Diagnostics.TraceLevel.Info);
