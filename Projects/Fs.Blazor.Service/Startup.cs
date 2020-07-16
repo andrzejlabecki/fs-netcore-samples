@@ -7,6 +7,8 @@ namespace Fs.Blazor.Service
 {
     public class Startup
     {
+        static public IWebHostBuilder WebHostBuilder;
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
@@ -23,6 +25,7 @@ namespace Fs.Blazor.Service
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 
