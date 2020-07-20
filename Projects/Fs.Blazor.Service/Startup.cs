@@ -2,15 +2,17 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Fs.Core.Interfaces.Services;
+using Fs.Business.Extensions;
 
 namespace Fs.Blazor.Service
 {
     public class Startup
     {
-        static public IWebHostBuilder WebHostBuilder;
-
         public void ConfigureServices(IServiceCollection services)
         {
+            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
+
             services.AddRazorPages();
         }
 

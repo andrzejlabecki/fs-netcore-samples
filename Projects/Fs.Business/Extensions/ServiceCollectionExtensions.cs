@@ -176,27 +176,27 @@ namespace Fs.Business.Extensions
 
                     var scopes = clientSection.GetValue<string>("Scopes");
                     if (scopes != null && scopes.Length > 0)
-                        clientColl[clientSection.Key].AllowedScopes = GetStringCollection(clientSection, "Scopes");
+                        clientColl[clientSection.Key].AllowedScopes = configuration.GetStringCollection(clientSection, "Scopes");
 
                     var origins = clientSection.GetValue<string>("CorsOrigins");
                     if (origins != null && origins.Length > 0)
-                        clientColl[clientSection.Key].AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins");
+                        clientColl[clientSection.Key].AllowedCorsOrigins = configuration.GetStringCollection(clientSection, "CorsOrigins");
 
-                    clientColl[clientSection.Key].RedirectUris = GetStringCollection(clientSection, "RedirectUris");
+                    clientColl[clientSection.Key].RedirectUris = configuration.GetStringCollection(clientSection, "RedirectUris");
                 }
                 else
                 {
                     clientColl.Add(new IdentityServer4.Models.Client
                     {
                         ClientId = clientSection.Key,
-                        AllowedGrantTypes = GetStringCollection(clientSection, "GrantTypes"),
-                        AllowedScopes = GetStringCollection(clientSection, "Scopes"),
+                        AllowedGrantTypes = configuration.GetStringCollection(clientSection, "GrantTypes"),
+                        AllowedScopes = configuration.GetStringCollection(clientSection, "Scopes"),
                         ClientSecrets = GetSecretCollection(clientSection),
                         RequireConsent = clientSection.GetValue<bool>("Consent"),
                         RequirePkce = clientSection.GetValue<bool>("Pkce"),
-                        RedirectUris = GetStringCollection(clientSection, "RedirectUris"),
-                        PostLogoutRedirectUris = GetStringCollection(clientSection, "LogoutUris"),
-                        AllowedCorsOrigins = GetStringCollection(clientSection, "CorsOrigins"),
+                        RedirectUris = configuration.GetStringCollection(clientSection, "RedirectUris"),
+                        PostLogoutRedirectUris = configuration.GetStringCollection(clientSection, "LogoutUris"),
+                        AllowedCorsOrigins = configuration.GetStringCollection(clientSection, "CorsOrigins"),
                     });
                 }
             }
@@ -221,16 +221,6 @@ namespace Fs.Business.Extensions
             }
 
             return secrets;
-        }
-
-        private static ICollection<string> GetStringCollection(IConfigurationSection section, string name)
-        {
-            string scopes = section.GetValue<string>(name);
-
-            if (scopes != null)
-                return scopes.Split(" ");
-            else
-                return new string[0];
         }
 
         public static ISharedConfiguration RegisterSharedConfiguration(this IServiceCollection services)

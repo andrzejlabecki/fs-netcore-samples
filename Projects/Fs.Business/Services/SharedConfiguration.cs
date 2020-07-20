@@ -78,7 +78,6 @@ namespace Fs.Business.Services
             return GetValue("IdentityServer:SpaClients:" + clientId + ":LogoutUriExt");
         }
 
-
         public System.Collections.Generic.IDictionary<string, string> GetClientParameters(string clientId)
         {
             System.Collections.Generic.IDictionary<string, string> clientParameters = null;
@@ -102,6 +101,36 @@ namespace Fs.Business.Services
             }
 
             return clientParameters;
+        }
+
+        public ICollection<string> GetStringCollection(IConfigurationSection section, string name)
+        {
+            string strings = section.GetValue<string>(name);
+
+            if (strings != null)
+                return strings.Split(" ");
+            else
+                return new string[0];
+        }
+
+        public ICollection<string> GetStringCollection(string name)
+        {
+            string strings = GetValue(name);
+
+            if (strings != null)
+                return strings.Split(" ");
+            else
+                return new string[0];
+        }
+
+        public string [] GetStringArray(string name)
+        {
+            string strings = GetValue(name);
+
+            if (strings != null)
+                return strings.Split(" ");
+            else
+                return new string[0];
         }
     }
 }
