@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,11 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4;
 using IdentityServer4.Models;
 using Fs.Core.Interfaces.Services;
+using Fs.Data;
+using Fs.Data.Models;
 using Fs.Business.Services;
 using Fs.Data.Extensions;
 using Fs.Business.Controllers;
@@ -24,12 +28,91 @@ namespace Fs.Business.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services, ISharedConfiguration configuration, ILoggerFactory appLoggerFactory)
+        private static ILoggerFactory AppLoggerFactory = null;
+
+        public static IServiceCollection AddTrace(this IServiceCollection services, ISharedConfiguration configuration)
         {
-            services.RegisterDbContexts(configuration, appLoggerFactory);
+            string appName = configuration.GetValue("Tracing:appName");
+            string traceFile = configuration.GetTraceFilePath();
+            TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), configuration.GetValue("Tracing:traceLevel"));
+
+            Fs.Core.Trace.Init(appName, traceLevel, traceFile);
+            Fs.Core.Trace.Write("ConfigureServices()", "Started", TraceLevel.Info);
+
+            SourceSwitch sourceSwitch = new SourceSwitch("POCTraceSwitch", "Verbose");
+            AppLoggerFactory = LoggerFactory.Create(builder => { builder.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener); });
+
+            services.AddLogging(config => config.ClearProviders())
+                    .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener));
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterServices(this IServiceCollection services, ISharedConfiguration configuration)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseLoggerFactory(AppLoggerFactory).
+                UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LoggerContext>(options =>
+                options.UseLoggerFactory(AppLoggerFactory).
+                UseSqlServer(configuration.GetConnectionString("LoggerConnection")));
+
+            services.RegisterDbContexts(configuration, AppLoggerFactory);
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IErrorLogService, ErrorLogService>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterServices2(this IServiceCollection services, ISharedConfiguration configuration)
+        {
+            services.RegisterDbContexts(configuration, AppLoggerFactory);
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IErrorLogService, ErrorLogService>();
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterServices3(this IServiceCollection services, ISharedConfiguration configuration, ILoggerFactory loggerFactory)
+        {
+            services.RegisterDbContexts(configuration, loggerFactory);
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IErrorLogService, ErrorLogService>();
+
+            return services;
+        }
+
+        public static DbContextOptions<OrderingContext> InitializeOptionsBuilder(this IServiceCollection services, ISharedConfiguration configuration)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>();
+            DbContextOptions<OrderingContext> options = optionsBuilder
+                    .UseLoggerFactory(AppLoggerFactory) // Warning: Do not create a new ILoggerFactory instance each time
+                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                    .Options;
+
+            optionsBuilder.EnableSensitiveDataLogging(true);
+
+            return options;
+        }
+
+        public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services, ISharedConfiguration configuration)
+        {
+            ClientCollection clientColl = services.GetClientCollection(configuration);
+
+            services.AddIdentityServer()
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+            {
+                services.CopyClients(options.Clients, ref clientColl);
+            })
+            .AddInMemoryClients(clientColl);
 
             return services;
         }

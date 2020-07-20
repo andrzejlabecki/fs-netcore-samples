@@ -1,30 +1,21 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Fs.Data;
-using Fs.Data.Models;
 using Fs.Business.Extensions;
 using Fs.Core.Extensions;
 using Fs.Core.Interfaces.Services;
 using AutoMapper;
-using IdentityServer4.Models;
-using IdentityServer4;
 
 namespace Fs
 {
     public class Startup
     {
-        private static ILoggerFactory AppLoggerFactory = null;
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,43 +29,9 @@ namespace Fs
             IdentityModelEventSource.ShowPII = true; //Add this line
             ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
 
-            string appName = SharedConfiguration.GetValue("Tracing:appName");
-            string traceFile = SharedConfiguration.GetTraceFilePath();
-            TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
-
-            Fs.Core.Trace.Init(appName, traceLevel, traceFile);
-            Fs.Core.Trace.Write("ConfigureServices()", "Started", TraceLevel.Info);
-
-            SourceSwitch sourceSwitch = new SourceSwitch("POCTraceSwitch", "Verbose");
-            AppLoggerFactory = LoggerFactory.Create(builder => { builder.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener); });
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseLoggerFactory(AppLoggerFactory).
-                UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<LoggerContext>(options =>
-                options.UseLoggerFactory(AppLoggerFactory).
-                UseSqlServer(SharedConfiguration.GetConnectionString("LoggerConnection")));
-            services.AddDbContext<OrderingContext>(options =>
-                options.UseLoggerFactory(AppLoggerFactory).
-                UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection")));
-
-            services.AddLogging(config => config.ClearProviders())
-                    .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener));
-
-            services.RegisterServices(SharedConfiguration, AppLoggerFactory);
-            services.AddHttpContextAccessor();
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            ClientCollection clientColl = services.GetClientCollection(SharedConfiguration);
-
-            services.AddIdentityServer()
-            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
-            {
-                services.CopyClients(options.Clients, ref clientColl);
-            })
-            .AddInMemoryClients(clientColl);
+            services.AddTrace(SharedConfiguration);
+            services.RegisterServices(SharedConfiguration);
+            services.ConfigureIdentityServer(SharedConfiguration);
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

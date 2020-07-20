@@ -54,7 +54,7 @@ namespace Fs.Blazor.Client
             services.AddLogging(config => config.ClearProviders())
                     .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener));
 
-            services.RegisterServices(SharedConfiguration, AppLoggerFactory);
+            services.RegisterServices3(SharedConfiguration, AppLoggerFactory);
             services.AddHttpContextAccessor();
 
             services.AddControllersWithViews();

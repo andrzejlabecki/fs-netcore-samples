@@ -1,13 +1,9 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Fs.Data;
 using Fs.Core.Extensions;
 using Fs.Business.Extensions;
-using Fs.Data.Models;
 using Fs.Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +15,6 @@ namespace Fs
 {
     public class Startup
     {
-        private static ILoggerFactory AppLoggerFactory = null;
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,32 +26,8 @@ namespace Fs
         public void ConfigureServices(IServiceCollection services)
         {
             ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
-
-            string appName = SharedConfiguration.GetValue("Tracing:appName");
-            string traceFile = SharedConfiguration.GetTraceFilePath();
-            TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
-
-            Fs.Core.Trace.Init(appName, traceLevel, traceFile);
-            Fs.Core.Trace.Write("ConfigureServices()", "Started", TraceLevel.Info);
-
-            SourceSwitch sourceSwitch = new SourceSwitch("POCTraceSwitch", "Verbose");
-            AppLoggerFactory = LoggerFactory.Create(builder => { builder.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener); });
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseLoggerFactory(AppLoggerFactory).
-                UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<LoggerContext>(options =>
-                options.UseLoggerFactory(AppLoggerFactory).
-                UseSqlServer(SharedConfiguration.GetConnectionString("LoggerConnection")));
-
-            services.AddLogging(config => config.ClearProviders())
-                    .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener));
-
-            services.RegisterServices(SharedConfiguration, AppLoggerFactory);
-            services.AddHttpContextAccessor();
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddTrace(SharedConfiguration);
+            services.RegisterServices(SharedConfiguration);
 
             services.AddControllersWithViews();
             services.AddRazorPages();

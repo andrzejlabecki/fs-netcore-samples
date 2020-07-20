@@ -1,15 +1,13 @@
-﻿using Fs.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Fs.Data.Models;
 
-namespace Fs.Data
+namespace Fs.Business.Services
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {

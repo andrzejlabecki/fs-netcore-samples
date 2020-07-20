@@ -17,8 +17,8 @@ namespace Fs.Service
 {
     public class Program
     {
-        public static ILoggerFactory ServiceLoggerFactory = null;
-        private static DbContextOptions<OrderingContext> options = null;
+        //public static ILoggerFactory ServiceLoggerFactory = null;
+        //private static DbContextOptions<OrderingContext> options = null;
         private static ILogger<OrderService> logger = null;
         private static IMapper mapper = null;
 
@@ -53,8 +53,9 @@ namespace Fs.Service
                     var services = new ServiceCollection();
 
                     ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration(sharedConfiguration);
+                    services.AddTrace(SharedConfiguration);
 
-                    string appName = SharedConfiguration.GetValue("Tracing:appName");
+                    /*string appName = SharedConfiguration.GetValue("Tracing:appName");
                     string traceFile = SharedConfiguration.GetTraceFilePath();
                     TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
 
@@ -70,15 +71,17 @@ namespace Fs.Service
                             .UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection"))
                             .Options;
 
-                    optionsBuilder.EnableSensitiveDataLogging(true);
+                    optionsBuilder.EnableSensitiveDataLogging(true);*/
 
-                    services.AddLogging(config => config.ClearProviders())
-                               .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener))
+                    services.InitializeOptionsBuilder(SharedConfiguration);
+
+                    services/*.AddLogging(config => config.ClearProviders())
+                               .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener))*/
                                .AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
 
                     IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-                    services.RegisterServices(SharedConfiguration, ServiceLoggerFactory);
+                    services.RegisterServices2(SharedConfiguration);
 
                     logger = serviceProvider.GetRequiredService<ILogger<OrderService>>();
                     mapper = serviceProvider.GetRequiredService<IMapper>();

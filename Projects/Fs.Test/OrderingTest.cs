@@ -29,7 +29,7 @@ namespace Fs.Test
 {
     public class OrderingTests
     {
-        public static ILoggerFactory TestLoggerFactory = null;
+        //public static ILoggerFactory TestLoggerFactory = null;
         private static DbContextOptions<OrderingContext> options = null;
         private static ILogger<OrderService> logger = null;
         private static IMapper mapper = null;
@@ -39,8 +39,9 @@ namespace Fs.Test
         {
             var services = new ServiceCollection();
             ISharedConfiguration SharedConfiguration = HostBuilderExtensions.CreateConfigurationBuilder(services);
+            services.AddTrace(SharedConfiguration);
 
-            string appName = SharedConfiguration.GetValue("Tracing:appName");
+            /*string appName = SharedConfiguration.GetValue("Tracing:appName");
             string traceFile = SharedConfiguration.GetTraceFilePath();
             TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
 
@@ -48,23 +49,24 @@ namespace Fs.Test
             Fs.Core.Trace.Write("ConfigureServices()", "Started", TraceLevel.Info);
 
             SourceSwitch sourceSwitch = new SourceSwitch("POCTraceSwitch", "Verbose");
-            TestLoggerFactory = LoggerFactory.Create(builder => { builder.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener); });
+            TestLoggerFactory = LoggerFactory.Create(builder => { builder.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener); });*/
 
-            var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>();
+            /*var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>();
             options = optionsBuilder
                     .UseLoggerFactory(TestLoggerFactory) // Warning: Do not create a new ILoggerFactory instance each time
                     .UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection"))
                     .Options;
 
-            optionsBuilder.EnableSensitiveDataLogging(true);
+            optionsBuilder.EnableSensitiveDataLogging(true);*/
+            options = services.InitializeOptionsBuilder(SharedConfiguration);
 
-            services.AddLogging(config => config.ClearProviders())
-                       .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener))
+            services/*.AddLogging(config => config.ClearProviders())
+                       .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener))*/
                        .AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            services.RegisterServices(SharedConfiguration, TestLoggerFactory);
+            services.RegisterServices2(SharedConfiguration);
 
             logger = serviceProvider.GetRequiredService<ILogger<OrderService>>();
             mapper = serviceProvider.GetRequiredService<IMapper>();
