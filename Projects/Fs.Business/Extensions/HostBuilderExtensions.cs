@@ -82,5 +82,20 @@ namespace Fs.Business.Extensions
 
             return (new ServiceCollection()).RegisterSharedConfiguration(sharedConfiguration);
         }
+
+        public static ISharedConfiguration CreateConfigurationBuilder(ServiceCollection services)
+        {
+            var sharedSettings = Path.GetFullPath(ConfigurationManager.AppSettings["SharedSettings"]);
+
+            var configBuilder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(sharedSettings, optional: true)
+                    .AddJsonFile("appsettings.json", optional: true)
+                    .AddEnvironmentVariables();
+
+            SharedConfiguration sharedConfiguration = new SharedConfiguration(configBuilder.Build());
+
+            return services.RegisterSharedConfiguration(sharedConfiguration);
+        }
     }
 }

@@ -37,22 +37,8 @@ namespace Fs.Test
         [OneTimeSetUp]
         public void Setup()
         {
-            var setting = ConfigurationManager.AppSettings["SharedSettings"];
-            var sharedSettings = Path.GetFullPath(setting);
-
-            var configBuilder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(sharedSettings, optional: true)
-                    .AddJsonFile("appsettings.json", optional: true)
-                    .AddEnvironmentVariables();
-
-            IConfiguration config = configBuilder.Build();
-
-            SharedConfiguration sharedConfiguration = new SharedConfiguration(config);
-
             var services = new ServiceCollection();
-
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration(sharedConfiguration);
+            ISharedConfiguration SharedConfiguration = HostBuilderExtensions.CreateConfigurationBuilder(services);
 
             string appName = SharedConfiguration.GetValue("Tracing:appName");
             string traceFile = SharedConfiguration.GetTraceFilePath();
