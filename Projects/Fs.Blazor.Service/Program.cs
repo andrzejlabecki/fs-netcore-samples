@@ -16,7 +16,7 @@ namespace Fs.Blazor.Service
     {
         public static async Task Main(string[] args)
         {
-            ISharedConfiguration SharedConfiguration = HostBuilderExtensions.CreateConfigurationBuilder();
+            ISharedConfiguration SharedConfiguration = HostBuilderExtensions.CreateConfigurationBuilder().Configuration();
 
             IHostBuilder builder = CreateHostBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

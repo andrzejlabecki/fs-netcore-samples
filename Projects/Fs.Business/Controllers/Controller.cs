@@ -28,7 +28,8 @@ namespace Fs.Business.Controllers
         {
             string userID = "<empty>";
 
-            if (_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) != null)
+            if (_httpContextAccessor.HttpContext != null &&
+                _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) != null)
                 userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             Fs.Core.Trace.Write("ReportUser() in " + Method, "UserID: " + userID, TraceLevel.Info);
         }

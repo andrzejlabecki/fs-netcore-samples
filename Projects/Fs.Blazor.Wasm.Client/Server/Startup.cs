@@ -24,16 +24,16 @@ namespace Fs.Blazor.Wasm.Client.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
-            services.AddTrace(SharedConfiguration);
+            services.RegisterSharedConfiguration();
+            services.AddTrace();
 
-            services.RegisterServices(SharedConfiguration);
+            services.RegisterServices();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddOidcProviders(SharedConfiguration);
-            services.AddJwtBearer(SharedConfiguration);
+            services.AddOidcProviders();
+            services.AddJwtBearer();
 
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }

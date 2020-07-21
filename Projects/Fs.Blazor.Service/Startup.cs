@@ -11,7 +11,7 @@ namespace Fs.Blazor.Service
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
+            services.RegisterSharedConfiguration();
 
             services.AddRazorPages();
         }

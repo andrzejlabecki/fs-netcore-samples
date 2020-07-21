@@ -29,22 +29,21 @@ namespace Fs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
-            services.AddTrace(SharedConfiguration);
+            services.RegisterSharedConfiguration();
+            services.AddTrace();
 
-            services.RegisterServices(SharedConfiguration);
+            services.RegisterServices();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
                 {
-                    //options.Clients[ApplicationName].PostLogoutRedirectUris.Add("/Identity/Account/logout");
-                    options.Clients[ApplicationName].PostLogoutRedirectUris.Add(SharedConfiguration.GetExternalLogoutUrl(ApplicationName));
+                    options.Clients[ApplicationName].PostLogoutRedirectUris.Add(services.Configuration().GetExternalLogoutUrl(ApplicationName));
                 });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddOidcProviders(SharedConfiguration);
+            services.AddOidcProviders();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

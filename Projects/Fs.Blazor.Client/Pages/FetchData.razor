@@ -6,7 +6,9 @@
     <Authorized>
         @using Fs.Blazor.Client.Data;
         @using Fs.Models;
-        @inject WeatherForecastService ForecastService
+        @using Fs.Business;
+        @using Fs.Client.Services;
+        @inject ForecastService forecastService
 
         <h1>Weather forecast</h1>
 
@@ -50,7 +52,7 @@
 
                 if (state.User.Identity.IsAuthenticated)
                 {
-                    forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+                    forecasts = forecastService.Get();
                 }
 
                 await base.OnInitializedAsync();

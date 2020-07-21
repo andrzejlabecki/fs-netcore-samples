@@ -15,7 +15,7 @@ namespace Fs.Business.Extensions
 {
     public static class HostBuilderExtensions
     {
-        public static IHostBuilder CompleteAppConfiguration(this IHostBuilder builder)
+        public static IHostBuilder CompleteAppConfiguration(this IHostBuilder builder, Action<IConfigurationBuilder> action = null)
         {
             builder.ConfigureAppConfiguration((hostingContext, configBuilder) =>
             {
@@ -31,6 +31,9 @@ namespace Fs.Business.Extensions
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
                 configBuilder.AddEnvironmentVariables();
+
+                if (action != null)
+                    action(configBuilder);
             });
 
             return builder;
@@ -68,7 +71,7 @@ namespace Fs.Business.Extensions
             }
         }
 
-        public static ISharedConfiguration CreateConfigurationBuilder()
+        public static IServiceCollection CreateConfigurationBuilder()
         {
             var sharedSettings = Path.GetFullPath(ConfigurationManager.AppSettings["SharedSettings"]);
 
@@ -83,7 +86,7 @@ namespace Fs.Business.Extensions
             return (new ServiceCollection()).RegisterSharedConfiguration(sharedConfiguration);
         }
 
-        public static ISharedConfiguration CreateConfigurationBuilder(ServiceCollection services)
+        public static IServiceCollection CreateConfigurationBuilder(ServiceCollection services)
         {
             var sharedSettings = Path.GetFullPath(ConfigurationManager.AppSettings["SharedSettings"]);
 

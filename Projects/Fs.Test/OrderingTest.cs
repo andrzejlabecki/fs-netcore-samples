@@ -1,22 +1,11 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using System;
-using System.IO;
 using System.Linq;
-using System.Data;
-using System.Diagnostics;
-using System.Configuration;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Logging.Debug;
-using Microsoft.Extensions.Logging.TraceSource;
-using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Fs.Data;
 using Fs.Data.Interfaces.Repositories;
 using Fs.Core.Contracts;
@@ -29,7 +18,6 @@ namespace Fs.Test
 {
     public class OrderingTests
     {
-        //public static ILoggerFactory TestLoggerFactory = null;
         private static DbContextOptions<OrderingContext> options = null;
         private static ILogger<OrderService> logger = null;
         private static IMapper mapper = null;
@@ -38,35 +26,16 @@ namespace Fs.Test
         public void Setup()
         {
             var services = new ServiceCollection();
-            ISharedConfiguration SharedConfiguration = HostBuilderExtensions.CreateConfigurationBuilder(services);
-            services.AddTrace(SharedConfiguration);
+            HostBuilderExtensions.CreateConfigurationBuilder(services);
+            services.AddTrace();
 
-            /*string appName = SharedConfiguration.GetValue("Tracing:appName");
-            string traceFile = SharedConfiguration.GetTraceFilePath();
-            TraceLevel traceLevel = (TraceLevel)System.Enum.Parse(typeof(TraceLevel), SharedConfiguration.GetValue("Tracing:traceLevel"));
+            options = services.GetDbContextOptions();
 
-            Fs.Core.Trace.Init(appName, traceLevel, traceFile);
-            Fs.Core.Trace.Write("ConfigureServices()", "Started", TraceLevel.Info);
-
-            SourceSwitch sourceSwitch = new SourceSwitch("POCTraceSwitch", "Verbose");
-            TestLoggerFactory = LoggerFactory.Create(builder => { builder.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener); });*/
-
-            /*var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>();
-            options = optionsBuilder
-                    .UseLoggerFactory(TestLoggerFactory) // Warning: Do not create a new ILoggerFactory instance each time
-                    .UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection"))
-                    .Options;
-
-            optionsBuilder.EnableSensitiveDataLogging(true);*/
-            options = services.InitializeOptionsBuilder(SharedConfiguration);
-
-            services/*.AddLogging(config => config.ClearProviders())
-                       .AddLogging(config => config.AddTraceSource(sourceSwitch, Fs.Core.Trace.TraceListener))*/
-                       .AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
+            services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            services.RegisterServices2(SharedConfiguration);
+            services.RegisterAppServices();
 
             logger = serviceProvider.GetRequiredService<ILogger<OrderService>>();
             mapper = serviceProvider.GetRequiredService<IMapper>();

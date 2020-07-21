@@ -1,18 +1,35 @@
 ﻿using System;
-using System.Linq;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
-using IdentityModel.Client;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication;
+using Fs.Business.Controllers;
 using Fs.Models;
+using Fs.Core.Interfaces.Services;
+using System.Linq;
 
-namespace Fs.Blazor.Client.Data
+namespace Fs.Client.Services
 {
+    public class ForecastService : BaseWeatherForecastController
+    {
+        public ForecastService(ILogger<ForecastService> logger, IHttpContextAccessor httpContextAccessor)
+            : base(logger, httpContextAccessor)
+        {
+        }
+
+        public new WeatherForecast [] Get()
+        {
+            WeatherForecast[] forecasts = base.Get().ToArray();
+
+            return forecasts;
+        }
+    }
+
     public class OrderService
     {
         public string AccessToken { get; set; }

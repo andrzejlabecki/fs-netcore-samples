@@ -25,10 +25,10 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true; //Add this line
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
-            services.AddTrace(SharedConfiguration);
+            services.RegisterSharedConfiguration();
+            services.AddTrace();
 
-            services.RegisterServices(SharedConfiguration);
+            services.RegisterServices();
 
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
 
@@ -36,7 +36,7 @@ namespace WebAPI
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddJwtBearers(SharedConfiguration);
+            services.AddJwtBearers();
 
             /*services.AddCors(options =>
             {

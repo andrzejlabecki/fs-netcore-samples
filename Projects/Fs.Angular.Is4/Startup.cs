@@ -27,11 +27,11 @@ namespace Fs
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true; //Add this line
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
+            services.RegisterSharedConfiguration();
 
-            services.AddTrace(SharedConfiguration);
-            services.RegisterServices(SharedConfiguration);
-            services.ConfigureIdentityServer(SharedConfiguration);
+            services.AddTrace();
+            services.RegisterServices();
+            services.ConfigureIdentityServer();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

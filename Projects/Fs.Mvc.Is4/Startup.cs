@@ -26,11 +26,11 @@ namespace Fs.Mvc.Is4
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true; //Add this line
-            ISharedConfiguration SharedConfiguration = services.RegisterSharedConfiguration();
-            services.AddTrace(SharedConfiguration);
+            services.RegisterSharedConfiguration();
+            services.AddTrace();
 
-            services.RegisterServices(SharedConfiguration);
-            services.ConfigureIdentityServer(SharedConfiguration);
+            services.RegisterServices();
+            services.ConfigureIdentityServer();
 
             services.AddAuthentication()
             .AddIdentityServerJwt();
