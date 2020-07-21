@@ -1,0 +1,47 @@
+﻿@inject AuthenticationStateProvider AuthState
+@inject NavigationManager NavManager
+
+<AuthorizeView>
+    <Authorized>
+        <a href="Identity/Account/Manage">Hello, @Username!</a>
+        <a href="#" @onclick="SignOut">Log out</a>
+        @code
+        {
+            private string Username = "";
+
+            protected override async Task OnInitializedAsync()
+            {
+                var state = await AuthState.GetAuthenticationStateAsync();
+
+                if (state.User.Identity.IsAuthenticated)
+                {
+                    Username =
+                        state.User.Claims
+                        .Where(c => c.Type.Equals("name"))
+                        .Select(c => c.Value)
+                        .FirstOrDefault() ?? string.Empty;
+                }
+
+                await base.OnInitializedAsync();
+            }
+
+            private void SignOut()
+            {
+                string returnUrl = "https://fs-blazor-client.netpoc.com/signout-callback-oidc";
+
+                NavManager.NavigateTo($"/Logout?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+            }
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Register">Register</a>
+        <a href="#" @onclick="SignIn">Log in</a>
+        @code {
+            private void SignIn()
+            {
+                NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+            }
+        }
+    </NotAuthorized>
+</AuthorizeView>

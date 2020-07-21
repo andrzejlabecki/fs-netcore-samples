@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Fs.Core.Extensions;
 using Fs.Business.Extensions;
-using Fs.Core.Interfaces.Services;
 
 namespace Fs.Blazor.Client
 {

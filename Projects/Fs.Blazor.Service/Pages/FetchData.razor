@@ -1,0 +1,72 @@
+﻿@page "/fetchdata"
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthState
+
+<AuthorizeView>
+    <Authorized>
+        @using Fs.Models;
+        @using Fs.Business;
+        @using Fs.Client.Services;
+        @inject ForecastService forecastService
+
+        <h1>Weather forecast</h1>
+
+        <p>This component demonstrates fetching data from a service.</p>
+
+        @if (forecasts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temp. (C)</th>
+                        <th>Temp. (F)</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in forecasts)
+                    {
+                        <tr>
+                            <td>@forecast.Date.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@forecast.Summary</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @code {
+            private WeatherForecast[] forecasts;
+
+            protected override async Task OnInitializedAsync()
+            {
+                var state = await AuthState.GetAuthenticationStateAsync();
+
+                if (state.User.Identity.IsAuthenticated)
+                {
+                    forecasts = forecastService.Get();
+                }
+
+                await base.OnInitializedAsync();
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        @{
+            //NavManager.NavigateTo("/Login", true);
+            NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+

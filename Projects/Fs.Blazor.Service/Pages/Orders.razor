@@ -1,0 +1,69 @@
+﻿@page "/orders"
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthState
+
+<AuthorizeView>
+    <Authorized>
+        @using Fs.Models;
+        @using Fs.Client.Services;
+        @inject OrderService OrderService
+        @inject ApplicationStateProvider StateProvider
+
+        <h1>Orders</h1>
+
+        <p>This component demonstrates fetching data from web API.</p>
+
+        @if (orders == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in orders)
+                    {
+                        <tr>
+                            <td>@order.OrderId.ToString()</td>
+                            <td>@order.Name.ToString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @code {
+            private Order[] orders;
+
+            protected override async Task OnInitializedAsync()
+            {
+                var state = await AuthState.GetAuthenticationStateAsync();
+
+                if (state.User.Identity.IsAuthenticated)
+                {
+                    OrderService.AccessToken = StateProvider.AccessToken;
+                    orders = await OrderService.GetOrdersAsync();
+                }
+
+                await base.OnInitializedAsync();
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        @{
+            //NavManager.NavigateTo("/Login", true);
+            NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+

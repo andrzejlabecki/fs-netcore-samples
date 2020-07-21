@@ -27,6 +27,15 @@
       "LogoutUris": "https://fs-blazor-client.netpoc.com/signout-callback-oidc",
       "CorsOrigins": "https://fs-blazor-client.netpoc.com"
     },
+    "Fs.Blazor.Service": {
+      "GrantTypes": "authorization_code",
+      "Scopes": "openid profile WebAPI",
+      "Secrets": "secret",
+      "Pkce": true,
+      "RedirectUris": "https://fs-blazor-service.netpoc.com:5001/signin-oidc",
+      "LogoutUris": "https://fs-blazor-service.netpoc.com:5001/signout-callback-oidc",
+      "CorsOrigins": "https://fs-blazor-service.netpoc.com:5001"
+    },
     "Fs.Angular.Is4.Client": {
       "Spa": true,
       "Secrets": "secret",
