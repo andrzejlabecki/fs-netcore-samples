@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Fs.Business.Extensions;
 using Fs.Core.Extensions;
 using AutoMapper;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace Fs.Blazor.Service
 {
@@ -28,6 +29,14 @@ namespace Fs.Blazor.Service
             services.RegisterServices(false);
 
             services.AddControllersWithViews();
+            /*services.AddControllersWithViews(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });*/
+
             services.AddRazorPages();
 
             services.AddOidcProviders(false);
@@ -59,6 +68,15 @@ namespace Fs.Blazor.Service
                 }
 
                 app.UseHttpsRedirection();
+
+                app.UseRewriter(new RewriteOptions().Add(context =>
+                {
+                    if (context.HttpContext.Request.Path == "/AzureAD/Account/SignedOut")
+                    {
+                        context.HttpContext.Response.Redirect("/");
+                    }
+                }));
+
                 app.UseStaticFiles();
 
                 app.UseRouting();

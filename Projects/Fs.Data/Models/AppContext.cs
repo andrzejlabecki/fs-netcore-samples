@@ -7,6 +7,7 @@ namespace Fs.Data.Models
         private static AppContext instance = new AppContext();
 
         public bool IsExternalLogin { get; set; }
+        public string AuthScheme { get; set; }
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit

@@ -27,9 +27,12 @@
 
             private void SignOut()
             {
-                string returnUrl = "https://fs-blazor-client.netpoc.com/signout-callback-oidc";
+                string returnUrl = "https://fs-blazor-service.netpoc.com:5001/signout-callback-oidc";
 
-                NavManager.NavigateTo($"/Logout?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+                if (Fs.Data.Models.AppContext.Instance.AuthScheme == "oidc")
+                    NavManager.NavigateTo($"/Logout?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+                else if (Fs.Data.Models.AppContext.Instance.AuthScheme == "AzureAD")
+                    NavManager.NavigateTo($"/AzureAD/Account/SignOut?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
             }
         }
 
@@ -40,7 +43,10 @@
         @code {
             private void SignIn()
             {
-                NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                if (Fs.Data.Models.AppContext.Instance.AuthScheme == "oidc")
+                    NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                else if (Fs.Data.Models.AppContext.Instance.AuthScheme == "AzureAD")
+                    NavManager.NavigateTo($"/AzureAD/Account/SignIn?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
             }
         }
     </NotAuthorized>

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Diagnostics;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -173,61 +174,107 @@ namespace Fs.Business.Extensions
 
         public static IServiceCollection AddOidcProviders(this IServiceCollection services, bool addServerJwt = true)
         {
-            AuthenticationBuilder builder = services.AddAuthentication(options =>
+            Fs.Data.Models.AppContext.Instance.AuthScheme = SharedConfiguration.GetValue<string>("OidcProviders:Enabled");
+            AuthenticationBuilder builder = null;
+
+            if (Fs.Data.Models.AppContext.Instance.AuthScheme == null ||
+                Fs.Data.Models.AppContext.Instance.AuthScheme == "oidc")
             {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            });
+                builder = services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = "Cookies";
+                    options.DefaultChallengeScheme = "oidc";
+                });
 
+                if (addServerJwt)
+                    builder.AddIdentityServerJwt();
+                builder.AddCookie("Cookies");
+            }
+            else if (Fs.Data.Models.AppContext.Instance.AuthScheme == AzureADDefaults.AuthenticationScheme)
+            {
+                builder = services.AddAuthentication(AzureADDefaults.AuthenticationScheme);
+                if (addServerJwt)
+                    builder.AddIdentityServerJwt();
+                builder.AddCookie("Cookies");
+                /*builder = services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = "Cookies";
+                    options.DefaultChallengeScheme = AzureADDefaults.AuthenticationScheme;
+                });
 
-            if (addServerJwt)
-                builder.AddIdentityServerJwt();
-            builder.AddCookie("Cookies");
+                if (addServerJwt)
+                    builder.AddIdentityServerJwt();
+                builder.AddCookie("Cookies");*/
+            }
 
             IConfigurationSection section = SharedConfiguration.GetSection("OidcProviders");
             IEnumerable<IConfigurationSection> providers = section.GetChildren();
 
             foreach (IConfigurationSection providerSection in providers)
             {
-                builder.AddOpenIdConnect(providerSection.Key, options =>
+                bool addProvider = Fs.Data.Models.AppContext.Instance.AuthScheme == null ||
+                                   Fs.Data.Models.AppContext.Instance.AuthScheme == providerSection.Key;
+
+                if (addProvider)
                 {
-                    options.Authority = providerSection.GetValue<string>("Authority");
-                    if (options.Authority == null)
-                        options.Authority = SharedConfiguration.GetOidcLink();
-
-                    options.ClientId = providerSection.GetValue<string>("ClientID");
-
-                    string secret = providerSection.GetValue<string>("ClientSecret");
-                    if (secret != null && secret.Length > 0)
-                        options.ClientSecret = secret;
-
-                    string response = providerSection.GetValue<string>("ResponseType");
-                    if (response != null && response.Length > 0)
-                        options.ResponseType = response;
-
-                    string scope = providerSection.GetValue<string>("Scope");
-                    if (scope != null && scope.Length > 0)
-                        options.Scope.Add(scope);
-
-                    options.SaveTokens = providerSection.GetValue<bool>("SaveTokens");
-                    options.RequireHttpsMetadata = providerSection.GetValue<bool>("HttpsMetadata");
-                    options.GetClaimsFromUserInfoEndpoint = providerSection.GetValue<bool>("ClaimsUserEndpoint");
-
-                    if (providerSection.GetValue<bool>("Events"))
+                    if (providerSection.Key == "oidc")
                     {
-                        options.Events = new OpenIdConnectEvents
+                        builder.AddOpenIdConnect(providerSection.Key, options =>
                         {
-                            // called if user clicks Cancel during login
-                            OnAccessDenied = context =>
+                            options.Authority = providerSection.GetValue<string>("Authority");
+                            if (options.Authority == null)
+                                options.Authority = SharedConfiguration.GetOidcLink();
+
+                            options.ClientId = providerSection.GetValue<string>("ClientID");
+
+                            string secret = providerSection.GetValue<string>("ClientSecret");
+                            if (secret != null && secret.Length > 0)
+                                options.ClientSecret = secret;
+
+                            string response = providerSection.GetValue<string>("ResponseType");
+                            if (response != null && response.Length > 0)
+                                options.ResponseType = response;
+
+                            string scope = providerSection.GetValue<string>("Scope");
+                            if (scope != null && scope.Length > 0)
+                                options.Scope.Add(scope);
+
+                            options.SaveTokens = providerSection.GetValue<bool>("SaveTokens");
+                            options.RequireHttpsMetadata = providerSection.GetValue<bool>("HttpsMetadata");
+                            options.GetClaimsFromUserInfoEndpoint = providerSection.GetValue<bool>("ClaimsUserEndpoint");
+
+                            if (providerSection.GetValue<bool>("Events"))
                             {
-                                context.Response.Redirect("/");
-                                context.HandleResponse();
-                                return Task.CompletedTask;
+                                options.Events = new OpenIdConnectEvents
+                                {
+                                // called if user clicks Cancel during login
+                                OnAccessDenied = context =>
+                                    {
+                                        context.Response.Redirect("/");
+                                        context.HandleResponse();
+                                        return Task.CompletedTask;
+                                    }
+                                };
                             }
-                        };
+                        });
                     }
-                });
+                    else if (providerSection.Key == "AzureAD")
+                    {
+                        builder.AddAzureAD(options =>
+                        {
+                            options.Instance = providerSection.GetValue<string>("Instance");
+                            options.Domain = providerSection.GetValue<string>("Domain");
+                            options.TenantId = providerSection.GetValue<string>("TenantId");
+                            options.ClientId = providerSection.GetValue<string>("ClientId");
+                            options.CallbackPath = providerSection.GetValue<string>("CallbackPath");
+                            options.SignedOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
+                        });
+                    }
+                }
             }
+
+            if (Fs.Data.Models.AppContext.Instance.AuthScheme == null)
+                Fs.Data.Models.AppContext.Instance.AuthScheme = "oidc";
 
             return services;
         }

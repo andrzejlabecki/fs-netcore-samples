@@ -5,7 +5,7 @@
 @{
     Layout = null;
 
-    var authResult = await HttpContext.AuthenticateAsync("oidc");
+    var authResult = await HttpContext.AuthenticateAsync(Fs.Data.Models.AppContext.Instance.AuthScheme);
 
     DateTimeOffset expiration = new DateTimeOffset();
 

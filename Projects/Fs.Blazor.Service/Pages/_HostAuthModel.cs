@@ -14,15 +14,12 @@ namespace Fs.Blazor.Service.Pages
 {
     public class _HostAuthModel : PageModel
     {
-        //public readonly BlazorServerAuthStateCache Cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ApplicationStateProvider StateProvider;
 
-        public _HostAuthModel(//BlazorServerAuthStateCache cache, 
-                              IHttpContextAccessor httpContextAccessor,
+        public _HostAuthModel(IHttpContextAccessor httpContextAccessor,
                               ApplicationStateProvider stateProvider)
         {
-            //Cache = cache;
             _httpContextAccessor = httpContextAccessor;
             StateProvider = stateProvider;
         }
@@ -35,35 +32,6 @@ namespace Fs.Blazor.Service.Pages
                 userID = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             System.Diagnostics.Debug.WriteLine("ReportUser() in " + Method, "UserID: " + userID);
         }
-
-
-        /*public async Task<IActionResult> OnGet()
-        {
-            System.Diagnostics.Debug.WriteLine($"\n_Host OnGet IsAuth? {User.Identity.IsAuthenticated}");
-            ReportUser("OnGet()");
-
-            if (User.Identity.IsAuthenticated)
-            {
-                var sid = User.Claims
-                    .Where(c => c.Type.Equals("sid"))
-                    .Select(c => c.Value)
-                    .FirstOrDefault();
-
-                System.Diagnostics.Debug.WriteLine($"sid: {sid}");
-
-                if (sid != null && !Cache.HasSubjectId(sid))
-                {
-                    string authScheme = "oidc";
-                    var authResult = await HttpContext.AuthenticateAsync(authScheme);
-
-                    DateTimeOffset expiration = authResult.Properties.ExpiresUtc.Value;
-                    string accessToken = await HttpContext.GetTokenAsync("access_token");
-                    string refreshToken = await HttpContext.GetTokenAsync("refresh_token");
-                    Cache.Add(sid, expiration, accessToken, refreshToken, authScheme);
-                }
-            }
-            return Page();
-        }*/
 
         public IActionResult OnGetLogin()
         {
@@ -84,7 +52,7 @@ namespace Fs.Blazor.Service.Pages
                 RedirectUri = Url.Content(redirectUri)
             };
 
-            return Challenge(authProps, "oidc");
+            return Challenge(authProps, Fs.Data.Models.AppContext.Instance.AuthScheme);
         }
 
         public async Task OnGetLogout()
@@ -109,11 +77,11 @@ namespace Fs.Blazor.Service.Pages
 
             var authProps = new AuthenticationProperties
             {
-                RedirectUri = Url.Content("https://fs-blazor-service.netpoc.com")
+                RedirectUri = Url.Content("https://fs-blazor-service.netpoc.com:5001")
             };
 
             await HttpContext.SignOutAsync("Cookies");
-            await HttpContext.SignOutAsync("oidc", authProps);
+            await HttpContext.SignOutAsync(Fs.Data.Models.AppContext.Instance.AuthScheme, authProps);
         }
     }
 }

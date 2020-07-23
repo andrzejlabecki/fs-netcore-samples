@@ -25,12 +25,10 @@ namespace Fs.Blazor.Service
     public class BlazorServerAuthState 
         : RevalidatingServerAuthenticationStateProvider
     {
-        //private readonly BlazorServerAuthStateCache Cache;
         private readonly ApplicationStateProvider StateProvider;
 
         public BlazorServerAuthState(
             ILoggerFactory loggerFactory,
-            //BlazorServerAuthStateCache cache,
             ApplicationStateProvider stateProvider)
             : base(loggerFactory)
         {
@@ -56,17 +54,14 @@ namespace Fs.Blazor.Service
                 .FirstOrDefault() ?? string.Empty;
             System.Diagnostics.Debug.WriteLine($"\nValidate: {name} / {sid}");
 
-            if (sid != null/* && Cache.HasSubjectId(sid)*/)
+            if (sid != null)
             {
-                //var data = Cache.Get(sid);
-
                 System.Diagnostics.Debug.WriteLine($"NowUtc: {DateTimeOffset.UtcNow.ToString("o")}");
                 System.Diagnostics.Debug.WriteLine($"ExpUtc: {StateProvider.Expiration.ToString("o")}");
 
                 if(DateTimeOffset.UtcNow >= StateProvider.Expiration)
                 {
                     System.Diagnostics.Debug.WriteLine($"*** EXPIRED ***");
-                    //Cache.Remove(sid);
                     return Task.FromResult(false);
                 }
             }
