@@ -29,13 +29,6 @@ namespace Fs.Blazor.Service
             services.RegisterServices(false);
 
             services.AddControllersWithViews();
-            /*services.AddControllersWithViews(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });*/
 
             services.AddRazorPages();
 

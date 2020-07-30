@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Identity;
-using Fs.Data.Models;
+using Fs.Core.Constants;
 
 
 namespace Fs.Blazor.Client.Pages
@@ -112,7 +111,7 @@ namespace Fs.Blazor.Client.Pages
                 RedirectUri = Url.Content("https://fs-blazor-client.netpoc.com")
             };
 
-            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync(OpenIdDefaults.Scheme);
             await HttpContext.SignOutAsync("oidc", authProps);
         }
     }

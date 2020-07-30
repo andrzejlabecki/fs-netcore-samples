@@ -3,12 +3,13 @@
 @using System.Net.Http
 @using Microsoft.AspNetCore.Authentication
 @using Fs.Data.Models
+@using Fs.Core.Constants
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor contextAccessor
 
 @{
-    var authResult = await contextAccessor.HttpContext.AuthenticateAsync("Identity.Application");
+    var authResult = await contextAccessor.HttpContext.AuthenticateAsync(OpenIdDefaults.ProviderScheme);
 }
 
 <ul class="navbar-nav">

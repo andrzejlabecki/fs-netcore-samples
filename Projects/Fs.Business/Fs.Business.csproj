@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.6" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.8" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 
@@ -17,6 +18,10 @@
     <ProjectReference Include="..\Fs.Blazor.Shared\Fs.Models.csproj" />
     <ProjectReference Include="..\Fs.Core\Fs.Core.csproj" />
     <ProjectReference Include="..\Fs.Data\Fs.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Blazor\" />
   </ItemGroup>
 
 </Project>

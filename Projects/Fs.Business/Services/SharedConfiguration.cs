@@ -73,6 +73,11 @@ namespace Fs.Business.Services
             return GetOidcLink("OidcAuthority:httpLink");
         }
 
+        public string GetAzureInstance()
+        {
+            return GetValue("AzureInstance:httpLink");
+        }
+
         public string GetExternalLogoutUrl(string clientId)
         {
             return GetValue("IdentityServer:SpaClients:" + clientId + ":LogoutUriExt");

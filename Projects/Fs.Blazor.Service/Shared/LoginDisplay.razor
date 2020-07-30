@@ -27,12 +27,11 @@
 
             private void SignOut()
             {
-                string returnUrl = "https://fs-blazor-service.netpoc.com:5001/signout-callback-oidc";
+                Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
 
-                if (Fs.Data.Models.AppContext.Instance.AuthScheme == "oidc")
-                    NavManager.NavigateTo($"/Logout?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
-                else if (Fs.Data.Models.AppContext.Instance.AuthScheme == "AzureAD")
-                    NavManager.NavigateTo($"/AzureAD/Account/SignOut?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+                string returnUrl = String.Format("{0}{1}", appContext.RedirectUri, appContext.SignOutCallbackPath);
+
+                NavManager.NavigateTo($"{appContext.SignOutUri}?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
             }
         }
 
@@ -43,10 +42,7 @@
         @code {
             private void SignIn()
             {
-                if (Fs.Data.Models.AppContext.Instance.AuthScheme == "oidc")
-                    NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
-                else if (Fs.Data.Models.AppContext.Instance.AuthScheme == "AzureAD")
-                    NavManager.NavigateTo($"/AzureAD/Account/SignIn?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
             }
         }
     </NotAuthorized>

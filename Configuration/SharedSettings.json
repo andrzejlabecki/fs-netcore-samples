@@ -12,6 +12,9 @@
     //"httpLink": "https://fs-angular-is4.netpoc.com/"
     //"httpLink": "https://fs-blazor-is4.netpoc.com/"
   },
+  "AzureInstance": {
+    "httpLink": "https://login.microsoftonline.com/"
+  },
   "OidcClients": {
     "ClientPOC2": {
       "GrantTypes": "client_credentials",

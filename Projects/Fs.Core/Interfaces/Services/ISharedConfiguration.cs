@@ -19,6 +19,7 @@ namespace Fs.Core.Interfaces.Services
         ICollection<string> GetStringCollection(IConfigurationSection section, string name);
         ICollection<string> GetStringCollection(string name);
         string [] GetStringArray(string name);
+        string GetAzureInstance();
     }
 }
 

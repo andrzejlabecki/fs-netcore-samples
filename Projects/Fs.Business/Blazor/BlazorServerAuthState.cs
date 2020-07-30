@@ -5,14 +5,16 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
-namespace Fs.Blazor.Service
+namespace Fs.Blazor
 {
     public class InitialApplicationState
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTimeOffset Expiration { get; set; }
+        public string IdentityCookie { get; set; }
     }
 
     public class ApplicationStateProvider
@@ -20,6 +22,7 @@ namespace Fs.Blazor.Service
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTimeOffset Expiration { get; set; }
+        public string IdentityCookie { get; set; }
     }
 
     public class BlazorServerAuthState 

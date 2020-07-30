@@ -1,0 +1,91 @@
+{
+	"id": "c13342b6-1060-480c-b7ae-7514539aa6fa",
+	"acceptMappedClaims": null,
+	"accessTokenAcceptedVersion": null,
+	"addIns": [],
+	"allowPublicClient": null,
+	"appId": "973448a2-6682-487f-98f2-19436fa9ff44",
+	"appRoles": [],
+	"oauth2AllowUrlPathMatching": false,
+	"createdDateTime": "2020-07-24T15:37:11Z",
+	"groupMembershipClaims": null,
+	"identifierUris": [
+		"api://973448a2-6682-487f-98f2-19436fa9ff44"
+	],
+	"informationalUrls": {
+		"termsOfService": null,
+		"support": null,
+		"privacy": null,
+		"marketing": null
+	},
+	"keyCredentials": [],
+	"knownClientApplications": [],
+	"logoUrl": null,
+	"logoutUrl": null,
+	"name": "FS-WEB-API",
+	"oauth2AllowIdTokenImplicitFlow": false,
+	"oauth2AllowImplicitFlow": false,
+	"oauth2Permissions": [
+		{
+			"adminConsentDescription": "Access to Fs Web API",
+			"adminConsentDisplayName": "Fs Web API",
+			"id": "2d2cefbe-4238-4b55-bdd4-abc578dce7f4",
+			"isEnabled": true,
+			"lang": null,
+			"origin": "Application",
+			"type": "Admin",
+			"userConsentDescription": null,
+			"userConsentDisplayName": null,
+			"value": "WebAPI"
+		}
+	],
+	"oauth2RequirePostResponse": false,
+	"optionalClaims": null,
+	"orgRestrictions": [],
+	"parentalControlSettings": {
+		"countriesBlockedForMinors": [],
+		"legalAgeGroupRule": "Allow"
+	},
+	"passwordCredentials": [],
+	"preAuthorizedApplications": [
+		{
+			"appId": "b897fff3-87d2-4675-b49b-63b123671972",
+			"permissionIds": [
+				"2d2cefbe-4238-4b55-bdd4-abc578dce7f4"
+			]
+		}
+	],
+	"publisherDomain": "Ferratasoft.onmicrosoft.com",
+	"replyUrlsWithType": [],
+	"requiredResourceAccess": [
+		{
+			"resourceAppId": "973448a2-6682-487f-98f2-19436fa9ff44",
+			"resourceAccess": [
+				{
+					"id": "2d2cefbe-4238-4b55-bdd4-abc578dce7f4",
+					"type": "Scope"
+				}
+			]
+		},
+		{
+			"resourceAppId": "00000003-0000-0000-c000-000000000000",
+			"resourceAccess": [
+				{
+					"id": "e1fe6dd8-ba31-4d61-89e7-88639da4683d",
+					"type": "Scope"
+				}
+			]
+		}
+	],
+	"samlMetadataUrl": null,
+	"signInUrl": null,
+	"signInAudience": "AzureADMyOrg",
+	"tags": [],
+	"tokenEncryptionKeyId": null,
+	"trustedCertificateSubjects": [],
+	"verifiedPublisher": {
+		"displayName": null,
+		"verifiedPublisherId": null,
+		"addedDateTime": null
+	}
+}

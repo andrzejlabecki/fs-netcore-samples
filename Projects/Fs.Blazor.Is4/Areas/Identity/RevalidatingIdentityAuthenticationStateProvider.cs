@@ -2,34 +2,18 @@ using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Text;
-using System.Net.Http;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Fs.Blazor.Is4;
+using Fs.Core.Constants;
 
 namespace Fs.Blazor.Is4.Areas.Identity
 {
-    public class InitialApplicationState
-    {
-        public string IdentityCookie { get; set; }
-    }
-
-    public class ApplicationStateProvider
-    {
-        public string IdentityCookie { get; set; }
-    }
-
     public class RevalidatingIdentityAuthenticationStateProvider<TUser>
         : RevalidatingServerAuthenticationStateProvider where TUser : class
     {
@@ -63,7 +47,7 @@ namespace Fs.Blazor.Is4.Areas.Identity
             string cookieValue = _appStateProvider.IdentityCookie;
 
             //Get a data protector to use with either approach
-            var dataProtector = _provider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", "Identity.Application", "v2");
+            var dataProtector = _provider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", OpenIdDefaults.ProviderScheme, "v2");
 
             //Get the decrypted cookie as a Authentication Ticket
             TicketDataFormat ticketDataFormat = new TicketDataFormat(dataProtector);

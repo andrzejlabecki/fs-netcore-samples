@@ -19,9 +19,8 @@
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
-                @{ // part 2: add this
-                    //NavManager.NavigateTo("/Logout", true);
-                    NavManager.NavigateTo($"/Logout?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                @{ 
+                    NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignOutUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
                 }
             </NotAuthorized>
             <Authorizing>

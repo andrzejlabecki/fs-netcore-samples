@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Fs.Core.Interfaces.Services;
+using Fs.Core.Constants;
 using Fs.Data.Models;
 using Fs.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -51,8 +52,8 @@ namespace Fs.Business.Controllers
 
             await _signInManager.SignOutAsync();
 
-            await HttpContext.SignOutAsync("oidc");
-            await HttpContext.SignOutAsync("Identity.Application");
+            await HttpContext.SignOutAsync(OpenIdDefaults.ChallengeScheme);
+            await HttpContext.SignOutAsync(OpenIdDefaults.ProviderScheme);
 
             return null;
         }

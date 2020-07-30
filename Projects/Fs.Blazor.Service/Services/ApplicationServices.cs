@@ -33,10 +33,14 @@ namespace Fs.Client.Services
     public class OrderService
     {
         public string AccessToken { get; set; }
+        //static public string TempToken = null;
 
         public async Task<Order[]> GetOrdersAsync()
         {
             string accessToken = AccessToken;
+
+            //if (TempToken != null)
+            //    accessToken = TempToken;
 
             IEnumerable<Order> results = null;
 

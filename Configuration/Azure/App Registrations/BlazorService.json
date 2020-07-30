@@ -1,0 +1,122 @@
+{
+	"id": "1836290a-ee30-4a95-9892-1236c65d6893",
+	"acceptMappedClaims": null,
+	"accessTokenAcceptedVersion": null,
+	"addIns": [],
+	"allowPublicClient": false,
+	"appId": "b897fff3-87d2-4675-b49b-63b123671972",
+	"appRoles": [],
+	"oauth2AllowUrlPathMatching": false,
+	"createdDateTime": "2020-07-22T15:05:25Z",
+	"groupMembershipClaims": null,
+	"identifierUris": [
+		"https://Ferratasoft.onmicrosoft.com/BlazorMsClient"
+	],
+	"informationalUrls": {
+		"termsOfService": null,
+		"support": null,
+		"privacy": null,
+		"marketing": null
+	},
+	"keyCredentials": [],
+	"knownClientApplications": [],
+	"logoUrl": null,
+	"logoutUrl": null,
+	"name": "BlazorService",
+	"oauth2AllowIdTokenImplicitFlow": true,
+	"oauth2AllowImplicitFlow": false,
+	"oauth2Permissions": [
+		{
+			"adminConsentDescription": "Allow the application to access BlazorMsClient on behalf of the signed-in user.",
+			"adminConsentDisplayName": "Access BlazorMsClient",
+			"id": "f2d1a8c7-a729-4ff3-a6ce-74610397cd93",
+			"isEnabled": true,
+			"lang": null,
+			"origin": "Application",
+			"type": "User",
+			"userConsentDescription": "Allow the application to access BlazorMsClient on your behalf.",
+			"userConsentDisplayName": "Access BlazorMsClient",
+			"value": "user_impersonation"
+		}
+	],
+	"oauth2RequirePostResponse": false,
+	"optionalClaims": null,
+	"orgRestrictions": [],
+	"parentalControlSettings": {
+		"countriesBlockedForMinors": [],
+		"legalAgeGroupRule": "Allow"
+	},
+	"passwordCredentials": [
+		{
+			"customKeyIdentifier": null,
+			"endDate": "2299-12-31T05:00:00Z",
+			"keyId": "430a4d8a-4088-4103-af96-62ec985dca56",
+			"startDate": "2020-07-26T16:22:06.039Z",
+			"value": null,
+			"createdOn": "2020-07-26T16:22:07.0913562Z",
+			"hint": "54q",
+			"displayName": "WebAPI"
+		},
+		{
+			"customKeyIdentifier": null,
+			"endDate": "2021-07-22T15:05:24.2604909Z",
+			"keyId": "78202d8d-f88e-44c8-915c-d6cc642c8229",
+			"startDate": "2020-07-22T15:05:24.2594916Z",
+			"value": null,
+			"createdOn": null,
+			"hint": null,
+			"displayName": null
+		}
+	],
+	"preAuthorizedApplications": [],
+	"publisherDomain": "Ferratasoft.onmicrosoft.com",
+	"replyUrlsWithType": [
+		{
+			"url": "https://localhost:44321/signin-oidc",
+			"type": "Web"
+		},
+		{
+			"url": "https://localhost:44321",
+			"type": "Web"
+		},
+		{
+			"url": "https://fs-blazor-service.netpoc.com:5001",
+			"type": "Web"
+		},
+		{
+			"url": "https://fs-blazor-service.netpoc.com:5001/signin-oidc",
+			"type": "Web"
+		}
+	],
+	"requiredResourceAccess": [
+		{
+			"resourceAppId": "973448a2-6682-487f-98f2-19436fa9ff44",
+			"resourceAccess": [
+				{
+					"id": "2d2cefbe-4238-4b55-bdd4-abc578dce7f4",
+					"type": "Scope"
+				}
+			]
+		},
+		{
+			"resourceAppId": "00000002-0000-0000-c000-000000000000",
+			"resourceAccess": [
+				{
+					"id": "311a71cc-e848-46a1-bdf8-97ff7156d8e6",
+					"type": "Scope"
+				}
+			]
+		}
+	],
+	"samlMetadataUrl": null,
+	"signInUrl": "https://fs-blazor-service.netpoc.com:5001/",
+	"signInAudience": "AzureADMyOrg",
+	"tags": [],
+	"tokenEncryptionKeyId": null,
+	"trustedCertificateSubjects": [],
+	"verifiedPublisher": {
+		"displayName": null,
+		"verifiedPublisherId": null,
+		"addedDateTime": null
+	}
+}

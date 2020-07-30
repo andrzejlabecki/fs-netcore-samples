@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using IdentityServer4.Models;
 using Fs.Core.Interfaces.Services;
+using Fs.Core.Constants;
 using Fs.Data;
 using Fs.Data.Models;
 using Fs.Business.Services;
 using Fs.Data.Extensions;
-using Fs.Business.Controllers;
 
 namespace Fs.Business.Extensions
 {
@@ -140,8 +140,6 @@ namespace Fs.Business.Extensions
 
         public static IServiceCollection AddJwtBearers(this IServiceCollection services)
         {
-            AuthenticationBuilder builder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-
             IConfigurationSection section = SharedConfiguration.GetSection("JwtBearers");
             IEnumerable<IConfigurationSection> bearers = section.GetChildren();
 
@@ -151,14 +149,31 @@ namespace Fs.Business.Extensions
             foreach (IConfigurationSection bearerSection in bearers)
             {
                 schemes[index++] = bearerSection.Key;
+                string type = bearerSection.GetValue<string>("Type");
 
-                builder.AddJwtBearer(bearerSection.Key, options =>
+                if (type == "Azure")
                 {
-                    options.Authority = bearerSection.GetValue<string>("Authority");
-                    options.RequireHttpsMetadata = bearerSection.GetValue<bool>("HttpsMetadata");
+                    AuthenticationBuilder builder = services.AddAuthentication(AzureADDefaults.JwtBearerAuthenticationScheme);
 
-                    options.Audience = bearerSection.GetValue<string>("Audience");
-                });
+                    builder.AddAzureADBearer(bearerSection.Key, AzureADDefaults.JwtBearerAuthenticationScheme, options =>
+                    {
+                        options.Instance = bearerSection.GetValue<string>("Instance");
+                        options.ClientId = bearerSection.GetValue<string>("ClientId");
+                        options.TenantId = bearerSection.GetValue<string>("TenantId");
+                    });
+                }
+                else
+                {
+                    AuthenticationBuilder builder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+
+                    builder.AddJwtBearer(bearerSection.Key, options =>
+                    {
+                        options.Authority = bearerSection.GetValue<string>("Authority");
+                        options.RequireHttpsMetadata = bearerSection.GetValue<bool>("HttpsMetadata");
+
+                        options.Audience = bearerSection.GetValue<string>("Audience");
+                    });
+                }
             }
 
             services.AddAuthorization(options =>
@@ -174,50 +189,37 @@ namespace Fs.Business.Extensions
 
         public static IServiceCollection AddOidcProviders(this IServiceCollection services, bool addServerJwt = true)
         {
-            Fs.Data.Models.AppContext.Instance.AuthScheme = SharedConfiguration.GetValue<string>("OidcProviders:Enabled");
+            Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+
+            appContext.AuthScheme = SharedConfiguration.GetValue<string>("OidcProviders:Enabled");
+            appContext.RedirectUri = SharedConfiguration.GetValue<string>("OidcProviders:RedirectUri");
             AuthenticationBuilder builder = null;
 
-            if (Fs.Data.Models.AppContext.Instance.AuthScheme == null ||
-                Fs.Data.Models.AppContext.Instance.AuthScheme == "oidc")
+            if (appContext.AuthScheme == null || appContext.AuthScheme == OpenIdDefaults.ChallengeScheme)
             {
                 builder = services.AddAuthentication(options =>
                 {
-                    options.DefaultScheme = "Cookies";
-                    options.DefaultChallengeScheme = "oidc";
+                    options.DefaultScheme = OpenIdDefaults.Scheme;
+                    options.DefaultChallengeScheme = OpenIdDefaults.ChallengeScheme;
                 });
-
-                if (addServerJwt)
-                    builder.AddIdentityServerJwt();
-                builder.AddCookie("Cookies");
             }
-            else if (Fs.Data.Models.AppContext.Instance.AuthScheme == AzureADDefaults.AuthenticationScheme)
-            {
+            else if (appContext.AuthScheme == AzureADDefaults.AuthenticationScheme)
                 builder = services.AddAuthentication(AzureADDefaults.AuthenticationScheme);
-                if (addServerJwt)
-                    builder.AddIdentityServerJwt();
-                builder.AddCookie("Cookies");
-                /*builder = services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = "Cookies";
-                    options.DefaultChallengeScheme = AzureADDefaults.AuthenticationScheme;
-                });
 
-                if (addServerJwt)
-                    builder.AddIdentityServerJwt();
-                builder.AddCookie("Cookies");*/
-            }
+            if (addServerJwt)
+                builder.AddIdentityServerJwt();
+            builder.AddCookie(OpenIdDefaults.Scheme);
 
             IConfigurationSection section = SharedConfiguration.GetSection("OidcProviders");
             IEnumerable<IConfigurationSection> providers = section.GetChildren();
 
             foreach (IConfigurationSection providerSection in providers)
             {
-                bool addProvider = Fs.Data.Models.AppContext.Instance.AuthScheme == null ||
-                                   Fs.Data.Models.AppContext.Instance.AuthScheme == providerSection.Key;
+                bool addProvider = appContext.AuthScheme == null || appContext.AuthScheme == providerSection.Key;
 
                 if (addProvider)
                 {
-                    if (providerSection.Key == "oidc")
+                    if (providerSection.Key == OpenIdDefaults.ChallengeScheme)
                     {
                         builder.AddOpenIdConnect(providerSection.Key, options =>
                         {
@@ -243,6 +245,10 @@ namespace Fs.Business.Extensions
                             options.RequireHttpsMetadata = providerSection.GetValue<bool>("HttpsMetadata");
                             options.GetClaimsFromUserInfoEndpoint = providerSection.GetValue<bool>("ClaimsUserEndpoint");
 
+                            appContext.SignOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
+                            appContext.SignInUri = providerSection.GetValue<string>("SignInUri");
+                            appContext.SignOutUri = providerSection.GetValue<string>("SignOutUri");
+
                             if (providerSection.GetValue<bool>("Events"))
                             {
                                 options.Events = new OpenIdConnectEvents
@@ -258,23 +264,33 @@ namespace Fs.Business.Extensions
                             }
                         });
                     }
-                    else if (providerSection.Key == "AzureAD")
+                    else if (providerSection.Key == AzureADDefaults.AuthenticationScheme)
                     {
                         builder.AddAzureAD(options =>
                         {
                             options.Instance = providerSection.GetValue<string>("Instance");
+                            if (options.Instance == null)
+                                appContext.Authority = options.Instance = SharedConfiguration.GetAzureInstance();
+
                             options.Domain = providerSection.GetValue<string>("Domain");
-                            options.TenantId = providerSection.GetValue<string>("TenantId");
-                            options.ClientId = providerSection.GetValue<string>("ClientId");
+                            appContext.TenantId = options.TenantId = providerSection.GetValue<string>("TenantId");
+                            appContext.ClientId = options.ClientId = providerSection.GetValue<string>("ClientId");
                             options.CallbackPath = providerSection.GetValue<string>("CallbackPath");
-                            options.SignedOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
+                            appContext.SignOutCallbackPath = options.SignedOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
+                            appContext.ClientSecret = providerSection.GetValue<string>("ClientSecret");
+                            appContext.ResourceId = providerSection.GetValue<string>("ResourceId");
+                            appContext.AuthorizePath = providerSection.GetValue<string>("AuthorizePath");
+                            appContext.CodeField = providerSection.GetValue<string>("CodeField");
+                            appContext.ResponseType = providerSection.GetValue<string>("ResponseType");
+                            appContext.SignInUri = providerSection.GetValue<string>("SignInUri");
+                            appContext.SignOutUri = providerSection.GetValue<string>("SignOutUri");
                         });
                     }
                 }
             }
 
-            if (Fs.Data.Models.AppContext.Instance.AuthScheme == null)
-                Fs.Data.Models.AppContext.Instance.AuthScheme = "oidc";
+            if (appContext.AuthScheme == null)
+                appContext.AuthScheme = OpenIdDefaults.ChallengeScheme;
 
             return services;
         }
