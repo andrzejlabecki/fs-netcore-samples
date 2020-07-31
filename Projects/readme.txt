@@ -37,6 +37,12 @@ Fs.Mvc.Is4:
 Works with IIS at https://fs-mvc-is4.netpoc.com/
 App with MVC client and .Net Core server, it's with integrated IS4.
 
+Fs.Blazor.Service:
+Works with IIS at https://fs-blazor-service.netpoc.com/
+App with blazor client (server-side) and .Net Core server. It's hosted with HTTP.Sys in Windows service. 
+It is using Fs.Angular.Is4 as OIDC/OAuth provider, it also supports Azure AD as OIDC/OAuth provider.
+OIDC/OAuth provider can be switched through configuration.
+
 Mappings for hosts file:
 127.0.0.1 fs-angular-is4.netpoc.com
 127.0.0.1 fs-angular-is4-client.netpoc.com
@@ -45,6 +51,7 @@ Mappings for hosts file:
 127.0.0.1 fs-blazor-is4-wasm-client.netpoc.com
 127.0.0.1 fs-blazor-is4.netpoc.com
 127.0.0.1 fs-blazor-client.netpoc.com
+127.0.0.1 fs-blazor-service.netpoc.com
 127.0.0.1 fs-mvc-is4.netpoc.com
 127.0.0.1 fs-api.netpoc.com
 
