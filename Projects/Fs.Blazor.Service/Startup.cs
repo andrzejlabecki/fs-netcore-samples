@@ -28,11 +28,11 @@ namespace Fs.Blazor.Service
 
             services.RegisterServices(false);
 
+            services.AddOidcProviders(false);
+
             services.AddControllersWithViews();
 
             services.AddRazorPages();
-
-            services.AddOidcProviders(false);
 
             services.AddServerSideBlazor();
             services.AddSingleton<Fs.Client.Services.ForecastService>();
