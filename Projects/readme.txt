@@ -43,6 +43,9 @@ App with blazor client (server-side) and .Net Core server. It's hosted with HTTP
 It is using Fs.Angular.Is4 as OIDC/OAuth provider, it also supports Azure AD as OIDC/OAuth provider.
 OIDC/OAuth provider can be switched through configuration.
 
+Fs.Migration:
+Data migrations. Migrate() call is inclided into Program.cs for projects with Identity Server support.
+
 Mappings for hosts file:
 127.0.0.1 fs-angular-is4.netpoc.com
 127.0.0.1 fs-angular-is4-client.netpoc.com
