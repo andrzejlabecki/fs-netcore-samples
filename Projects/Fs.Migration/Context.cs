@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
 using Fs.Data.Models;
 
-namespace Fs.Business.Services
+namespace Fs.Migrations
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDesignContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(
+        public ApplicationDesignContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Fs.Migration": {
+      "commandName": "Executable",
+      "executablePath": "dotnet-ef",
+      "commandLineArgs": "migrations add AddDobToUser",
+      "workingDirectory": "C:\\GitHub\\fs-netcore-samples\\Projects\\Fs.Migration"
+    }
+  }
+}
