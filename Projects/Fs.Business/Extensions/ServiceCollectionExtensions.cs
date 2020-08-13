@@ -56,6 +56,9 @@ namespace Fs.Business.Extensions
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLoggerFactory(AppLoggerFactory).
                 UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LoggerContext>(options =>
+                options.UseLoggerFactory(AppLoggerFactory).
+                UseSqlServer(SharedConfiguration.GetConnectionString("LoggerConnection")));
 
             services.RegisterDbContexts(SharedConfiguration, AppLoggerFactory);
 
