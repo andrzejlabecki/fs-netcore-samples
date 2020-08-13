@@ -33,11 +33,6 @@ namespace Fs.Mvc.Is4.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [Display(Name = "Birth Date")]
-            [DataType(DataType.Date)]
-
-            public DateTime DOB { get; set; }
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -52,7 +47,6 @@ namespace Fs.Mvc.Is4.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                DOB = user.DOB,
                 PhoneNumber = phoneNumber
             };
         }
@@ -93,13 +87,6 @@ namespace Fs.Mvc.Is4.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
-            if (Input.DOB != user.DOB)
-            {
-                user.DOB = Input.DOB;
-            }
-
-            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

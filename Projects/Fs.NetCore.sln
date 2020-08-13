@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Blazor.Service", "Fs.Bla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Service", "Fs.Service\Fs.Service.csproj", "{E58ACFAE-9B0F-45B1-9856-4CA8A57D3393}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Migration", "Fs.Migration\Fs.Migration.csproj", "{7D93E5DF-651D-4A58-B4DA-1B37E0B60948}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fs.Migration", "Fs.Migration\Fs.Migration.csproj", "{7D93E5DF-651D-4A58-B4DA-1B37E0B60948}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
