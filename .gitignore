@@ -67,3 +67,10 @@
 /Projects/Fs.Migration/bin/Debug/netcoreapp3.1
 /Projects/Fs.Models/bin/Debug/netstandard2.1
 /Projects/Fs.Models/obj
+/Projects/Debug
+/Projects/Fs.Cpp.Console/Debug
+/Projects/Fs.Cpp.Console/Fs.Cpp.Console.vcxproj.filters
+/Projects/Fs.Cpp.Console/Fs.Cpp.Console.vcxproj.user
+/Projects/Fs.Cpp.Lib/Debug
+/Projects/Fs.Cpp.Lib/Fs.Cpp.Lib.vcxproj.filters
+/Projects/Fs.Cpp.Lib/Fs.Cpp.Lib.vcxproj.user
