@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Fs.Core.Contracts;
 
 namespace Fs.Core.Interfaces.Services
 {
