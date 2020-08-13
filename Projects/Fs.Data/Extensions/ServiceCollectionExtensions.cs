@@ -19,7 +19,7 @@ namespace Fs.Data.Extensions
                 UseSqlServer(configuration.GetConnectionString("LoggerConnection")));
             services.AddDbContext<OrderingContext>(options =>
                 options.UseLoggerFactory(appLoggerFactory).
-                UseSqlServer(configuration.GetConnectionString("OrderConnection")));
+                UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUnitOfWork, SqlUnitOfWork>();
             services.AddScoped<ILoggerUnitOfWork, LoggerSqlUnitOfWork>();

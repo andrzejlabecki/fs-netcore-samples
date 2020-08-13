@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Fs.Models\Fs.Models.csproj" />
+    <ProjectReference Include="..\..\Fs.Blazor.Shared\Fs.Models.csproj" />
   </ItemGroup>
 
 </Project>

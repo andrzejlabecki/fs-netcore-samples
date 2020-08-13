@@ -1,4 +1,5 @@
 ﻿using System;
+using Fs.Blazor.Is4.Wasm.Client.Server.Data;
 using Fs.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

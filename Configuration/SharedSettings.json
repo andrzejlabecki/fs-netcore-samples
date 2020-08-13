@@ -1,9 +1,7 @@
 {
   "SharedConnectionStrings": {
-    "IdentityConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!",
-    "LoggerConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!",
-    "OrderConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!"
-    //"DefaultConnection": "Server=LAPTOP-FS\\LOCAL;Database=Identity;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!"
+    "DefaultConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!",
+    "LoggerConnection": "Server=LAPTOP-FS\\LOCAL;Database=DB_A575A2_andrzejlabecki;User ID = DB_A575A2_andrzejlabecki_admin; pwd=Fspoc2020!"
   },
   "Tracing": {
     "traceLevel": "Info",

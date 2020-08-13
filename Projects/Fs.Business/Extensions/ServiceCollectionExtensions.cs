@@ -55,8 +55,7 @@ namespace Fs.Business.Extensions
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLoggerFactory(AppLoggerFactory).
-                UseSqlServer(SharedConfiguration.GetConnectionString("IdentityConnection"),
-                    options => options.MigrationsAssembly("Fs.Migration")));
+                UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection")));
 
             services.RegisterDbContexts(SharedConfiguration, AppLoggerFactory);
 

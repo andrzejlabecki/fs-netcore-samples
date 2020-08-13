@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Fs.Business\Fs.Business.csproj" />
     <ProjectReference Include="..\Fs.Core\Fs.Core.csproj" />
-    <ProjectReference Include="..\Fs.Migration\Fs.Migration.csproj" />
   </ItemGroup>
 
 </Project>
