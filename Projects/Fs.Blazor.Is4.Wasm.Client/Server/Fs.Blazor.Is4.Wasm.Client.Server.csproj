@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Fs.Business\Fs.Business.csproj" />
     <ProjectReference Include="..\..\Fs.Core\Fs.Core.csproj" />
+    <ProjectReference Include="..\..\Fs.Migration\Fs.Migration.csproj" />
     <ProjectReference Include="..\Client\Fs.Blazor.Is4.Wasm.Client.Client.csproj" />
   </ItemGroup>
 

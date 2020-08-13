@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Blazor.Is4", "Fs.Blazor.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Blazor.Client", "Fs.Blazor.Client\Fs.Blazor.Client.csproj", "{6F2FEA6D-89EB-4B0D-A57F-DE2A33B65A72}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Models", "Fs.Blazor.Shared\Fs.Models.csproj", "{DE7AB1A9-CC2F-47C6-B0E2-23B11884B637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Models", "Fs.Models\Fs.Models.csproj", "{DE7AB1A9-CC2F-47C6-B0E2-23B11884B637}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fs.Mvc.Is4", "Fs.Mvc.Is4\Fs.Mvc.Is4.csproj", "{D4AF6E53-EA69-467F-863D-FD2C4AA78E5B}"
 EndProject

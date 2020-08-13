@@ -11,7 +11,6 @@ using AutoMapper;
 using Fs.Business.Extensions;
 using Fs.Core.Extensions;
 using Fs.Blazor.Is4.Areas.Identity;
-using Fs.Blazor.Is4.Data;
 using Fs.Data.Models;
 
 namespace Fs.Blazor.Is4
@@ -43,7 +42,6 @@ namespace Fs.Blazor.Is4
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddScoped<ApplicationStateProvider>();
-            services.AddSingleton<WeatherForecastService>();
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }
 
