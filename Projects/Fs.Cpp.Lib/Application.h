@@ -6,17 +6,25 @@
 #define CBIAPPLICATION_API __declspec(dllimport)
 #endif
 
+CBIAPPLICATION_API wchar_t* GetAppPath();
+CBIAPPLICATION_API wchar_t* GetAppName();
 
-class CBIAPPLICATION_API Application
+namespace UnmanagedLib
 {
-public:
-	Application();
+	class CBIAPPLICATION_API Application
+	{
+	public:
+		Application();
 
-public:
-	CComBSTR GetPath();
-	CComBSTR GetName();
-	
-protected:
-	CComBSTR& BSTRRight(CComBSTR& bsString, UINT nCount);
-};
+	public:
+		CComBSTR GetPath();
+		CComBSTR GetName();
+
+	public:
+		wchar_t* BSTRToWchar(CComBSTR& bsString);
+
+	protected:
+		CComBSTR& BSTRRight(CComBSTR& bsString, UINT nCount);
+	};
+}
 

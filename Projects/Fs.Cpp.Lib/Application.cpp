@@ -1,6 +1,27 @@
 #include "pch.h"
 #include "Application.h"
 
+using namespace UnmanagedLib;
+
+wchar_t* GetAppPath()
+{
+	Application app = Application();
+
+	CComBSTR bsPath = app.GetPath();
+
+	return app.BSTRToWchar(bsPath);
+
+}
+
+wchar_t* GetAppName()
+{
+	Application app = Application();
+
+	CComBSTR bsName = app.GetName();
+
+	return app.BSTRToWchar(bsName);
+}
+
 Application::Application()
 {
 }
@@ -60,3 +81,13 @@ CComBSTR& Application::BSTRRight(CComBSTR& bsString, UINT nCount)
 	bsString = CComBSTR(nCount, bsString + nLen - nCount);
 	return bsString;
 }
+
+wchar_t* Application::BSTRToWchar(CComBSTR& bsString)
+{
+	const size_t widesize = bsString.Length() + 1;
+	wchar_t* wcstring = new wchar_t[widesize];
+	wcscpy_s(wcstring, widesize, bsString);
+
+	return wcstring;
+}
+

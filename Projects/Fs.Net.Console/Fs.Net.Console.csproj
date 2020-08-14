@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" SourceFiles="..\x64\Debug\Fs.Cpp.Lib.dll" DestinationFiles="$(OutDir)\Fs.Cpp.Lib.dll" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fs.Cpp.Clr.Lib\Fs.Cpp.Clr.Lib.vcxproj" />
+  </ItemGroup>
+</Project>
