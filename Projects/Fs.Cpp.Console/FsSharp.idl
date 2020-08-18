@@ -1,0 +1,35 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(3D2C2913-7E0C-4A8D-B8AD-C7DD9EE14480),
+	dual,
+	nonextensible,
+	helpstring("IApplicationSharp Interface"),
+	pointer_default(unique)
+]
+interface IApplicationSharp : IDispatch
+{
+	[id(1), helpstring("method GetPath")] HRESULT GetPath([out, retval] BSTR* pbsPath);
+	[id(2), helpstring("method GetName")] HRESULT GetName([out, retval] BSTR* pbsName);
+};
+[
+	uuid(9CE72DE2-A8F7-43E8-BA19-9632956D9F36),
+	version(1.0),
+	helpstring("FsSharp 1.0 Type Library")
+]
+library FsSharpLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(ACE32CC7-A66C-4E52-9FFD-C60F9C872975),
+		helpstring("ApplicationSharp Class")
+	]
+	coclass ApplicationSharp
+	{
+		[default] interface IApplicationSharp;
+	};
+};
+
+import "shobjidl.idl";

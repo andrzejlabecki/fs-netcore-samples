@@ -11,8 +11,8 @@ namespace Fs
 				Application();
 
 		public:
-			String^ GetPath();
-			String^ GetName();
+			virtual String^ GetPath();
+			virtual String^ GetName();
 		};
 	}
 }

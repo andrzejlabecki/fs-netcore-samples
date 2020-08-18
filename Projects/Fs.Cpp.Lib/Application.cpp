@@ -84,7 +84,7 @@ CComBSTR& Application::BSTRRight(CComBSTR& bsString, UINT nCount)
 
 wchar_t* Application::BSTRToWchar(CComBSTR& bsString)
 {
-	const size_t widesize = bsString.Length() + 1;
+	const size_t widesize = (size_t)bsString.Length() + 1;
 	wchar_t* wcstring = new wchar_t[widesize];
 	wcscpy_s(wcstring, widesize, bsString);
 

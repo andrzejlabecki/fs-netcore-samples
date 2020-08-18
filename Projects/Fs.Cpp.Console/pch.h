@@ -15,8 +15,6 @@
 #include <crtdbg.h>
 
 #include <iostream>
-
 #include <atlbase.h>
-#include "..\Fs.Cpp.Lib\Application.h"
 
 #endif //PCH_H

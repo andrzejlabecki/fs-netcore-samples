@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>Fs.Net.snk</AssemblyOriginatorKeyFile>
+    <EnableComHosting>true</EnableComHosting>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="..\x64\Debug\Fs.Cpp.Lib.dll" DestinationFiles="$(OutDir)\Fs.Cpp.Lib.dll" />
+    <Exec Command="regsvr32 /s /c &quot;$(TargetDir)Fs.CSharp.Lib.comhost.dll&quot;&#xD;&#xA;" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fs.Cpp.Clr.Lib\Fs.Cpp.Clr.Lib.vcxproj" />
+  </ItemGroup>
+
+</Project>

@@ -11,12 +11,19 @@ namespace Fs.Net
             try
             {
                 Application app = new Application();
+                FsCppComLib.IApplication appInt = new FsCppComLib.ApplicationClass();
 
                 string appName = app.GetName();
                 string appPath = app.GetPath();
 
                 Console.WriteLine("Application name: " + appName);
                 Console.WriteLine("Application path: " + appPath);
+
+                appName = appInt.GetName();
+                appPath = appInt.GetPath();
+
+                Console.WriteLine("Application name (COM): " + appName);
+                Console.WriteLine("Application path (COM): " + appPath);
             }
             catch (System.Exception ex)
             {

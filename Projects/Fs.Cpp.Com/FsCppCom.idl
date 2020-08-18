@@ -12,20 +12,25 @@ import "ocidl.idl";
 	uuid(81990630-ee52-4fdd-866b-e30467eba092),
 	dual,
 	nonextensible,
+	helpstring("IApplication Interface"),
 	pointer_default(unique)
 ]
 interface IApplication : IDispatch
 {
+	[id(1), helpstring("method GetPath")] HRESULT GetPath([out, retval] BSTR* pbsPath);
+	[id(2), helpstring("method GetName")] HRESULT GetName([out, retval] BSTR* pbsName);
 };
 [
 	uuid(9086deb6-7e20-410d-be46-9efcd27eab53),
 	version(1.0),
+	helpstring("FsCppCom 1.0 Type Library")
 ]
 library FsCppComLib
 {
 	importlib("stdole2.tlb");
 	[
-		uuid(08c5e710-fcfe-40a9-9d8b-5e624bef3a3e)
+		uuid(08c5e710-fcfe-40a9-9d8b-5e624bef3a3e),
+		helpstring("Application Class")
 	]
 	coclass Application
 	{

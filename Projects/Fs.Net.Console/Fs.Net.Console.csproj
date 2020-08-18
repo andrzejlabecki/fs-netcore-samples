@@ -14,6 +14,17 @@
   </Target>
 
   <ItemGroup>
+    <COMReference Include="FsCppComLib.dll">
+      <Guid>9086deb6-7e20-410d-be46-9efcd27eab53</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Fs.Cpp.Clr.Lib\Fs.Cpp.Clr.Lib.vcxproj" />
   </ItemGroup>
 </Project>

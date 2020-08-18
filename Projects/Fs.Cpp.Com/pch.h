@@ -10,4 +10,12 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#include <atlbase.h>
+
+//#include "..\Fs.Cpp.Lib\Application.h"
+
 #endif //PCH_H
