@@ -41,14 +41,14 @@ int main()
     wchar_t* wchName = GetAppName();
     wchar_t* wchPath = GetAppPath();
 
-    std::cout << "Application name (C class): " << CW2A(UnmanagedLib::Application().GetName()) << "\r\n";
-    std::cout << "Application path (C class): " << CW2A(UnmanagedLib::Application().GetPath()) << "\r\n";
-    std::wcout << _T("Application name (global): ") << wchName << _T("\r\n");
-    std::wcout << _T("Application path (global): ") << wchPath << _T("\r\n");
-    std::cout << "Application name (COM): " << CW2A(bsName) << "\r\n";
-    std::cout << "Application path (COM): " << CW2A(bsPath) << "\r\n";
-    std::cout << "Application name (COM/Sharp): " << CW2A(bsNameSharp) << "\r\n";
-    std::cout << "Application path (COM/Sharp): " << CW2A(bsPathSharp) << "\r\n";
+    std::cout << "Application name (C++ class): " << CW2A(UnmanagedLib::Application().GetName()) << "\r\n";
+    std::cout << "Application path (C++ class): " << CW2A(UnmanagedLib::Application().GetPath()) << "\r\n";
+    std::wcout << _T("Application name (C global): ") << wchName << _T("\r\n");
+    std::wcout << _T("Application path (C global): ") << wchPath << _T("\r\n");
+    std::cout << "Application name (COM/C++): " << CW2A(bsName) << "\r\n";
+    std::cout << "Application path (COM/C++): " << CW2A(bsPath) << "\r\n";
+    std::cout << "Application name (COM/C#): " << CW2A(bsNameSharp) << "\r\n";
+    std::cout << "Application path (COM/C#): " << CW2A(bsPathSharp) << "\r\n";
 
     delete wchName;
     delete wchPath;

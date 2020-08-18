@@ -16,8 +16,8 @@ namespace Fs.Net
                 string appName = app.GetName();
                 string appPath = app.GetPath();
 
-                Console.WriteLine("Application name: " + appName);
-                Console.WriteLine("Application path: " + appPath);
+                Console.WriteLine("Application name (C++): " + appName);
+                Console.WriteLine("Application path (C++): " + appPath);
 
                 appName = appInt.GetName();
                 appPath = appInt.GetPath();
