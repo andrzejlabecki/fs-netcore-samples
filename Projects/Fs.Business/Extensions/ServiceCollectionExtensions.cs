@@ -200,6 +200,11 @@ namespace Fs.Business.Extensions
                     options.DefaultScheme = OpenIdDefaults.Scheme;
                     options.DefaultChallengeScheme = OpenIdDefaults.ChallengeScheme;
                 });
+                /*.AddMicrosoftAccount(microsoftOptions =>
+                {
+                    microsoftOptions.ClientId = "b897fff3-87d2-4675-b49b-63b123671972";
+                    microsoftOptions.ClientSecret = "54q37JSSnoU11a9y..brN_NhESk~93s.qF";
+                });*/
             }
             else if (appContext.AuthScheme == AzureADDefaults.AuthenticationScheme)
                 builder = services.AddAuthentication(AzureADDefaults.AuthenticationScheme);
