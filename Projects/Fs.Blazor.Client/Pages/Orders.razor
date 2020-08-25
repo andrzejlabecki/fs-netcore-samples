@@ -15,7 +15,7 @@
 
         @if (orders == null)
         {
-            <p><em>Loading...</em></p>
+            <p><em>@message</em></p>
         }
         else
         {
@@ -40,6 +40,7 @@
 
         @code {
             private Order[] orders;
+            private string message = "Starting...";
 
             protected override async Task OnInitializedAsync()
             {
@@ -47,8 +48,14 @@
 
                 if (state.User.Identity.IsAuthenticated)
                 {
-                    OrderService.AccessToken = StateProvider.AccessToken;
-                    orders = await OrderService.GetOrdersAsync();
+                    if (StateProvider.AccessToken != null)
+                    {
+                        message = "Loading...";
+                        OrderService.AccessToken = StateProvider.AccessToken;
+                        orders = await OrderService.GetOrdersAsync();
+                    }
+                    else
+                        message = "Looking for authorization token...";
                 }
 
                 await base.OnInitializedAsync();
@@ -57,8 +64,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            //NavManager.NavigateTo("/Login", true);
-            NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+            NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
         }
     </NotAuthorized>
 </AuthorizeView>

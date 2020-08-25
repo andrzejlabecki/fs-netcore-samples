@@ -86,23 +86,31 @@
 		{
 			"url": "https://fs-blazor-service.netpoc.com:5001/signin-oidc",
 			"type": "Web"
+		},
+		{
+			"url": "https://fs-blazor-client.netpoc.com",
+			"type": "Web"
+		},
+		{
+			"url": "https://fs-blazor-client.netpoc.com/signin-oidc",
+			"type": "Web"
 		}
 	],
 	"requiredResourceAccess": [
 		{
-			"resourceAppId": "973448a2-6682-487f-98f2-19436fa9ff44",
+			"resourceAppId": "00000003-0000-0000-c000-000000000000",
 			"resourceAccess": [
 				{
-					"id": "2d2cefbe-4238-4b55-bdd4-abc578dce7f4",
+					"id": "e1fe6dd8-ba31-4d61-89e7-88639da4683d",
 					"type": "Scope"
 				}
 			]
 		},
 		{
-			"resourceAppId": "00000002-0000-0000-c000-000000000000",
+			"resourceAppId": "973448a2-6682-487f-98f2-19436fa9ff44",
 			"resourceAccess": [
 				{
-					"id": "311a71cc-e848-46a1-bdf8-97ff7156d8e6",
+					"id": "2d2cefbe-4238-4b55-bdd4-abc578dce7f4",
 					"type": "Scope"
 				}
 			]
@@ -112,11 +120,5 @@
 	"signInUrl": "https://fs-blazor-service.netpoc.com:5001/",
 	"signInAudience": "AzureADMyOrg",
 	"tags": [],
-	"tokenEncryptionKeyId": null,
-	"trustedCertificateSubjects": [],
-	"verifiedPublisher": {
-		"displayName": null,
-		"verifiedPublisherId": null,
-		"addedDateTime": null
-	}
+	"tokenEncryptionKeyId": null
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,8 +21,6 @@ namespace Fs.Blazor.Client
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterSharedConfiguration();
@@ -29,10 +28,11 @@ namespace Fs.Blazor.Client
 
             services.RegisterServices(false);
 
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-
             services.AddOidcProviders(false);
+
+            services.AddControllersWithViews();
+
+            services.AddRazorPages();
 
             services.AddServerSideBlazor();
             services.AddSingleton<Fs.Client.Services.ForecastService>();
@@ -42,7 +42,6 @@ namespace Fs.Blazor.Client
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             try
@@ -62,6 +61,15 @@ namespace Fs.Blazor.Client
                 }
 
                 app.UseHttpsRedirection();
+
+                app.UseRewriter(new RewriteOptions().Add(context =>
+                {
+                    if (context.HttpContext.Request.Path == "/AzureAD/Account/SignedOut")
+                    {
+                        context.HttpContext.Response.Redirect("/");
+                    }
+                }));
+
                 app.UseStaticFiles();
 
                 app.UseRouting();

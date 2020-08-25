@@ -60,8 +60,7 @@
     </Authorized>
     <NotAuthorized>
         @{
-            //NavManager.NavigateTo("/Login", true);
-            NavManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+            NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
         }
     </NotAuthorized>
 </AuthorizeView>
