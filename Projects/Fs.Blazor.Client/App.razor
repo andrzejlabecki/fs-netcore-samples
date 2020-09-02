@@ -11,6 +11,8 @@
         StateProvider.AccessToken = InitialState.AccessToken;
         StateProvider.RefreshToken = InitialState.RefreshToken;
         StateProvider.Expiration = InitialState.Expiration;
+        StateProvider.IdentityCookie = InitialState.IdentityCookie;
+        StateProvider.ProviderIndex = InitialState.ProviderIndex;
 
         return base.OnInitializedAsync();
     }
@@ -20,7 +22,10 @@
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
                 @{ 
-                    NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignOutUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                    Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+                    Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[StateProvider.ProviderIndex];
+
+                    NavManager.NavigateTo($"{schemeContext.SignOutUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
                 }
             </NotAuthorized>
             <Authorizing>

@@ -93,12 +93,25 @@ namespace Fs.Core.Middlewares
                     throw;
                 }
 
-                object[] args = new object[2];
+                int argCount = 3;
+
+                if (ex.InnerException != null)
+                    argCount = 5;
+
+                object[] args = new object[argCount];
 
                 args[0] = ex.Message;
                 args[1] = ex.StackTrace;
+                args[2] = context.Request.Path;
 
-                _logger.LogError(ex, "Exception: Message {0}, Stack {1}", args);
+                if (ex.InnerException != null)
+                {
+                    args[3] = ex.InnerException.Message;
+                    args[4] = ex.InnerException.StackTrace;
+                    _logger.LogError(ex, "Exception: Message {0}, Stack {1}, Path {2}. Inner Exception: Message {3}, Stack {4}", args);
+                }
+                else
+                    _logger.LogError(ex, "Exception: Message {0}, Stack {1}, Path {2}", args);
 
                 ErrorLogDto value = new ErrorLogDto();
 
@@ -113,7 +126,15 @@ namespace Fs.Core.Middlewares
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
                 context.Response.Headers.Add("exception", "messageException");
-                var json = JsonConvert.SerializeObject(new { Message = ex.Message }, _jsonSettings);
+
+                object obj;
+
+                if (ex.InnerException != null)
+                    obj = new { Message = ex.Message, Stack = ex.StackTrace, Path = context.Request.Path, InnerMessage = ex.InnerException.Message, InnerStack = ex.InnerException.StackTrace };
+                else
+                    obj = new { Message = ex.Message, Stack = ex.StackTrace, Path = context.Request.Path };
+
+                var json = JsonConvert.SerializeObject(obj, _jsonSettings);
                 await context.Response.WriteAsync(json);
             }
         }

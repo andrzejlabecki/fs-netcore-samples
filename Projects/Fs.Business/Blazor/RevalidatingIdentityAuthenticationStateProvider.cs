@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Fs.Core.Constants;
 
-namespace Fs.Blazor.Is4.Areas.Identity
+namespace Fs.Blazor
 {
     public class RevalidatingIdentityAuthenticationStateProvider<TUser>
         : RevalidatingServerAuthenticationStateProvider where TUser : class
@@ -36,7 +36,7 @@ namespace Fs.Blazor.Is4.Areas.Identity
             _provider = provider;
         }
 
-        public AuthenticationTicket DecryptIdentityCookie()
+        protected AuthenticationTicket DecryptIdentityCookie()
         {
             if (_appStateProvider == null || 
                 _appStateProvider.IdentityCookie == null ||

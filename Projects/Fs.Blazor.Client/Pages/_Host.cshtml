@@ -2,13 +2,21 @@
 @namespace Fs.Blazor.Client.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
+    @using Microsoft.AspNetCore.Authentication.Cookies
+    @inject ChunkingCookieManager cookieManager
+
     Layout = null;
+
+    string cookie = cookieManager.GetRequestCookie(HttpContext, ".AspNetCore.AzureADCookie");
 
     var tokens = new InitialApplicationState
     {
         AccessToken = this.Model.AccessToken,
         RefreshToken = this.Model.RefreshToken,
-        Expiration = this.Model.Expiration
+        Expiration = this.Model.Expiration,
+        ProviderIndex = this.Model.ProviderIndex,
+        IdentityCookie = cookie
+
     };
 }
 

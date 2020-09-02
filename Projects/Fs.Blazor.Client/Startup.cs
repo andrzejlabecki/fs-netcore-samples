@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +29,8 @@ namespace Fs.Blazor.Client
 
             services.RegisterServices(false);
 
+            //services.SetDataProtector();
+
             services.AddOidcProviders(false);
 
             services.AddControllersWithViews();
@@ -37,6 +40,7 @@ namespace Fs.Blazor.Client
             services.AddServerSideBlazor();
             services.AddSingleton<Fs.Client.Services.ForecastService>();
             services.AddSingleton<Fs.Client.Services.OrderService>();
+            services.AddSingleton<ChunkingCookieManager>();
             services.AddScoped<ApplicationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, BlazorServerAuthState>();
             services.AddAutoMapper(typeof(Fs.Business.Mappings.MappingProfile).Assembly);

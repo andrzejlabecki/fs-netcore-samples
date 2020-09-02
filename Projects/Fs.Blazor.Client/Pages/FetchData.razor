@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthState
+@inject ApplicationStateProvider appState
 
 <AuthorizeView>
     <Authorized>
@@ -60,7 +61,11 @@
     </Authorized>
     <NotAuthorized>
         @{
-            NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+            int index = appState.ProviderIndex;
+            Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+            Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[index];
+
+            NavManager.NavigateTo($"{schemeContext.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
         }
     </NotAuthorized>
 </AuthorizeView>

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using IdentityServer4.Models;
 using Fs.Core.Interfaces.Services;
@@ -20,6 +21,8 @@ using Fs.Data;
 using Fs.Data.Models;
 using Fs.Business.Services;
 using Fs.Data.Extensions;
+using Fs.Data.Services;
+using IdentityServer4.Test;
 
 namespace Fs.Business.Extensions
 {
@@ -27,10 +30,22 @@ namespace Fs.Business.Extensions
     {
         private static ILoggerFactory AppLoggerFactory = null;
         private static ISharedConfiguration SharedConfiguration = null;
+        private static IDataProtectionProvider dataProtectionProvider = null;
 
         public static ISharedConfiguration Configuration(this IServiceCollection services)
         {
             return SharedConfiguration;
+        }
+
+        public static IServiceCollection SetDataProtector(this IServiceCollection services)
+        {
+            services.AddDataProtection();
+
+            IServiceProvider serviceProvider = services.AddSingleton<OIDCDataProtectionProvider>().BuildServiceProvider();
+
+            dataProtectionProvider = serviceProvider.GetRequiredService<OIDCDataProtectionProvider>();
+
+            return services;
         }
 
         public static IServiceCollection AddTrace(this IServiceCollection services)
@@ -87,7 +102,7 @@ namespace Fs.Business.Extensions
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>();
             DbContextOptions<OrderingContext> options = optionsBuilder
                     .UseLoggerFactory(AppLoggerFactory) // Warning: Do not create a new ILoggerFactory instance each time
-                    .UseSqlServer(SharedConfiguration.GetConnectionString("DefaultConnection"))
+                    .UseSqlServer(SharedConfiguration.GetConnectionString("OrderConnection"))
                     .Options;
 
             optionsBuilder.EnableSensitiveDataLogging(true);
@@ -189,36 +204,57 @@ namespace Fs.Business.Extensions
         {
             Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
 
-            appContext.AuthScheme = SharedConfiguration.GetValue<string>("OidcProviders:Enabled");
+            string authScheme = SharedConfiguration.GetValue<string>("OidcProviders:Enabled");
             appContext.RedirectUri = SharedConfiguration.GetValue<string>("OidcProviders:RedirectUri");
             AuthenticationBuilder builder = null;
 
-            if (appContext.AuthScheme == null || appContext.AuthScheme == OpenIdDefaults.ChallengeScheme)
+            IConfigurationSection section = SharedConfiguration.GetSection("OidcProviders");
+            IEnumerable<IConfigurationSection> providers = section.GetChildren();
+
+            int providerCount = 0;
+
+            if (authScheme == null)
+            {
+                services.AddAuthentication(AzureADDefaults.AuthenticationScheme);
+                builder = services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = OpenIdDefaults.Scheme;
+                    options.DefaultChallengeScheme = OpenIdDefaults.ChallengeScheme;
+                });
+
+                providerCount = providers.Count();
+
+                if (appContext.RedirectUri != null)
+                    providerCount--;
+            }
+            else if (authScheme == OpenIdDefaults.ChallengeScheme)
             {
                 builder = services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = OpenIdDefaults.Scheme;
                     options.DefaultChallengeScheme = OpenIdDefaults.ChallengeScheme;
                 });
-                /*.AddMicrosoftAccount(microsoftOptions =>
-                {
-                    microsoftOptions.ClientId = "b897fff3-87d2-4675-b49b-63b123671972";
-                    microsoftOptions.ClientSecret = "54q37JSSnoU11a9y..brN_NhESk~93s.qF";
-                });*/
+
+                providerCount = 1;
             }
-            else if (appContext.AuthScheme == AzureADDefaults.AuthenticationScheme)
+            else if (authScheme == AzureADDefaults.AuthenticationScheme)
+            {
                 builder = services.AddAuthentication(AzureADDefaults.AuthenticationScheme);
+                providerCount = 1;
+            }
+            else
+                throw new Exception("AddOidcProviders: 0 supported providers are found in 'OidcProviders' section of appsettings.json");
 
             if (addServerJwt)
                 builder.AddIdentityServerJwt();
             builder.AddCookie(OpenIdDefaults.Scheme);
 
-            IConfigurationSection section = SharedConfiguration.GetSection("OidcProviders");
-            IEnumerable<IConfigurationSection> providers = section.GetChildren();
+            appContext.AuthSchemes = new SchemeContext[providerCount];
+            int i = 0;
 
             foreach (IConfigurationSection providerSection in providers)
             {
-                bool addProvider = appContext.AuthScheme == null || appContext.AuthScheme == providerSection.Key;
+                bool addProvider = authScheme == null || authScheme == providerSection.Key;
 
                 if (addProvider)
                 {
@@ -248,9 +284,15 @@ namespace Fs.Business.Extensions
                             options.RequireHttpsMetadata = providerSection.GetValue<bool>("HttpsMetadata");
                             options.GetClaimsFromUserInfoEndpoint = providerSection.GetValue<bool>("ClaimsUserEndpoint");
 
-                            appContext.SignOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
-                            appContext.SignInUri = providerSection.GetValue<string>("SignInUri");
-                            appContext.SignOutUri = providerSection.GetValue<string>("SignOutUri");
+                            appContext.AuthSchemes[i] = new SchemeContext();
+                            appContext.AuthSchemes[i].Authority = options.Authority;
+                            appContext.AuthSchemes[i].SignOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
+                            appContext.AuthSchemes[i].SignInUri = providerSection.GetValue<string>("SignInUri");
+                            appContext.AuthSchemes[i].SignOutUri = providerSection.GetValue<string>("SignOutUri");
+                            appContext.AuthSchemes[i].AuthScheme = OpenIdDefaults.ChallengeScheme;
+
+                            if (dataProtectionProvider != null)
+                                options.DataProtectionProvider = dataProtectionProvider;
 
                             if (providerSection.GetValue<bool>("Events"))
                             {
@@ -265,6 +307,8 @@ namespace Fs.Business.Extensions
                                     }
                                 };
                             }
+
+                            i++;
                         });
                     }
                     else if (providerSection.Key == AzureADDefaults.AuthenticationScheme)
@@ -273,27 +317,36 @@ namespace Fs.Business.Extensions
                         {
                             options.Instance = providerSection.GetValue<string>("Instance");
                             if (options.Instance == null)
-                                appContext.Authority = options.Instance = SharedConfiguration.GetAzureInstance();
+                                options.Instance = SharedConfiguration.GetAzureInstance();
+
+                            appContext.AuthSchemes[i] = new SchemeContext();
+                            appContext.AuthSchemes[i].Authority = options.Instance;
 
                             options.Domain = providerSection.GetValue<string>("Domain");
-                            appContext.TenantId = options.TenantId = providerSection.GetValue<string>("TenantId");
-                            appContext.ClientId = options.ClientId = providerSection.GetValue<string>("ClientId");
+                            appContext.AuthSchemes[i].TenantId = options.TenantId = providerSection.GetValue<string>("TenantId");
+                            appContext.AuthSchemes[i].ClientId = options.ClientId = providerSection.GetValue<string>("ClientId");
                             options.CallbackPath = providerSection.GetValue<string>("CallbackPath");
-                            appContext.SignOutCallbackPath = options.SignedOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
-                            appContext.ClientSecret = providerSection.GetValue<string>("ClientSecret");
-                            appContext.ResourceId = providerSection.GetValue<string>("ResourceId");
-                            appContext.AuthorizePath = providerSection.GetValue<string>("AuthorizePath");
-                            appContext.CodeField = providerSection.GetValue<string>("CodeField");
-                            appContext.ResponseType = providerSection.GetValue<string>("ResponseType");
-                            appContext.SignInUri = providerSection.GetValue<string>("SignInUri");
-                            appContext.SignOutUri = providerSection.GetValue<string>("SignOutUri");
+                            appContext.AuthSchemes[i].SignOutCallbackPath = options.SignedOutCallbackPath = providerSection.GetValue<string>("OutCallbackPath");
+
+                            appContext.AuthSchemes[i].SignInUri = providerSection.GetValue<string>("SignInUri");
+                            appContext.AuthSchemes[i].SignOutUri = providerSection.GetValue<string>("SignOutUri");
+
+                            appContext.AuthSchemes[i].ClientSecret = providerSection.GetValue<string>("ClientSecret");
+                            appContext.AuthSchemes[i].ResourceId = providerSection.GetValue<string>("ResourceId");
+                            appContext.AuthSchemes[i].AuthorizePath = providerSection.GetValue<string>("AuthorizePath");
+                            appContext.AuthSchemes[i].CodeField = providerSection.GetValue<string>("CodeField");
+                            appContext.AuthSchemes[i].ResponseType = providerSection.GetValue<string>("ResponseType");
+                            appContext.AuthSchemes[i].AuthScheme = AzureADDefaults.AuthenticationScheme;
+
+                            i++;
                         });
                     }
                 }
             }
 
-            if (appContext.AuthScheme == null)
-                appContext.AuthScheme = OpenIdDefaults.ChallengeScheme;
+            /*if (appContext.AuthScheme == null)
+                //appContext.AuthScheme = AzureADDefaults.AuthenticationScheme;
+                appContext.AuthScheme = OpenIdDefaults.ChallengeScheme;*/
 
             return services;
         }

@@ -1,16 +1,24 @@
 ﻿@inject AuthenticationStateProvider AuthState
 @inject NavigationManager NavManager
+@inject ApplicationStateProvider appState
 
 <AuthorizeView>
     <Authorized>
         <a href="Identity/Account/Manage">Hello, @Username!</a>
-        <a href="#" @onclick="SignOut">Log out</a>
+        <a href="#" @onclick="SignOut">Log out (@appContext.AuthSchemes[index].AuthScheme)</a>
         @code
         {
             private string Username = "";
+            private int index = -1;
+            private int i = 0;
+            private Fs.Data.Models.AppContext appContext = null;
+
 
             protected override async Task OnInitializedAsync()
             {
+                index = appState.ProviderIndex;
+                appContext = Fs.Data.Models.AppContext.Instance;
+
                 var state = await AuthState.GetAuthenticationStateAsync();
 
                 if (state.User.Identity.IsAuthenticated)
@@ -27,23 +35,34 @@
 
             private void SignOut()
             {
-                Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+                Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[index];
 
-                string returnUrl = String.Format("{0}{1}", appContext.RedirectUri, appContext.SignOutCallbackPath);
+                string returnUrl = String.Format("{0}{1}", appContext.RedirectUri, schemeContext.SignOutCallbackPath);
 
-                NavManager.NavigateTo($"{appContext.SignOutUri}?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+                NavManager.NavigateTo($"{schemeContext.SignOutUri}?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
             }
         }
 
     </Authorized>
     <NotAuthorized>
         <a href="Identity/Account/Register">Register</a>
-        <a href="#" @onclick="SignIn">Log in</a>
-        @code {
-            private void SignIn()
-            {
-                NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
-            }
+
+        @foreach (var provider in appContext.AuthSchemes)
+        {
+            var buttonNumber = i;
+
+            <a href="#" @onclick="@(e => SignIn(buttonNumber))">Log in (@provider.AuthScheme)</a>
+            i++;
         }
-    </NotAuthorized>
+
+            @code {
+                private void SignIn(int buttonNumber)
+                {
+                    Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[buttonNumber];
+                    appState.ProviderIndex = buttonNumber;
+
+                    NavManager.NavigateTo($"{schemeContext.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                }
+            }
+        </NotAuthorized>
 </AuthorizeView>

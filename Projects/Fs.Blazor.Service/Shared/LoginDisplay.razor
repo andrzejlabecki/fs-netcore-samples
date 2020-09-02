@@ -28,10 +28,11 @@
             private void SignOut()
             {
                 Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+                Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[0];
 
-                string returnUrl = String.Format("{0}{1}", appContext.RedirectUri, appContext.SignOutCallbackPath);
+                string returnUrl = String.Format("{0}{1}", appContext.RedirectUri, schemeContext.SignOutCallbackPath);
 
-                NavManager.NavigateTo($"{appContext.SignOutUri}?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
+                NavManager.NavigateTo($"{schemeContext.SignOutUri}?returnUrl={Uri.EscapeDataString(returnUrl)}", true);
             }
         }
 
@@ -42,7 +43,10 @@
         @code {
             private void SignIn()
             {
-                NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+                Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[0];
+
+                NavManager.NavigateTo($"{schemeContext.SignInUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
             }
         }
     </NotAuthorized>

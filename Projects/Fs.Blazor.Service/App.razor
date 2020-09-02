@@ -20,7 +20,10 @@
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
                 @{ 
-                    NavManager.NavigateTo($"{Fs.Data.Models.AppContext.Instance.SignOutUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
+                    Fs.Data.Models.AppContext appContext = Fs.Data.Models.AppContext.Instance;
+                    Fs.Data.Models.SchemeContext schemeContext = appContext.AuthSchemes[0];
+
+                    NavManager.NavigateTo($"{schemeContext.SignOutUri}?returnUrl={Uri.EscapeDataString(NavManager.Uri)}", true);
                 }
             </NotAuthorized>
             <Authorizing>
