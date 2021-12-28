@@ -13,7 +13,8 @@ namespace Fs.Client
             // discover endpoints from metadata
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync("https://fs-angular-is4.netpoc.com");
+            //var disco = await client.GetDiscoveryDocumentAsync("https://fs-angular-is4.netpoc.com");
+            var disco = await client.GetDiscoveryDocumentAsync("https://fs-mvc-is4.netpoc.com");
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);

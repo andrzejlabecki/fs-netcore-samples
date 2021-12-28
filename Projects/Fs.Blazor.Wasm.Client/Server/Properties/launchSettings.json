@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iis": {
       "applicationUrl": "https://fs-blazor-wasm-client.netpoc.com",
-      "sslPort": 0
+      "sslPort": 443
     },
     "iisExpress": {
       "applicationUrl": "http://localhost:62158",
@@ -23,10 +23,12 @@
     "Fs.Blazor.Wasm.Client.Server": {
       "commandName": "IIS",
       "launchBrowser": true,
+      "launchUrl": "https://fs-blazor-wasm-client.netpoc.com",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://fs-blazor-wasm-client.netpoc.com",
+      "jsWebView2Debugging": false,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
     }
   }
